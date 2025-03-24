@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import meta from '@/data/meta';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -15,6 +16,17 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
     title: 'David Dada',
     description: 'Computer Scientist and Experienced Backend Engineer.',
+    icons: {
+        shortcut: "icon.svg"
+    },
+    openGraph: {
+        locale: 'en_US',
+        title: 'David Dada',
+        siteName: 'David Dada',
+        description: 'Computer Scientist and Experienced Backend Engineer.',
+        url: meta.url,
+    },
+    metadataBase: new URL(meta.url),
 };
 
 export default function RootLayout({
