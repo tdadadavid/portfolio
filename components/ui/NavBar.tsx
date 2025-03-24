@@ -1,12 +1,45 @@
 import meta from "@/data/meta"
-import { NavLink } from "./NavLink"
+import {NavLink} from "./NavLink"
+import icon from "@/app/icon.svg"
+import Image from "next/image"
+import {GithubLogo, XLogo} from "@phosphor-icons/react/dist/ssr"
+import {ThemeSwitcher} from "@/components/ui/ThemeSwitcher";
+import {IconLink} from "./IconLink"
 
-export const NavBar = () => { 
+const HomeRow = () => {
     return (
-        <header>
-            {meta.navLinks.map(link => (
-                <NavLink href={link.href} title={link.title} key={link.href} />
-            ))}
+        <div className="flex items-center gap-3">
+            <Image width={32} height={32} src={icon} alt="David Dada"/>
+            <div className="flex flex-col">
+                <h4 className={"font-bold"}>David Dada</h4>
+                <h6 className="text-gray-500 text-xs">Software Engineer (Backend)</h6>
+            </div>
+        </div>
+    )
+}
+
+const ExternalLinks = () => {
+    return (
+        <div className={"flex items-center gap-3"}>
+            <IconLink icon={<XLogo size={24}/>} href={"https://x.com/dtrue_king"}/>
+            <IconLink icon={<GithubLogo size={24}/>} href={"https://github.com/tdadadavid"}/>
+            <ThemeSwitcher/>
+        </div>
+    )
+}
+
+export const NavBar = () => {
+    return (
+        <header className="flex items-center justify-between w-full bg-white dark:bg-black border-b-gray-300 py-4">
+            <HomeRow/>
+            <ul className="flex gap-4 items-center">
+                {meta.navLinks.map(link => (
+                    <li className={"text-gray-500 hover:text-gray-800"}>
+                        <NavLink href={link.href} title={link.title} key={link.href} selected={"home"}/>
+                    </li>
+                ))}
+            </ul>
+            <ExternalLinks/>
         </header>
     )
 }
