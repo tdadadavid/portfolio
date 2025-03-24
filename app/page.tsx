@@ -17,10 +17,10 @@ const Home = () => {
                 </h4>
                 <h4 className={"mt-6 text-gray-500 leading-8"}>
                     I've worked on projects like{' '}
-                    <InlineLink href={"https://github.com/tdadadavid"}
+                    <InlineLink href={"https://github.com/tdadadavid/minired"}
                                 title={"minired"}
                                 external={true}/>, implementing core redis functionality from scratch in Go,{' '}
-                    <InlineLink href={"https://github.com/tdadadavid"}
+                    <InlineLink href={"https://github.com/tdadadavid/search-engine"}
                                 title={"a search engine"}
                                 external={true}/> written in C#,{' '}
                     and contributed to big Open Source projects like{' '}
