@@ -2,10 +2,10 @@ import meta from "@/data/meta"
 import {NavLink} from "./NavLink"
 import icon from "@/app/icon.svg"
 import Image from "next/image"
-import {GithubLogo, XLogo} from "@phosphor-icons/react/dist/ssr"
-import {ThemeSwitcher} from "@/components/ui/ThemeSwitcher";
+import {GithubLogo, LinkedinLogo} from "@phosphor-icons/react/dist/ssr"
+import {ThemeSwitcher} from "@/components/ui/ThemeSwitcher"
 import {IconLink} from "./IconLink"
-import {NavLinkType} from "@/types/types.navigation";
+import {NavLinkType} from "@/types/types.navigation"
 
 interface NavBarProps {
     currentPage: NavLinkType
@@ -26,8 +26,8 @@ const HomeRow = () => {
 const ExternalLinks = () => {
     return (
         <div className={"flex items-center gap-3"}>
-            <IconLink icon={<XLogo size={24}/>} href={"https://x.com/dtrue_king"}/>
-            <IconLink icon={<GithubLogo size={24}/>} href={"https://github.com/tdadadavid"}/>
+            <IconLink icon={<LinkedinLogo size={24}/>} href={meta.socials.linkedin}/>
+            <IconLink icon={<GithubLogo size={24}/>} href={meta.github}/>
             <ThemeSwitcher/>
         </div>
     )

@@ -1,6 +1,10 @@
 const meta = {
     url: "https://tdadadavid.vercel.app",
     github: "https://github.com/tdadadavid",
+    socials: {
+        twitter: "https://x.com/dtrue_king",
+        linkedin: "https://linkedin.com/in/obadafidi",
+    },
     navLinks: [
         {title: "home", href: "/"},
         {title: "works", href: "/works"},

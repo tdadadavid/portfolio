@@ -6,11 +6,15 @@ import {GridBackground} from "@/components/other/GridBackground";
 import {InlineLink} from "@/components/ui/InlineLink";
 import meta from "@/data/meta";
 import {PopOutButton} from "@/components/ui/Buttons";
-import {PaperPlaneTilt} from "@phosphor-icons/react/dist/ssr";
+import {PaperPlaneTilt, PencilRuler} from "@phosphor-icons/react/dist/ssr";
 
 const Home = () => {
     const onConnectButtonClick = () => {
-        alert("connect");
+        window.open(meta.socials.linkedin, "_blank", "noopener,noreferrer");
+    }
+
+    const onViewWorksButtonClick = () => {
+        window.open("/works", "_self");
     }
 
     return (
@@ -39,11 +43,18 @@ const Home = () => {
                     member of the Google Student Developer Club and a technical trainer at NitHub and
                     Engineering Career Expo (ECX).
                 </h4>
-                <PopOutButton
-                    title={"Let's connect"}
-                    icon={<PaperPlaneTilt size={18} className={"text-gray-900"} weight={"fill"}/>}
-                    action={onConnectButtonClick}
-                />
+                <section className={"flex gap-4 items-center"}>
+                    <PopOutButton
+                        title={"View Works"}
+                        icon={<PencilRuler size={18} className={"text-gray-900"} weight={"duotone"}/>}
+                        action={onViewWorksButtonClick}
+                    />
+                    <PopOutButton
+                        title={"Let's connect"}
+                        icon={<PaperPlaneTilt size={18} className={"text-gray-900"} weight={"duotone"}/>}
+                        action={onConnectButtonClick}
+                    />
+                </section>
             </GridBackground>
         </Container>
     )
