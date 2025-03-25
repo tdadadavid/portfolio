@@ -1,10 +1,11 @@
 "use client"
 
+import meta from "@/data/meta";
+
 import {NavBar} from "@/components/ui/NavBar"
 import {Container} from "@/components/layout/Container"
 import {GridBackground} from "@/components/other/GridBackground";
 import {InlineLink} from "@/components/ui/InlineLink";
-import meta from "@/data/meta";
 import {PopOutButton} from "@/components/ui/Buttons";
 import {PaperPlaneTilt, PencilRuler} from "@phosphor-icons/react/dist/ssr";
 
