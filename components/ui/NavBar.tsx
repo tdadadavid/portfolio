@@ -17,7 +17,7 @@ const HomeRow = () => {
             <Image width={32} height={32} src={icon} alt="David Dada"/>
             <div className="flex flex-col">
                 <h4 className={"font-bold"}>David Dada</h4>
-                <h6 className="text-gray-500 text-xs">Software Engineer (Backend)</h6>
+                <h6 className="dark:text-gray-300 text-gray-500 text-xs">Software Engineer (Backend)</h6>
             </div>
         </div>
     )
@@ -35,11 +35,12 @@ const ExternalLinks = () => {
 
 export const NavBar = (props: NavBarProps) => {
     return (
-        <header className="flex items-center justify-between w-full bg-white dark:bg-black border-b-gray-300 py-4">
+        <header className="flex items-center justify-between w-full bg-white dark:bg-nord border-b-gray-300 py-4">
             <HomeRow/>
             <ul className="flex gap-4 items-center">
                 {meta.navLinks.map((link, idx) => (
-                    <li key={idx} className={"text-gray-500 hover:text-gray-800"}>
+                    <li key={idx}
+                        className={"dark:text-gray-300 dark:hover:text-gray-100 text-gray-500 hover:text-gray-800"}>
                         <NavLink href={link.href} title={link.title} selected={props.currentPage}/>
                     </li>
                 ))}

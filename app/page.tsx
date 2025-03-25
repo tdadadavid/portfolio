@@ -24,15 +24,16 @@ const Home = () => {
             <GridBackground>
                 <div className={"flex gap-4"}>
                     <div>
-                        <h2 className={"font-bold text-6xl text-gray-800"}>David Dada</h2>
-                        <h2 className={"mt-4 text-3xl underline text-gray-800"}>Backend Engineer</h2>
+                        <h2 className={"font-bold text-6xl dark:text-gray-200 text-gray-800"}>David Dada</h2>
+                        <h2 className={"mt-4 text-3xl underline dark:text-gray-200 text-gray-800"}>Backend Engineer</h2>
                     </div>
                 </div>
-                <h4 className={"mt-8 text-gray-500 leading-8"}>I am a backend engineer based in Lagos, Nigeria, with
+                <h4 className={"mt-8 dark:text-gray-400 text-gray-500 leading-8"}>I am a backend engineer based in
+                    Lagos, Nigeria, with
                     over 5 years of experience building scalable, high-performance systems. I'm passionate about
                     technology, arts, and entrepreneurship. I also have a keen interest in writing and web development.
                 </h4>
-                <h4 className={"mt-6 text-gray-500 leading-8"}>
+                <h4 className={"mt-6 dark:text-gray-400 text-gray-500 leading-8"}>
                     I've worked on projects like{' '}
                     <InlineLink href={`${meta.github}/minired`}
                                 title={"minired"}
@@ -47,12 +48,14 @@ const Home = () => {
                 <section className={"flex gap-4 items-center"}>
                     <PopOutButton
                         title={"View Works"}
-                        icon={<PencilRuler size={18} className={"text-gray-900"} weight={"duotone"}/>}
+                        icon={<PencilRuler size={18} className={"dark:text-gray-300 text-gray-900"}
+                                           weight={"duotone"}/>}
                         action={onViewWorksButtonClick}
                     />
                     <PopOutButton
                         title={"Let's connect"}
-                        icon={<PaperPlaneTilt size={18} className={"text-gray-900"} weight={"duotone"}/>}
+                        icon={<PaperPlaneTilt size={18} className={"dark:text-gray-300 text-gray-900"}
+                                              weight={"duotone"}/>}
                         action={onConnectButtonClick}
                     />
                 </section>

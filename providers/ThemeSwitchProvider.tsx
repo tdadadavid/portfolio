@@ -16,7 +16,7 @@ const ThemeSwitchProvider = ({children}: ThemeSwitchProps) => {
     if (!mounted) return (<>{children}</>);
 
     return (
-        <ThemeProvider>
+        <ThemeProvider defaultTheme={"system"}>
             {children}
         </ThemeProvider>
     )

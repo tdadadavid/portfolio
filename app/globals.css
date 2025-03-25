@@ -1,23 +1,27 @@
 @import "tailwindcss";
 
+@variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 :root {
     --background: #ffffff;
     --foreground: #171717;
 }
 
-@theme inline {
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    --font-sans: var(--font-geist-sans);
-    --font-mono: var(--font-geist-mono);
+[data-theme="dark"] {
+    --background: #181b23;
+    --foreground: #ededed;
 }
 
 @theme {
-    --color-subheading: oklch(55.1% 0.0234 264.36);
+    --color-nord: #181b23;
+    --color-ice: #66aadb;
 }
 
-@theme dark {
-    --color-subheading: oklch(71.37% 0.0192 261.32);
+@theme inline {
+    /*--color-background: var(--background);*/
+    /*--color-foreground: var(--foreground);*/
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -56,4 +60,8 @@ body {
     z-index: -1;
     border-radius: 4px;
     animation: ghost 0.355ms 0.5s ease backwards;
+}
+
+[data-theme="dark"] .ghost-popup .popup {
+    background: oklch(30.88% 0.031 263.96);
 }
