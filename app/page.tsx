@@ -32,18 +32,19 @@ const Home = () => {
                 </div>
                 <h4 className={"mt-8 dark:text-gray-400 text-gray-500 leading-8"}>I am a backend engineer based in
                     Lagos, Nigeria, with
-                    over 5 years of experience building scalable, high-performance systems. I'm passionate about
+                    over 5 years of experience building scalable, high-performance systems. I&apos;m passionate about
                     technology, arts, and entrepreneurship. I also have a keen interest in writing and web development.
                 </h4>
                 <h4 className={"mt-6 dark:text-gray-400 text-gray-500 leading-8"}>
-                    I've worked on projects like{' '}
+                    I&apos;ve worked on projects like{' '}
                     <InlineLink href={`${meta.github}/minired`}
                                 title={"minired"}
                                 external={true}/>, implementing core redis functionality from scratch in Go,{' '}
                     <InlineLink href={`${meta.github}/search-engine`} title={"a search engine"}
                                 external={true}/> written in C#,{' '}
                     and contributed to big Open Source projects like{' '}
-                    <InlineLink title={"DiceDB"} href={"https://github.com/DiceDB/dice"} external={true}/>. I'm also
+                    <InlineLink title={"DiceDB"} href={"https://github.com/DiceDB/dice"} external={true}/>. I&apos;m
+                    also
                     member of the Google Student Developer Club and a technical trainer at NitHub and
                     Engineering Career Expo (ECX).
                 </h4>
