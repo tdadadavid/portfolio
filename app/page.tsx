@@ -7,7 +7,7 @@ import {PaperPlaneTilt} from "@phosphor-icons/react/dist/ssr";
 const Home = () => {
     return (
         <Container>
-            <NavBar/>
+            <NavBar currentPage={"home"}/>
             <GridBackground>
                 <div className={"flex gap-4"}>
                     <div>
@@ -18,7 +18,6 @@ const Home = () => {
                 <h4 className={"mt-8 text-gray-500 leading-8"}>I am a backend engineer based in Lagos, Nigeria, with
                     over 5 years of experience building scalable, high-performance systems. I'm passionate about
                     technology, arts, and entrepreneurship. I also have a keen interest in writing and web development.
-
                 </h4>
                 <h4 className={"mt-6 text-gray-500 leading-8"}>
                     I've worked on projects like{' '}

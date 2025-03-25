@@ -5,6 +5,11 @@ import Image from "next/image"
 import {GithubLogo, XLogo} from "@phosphor-icons/react/dist/ssr"
 import {ThemeSwitcher} from "@/components/ui/ThemeSwitcher";
 import {IconLink} from "./IconLink"
+import {NavLinkType} from "@/types/types.navigation";
+
+interface NavBarProps {
+    currentPage: NavLinkType
+}
 
 const HomeRow = () => {
     return (
@@ -28,14 +33,14 @@ const ExternalLinks = () => {
     )
 }
 
-export const NavBar = () => {
+export const NavBar = (props: NavBarProps) => {
     return (
         <header className="flex items-center justify-between w-full bg-white dark:bg-black border-b-gray-300 py-4">
             <HomeRow/>
             <ul className="flex gap-4 items-center">
-                {meta.navLinks.map(link => (
-                    <li className={"text-gray-500 hover:text-gray-800"}>
-                        <NavLink href={link.href} title={link.title} key={link.href} selected={"home"}/>
+                {meta.navLinks.map((link, idx) => (
+                    <li key={idx} className={"text-gray-500 hover:text-gray-800"}>
+                        <NavLink href={link.href} title={link.title} selected={props.currentPage}/>
                     </li>
                 ))}
             </ul>
