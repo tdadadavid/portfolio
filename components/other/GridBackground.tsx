@@ -19,7 +19,7 @@ export const GridBackground = (props: GridBackgroundProps) => {
             {/* Faded */}
             <div
                 className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-nord"></div>
-            <div className={"relative z-20 p-16"}>
+            <div className={"relative z-20 sm:px-16 sm:py-16 py-8 px-4"}>
                 {props.children}
             </div>
         </div>

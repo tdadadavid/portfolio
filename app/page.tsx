@@ -24,8 +24,10 @@ const Home = () => {
             <GridBackground>
                 <div className={"flex gap-4"}>
                     <div>
-                        <h2 className={"font-bold text-6xl dark:text-gray-200 text-gray-800"}>David Dada</h2>
-                        <h2 className={"mt-4 text-3xl underline dark:text-gray-200 text-gray-800"}>Backend Engineer</h2>
+                        <h2 className={"font-bold text-4xl sm:text-6xl dark:text-gray-200 text-gray-800"}>David
+                            Dada</h2>
+                        <h2 className={"mt-4 text-xl sm:text-3xl underline dark:text-gray-200 text-gray-800"}>Backend
+                            Engineer</h2>
                     </div>
                 </div>
                 <h4 className={"mt-8 dark:text-gray-400 text-gray-500 leading-8"}>I am a backend engineer based in

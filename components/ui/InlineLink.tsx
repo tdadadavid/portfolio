@@ -9,7 +9,6 @@ export const InlineLink = (props: InlineLinkProps) => {
         <summary className={"inline-flex items-center text-blue-500 dark:text-ice"}>
             <a href={props.href} target={props.external ? "_blank" : "_self"}
                className={"dark:text-ice text-blue-500 underline underline-offset-4 dark:decoration-ice decoration-gray-800"}>{props.title}</a>
-            {/*<ArrowUpRight size={24}/>*/}
         </summary>
     )
 }
