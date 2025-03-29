@@ -14,25 +14,42 @@ const geistMono = Geist_Mono({
     subsets: ['latin'],
 });
 
+const ogImageUrl = new URL(`${meta.url}/api/og`)
+ogImageUrl.searchParams.append("title", "David Dada")
+ogImageUrl.searchParams.append("description", "Computer Scientist and Experienced Backend Engineer.")
+ogImageUrl.searchParams.append("type", "website")
+
 export const metadata: Metadata = {
-    title: 'David Dada',
-    description: 'Computer Scientist and Experienced Backend Engineer.',
+    title: "David Dada",
+    description: "Computer Scientist and Experienced Backend Engineer.",
     icons: {
-        shortcut: "icon.svg"
+        shortcut: "icon.svg",
     },
     openGraph: {
-        locale: 'en_US',
-        title: 'David Dada',
-        siteName: 'David Dada',
-        description: 'Computer Scientist and Experienced Backend Engineer.',
+        locale: "en_US",
+        title: "David Dada",
+        siteName: "David Dada",
+        description: "Computer Scientist and Experienced Backend Engineer.",
         url: meta.url,
+        images: [
+            {
+                url: ogImageUrl.toString(),
+                width: 1200,
+                height: 630,
+                alt: "David Dada",
+            },
+        ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "David Dada",
+        description: "Computer Scientist and Experienced Backend Engineer.",
+        images: [ogImageUrl.toString()],
     },
     metadataBase: new URL(meta.url),
-};
+}
 
-export default function RootLayout({
-                                       children,
-                                   }: Readonly<{
+export default function RootLayout({children}: Readonly<{
     children: React.ReactNode;
 }>) {
     return (

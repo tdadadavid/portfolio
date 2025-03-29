@@ -9,6 +9,7 @@ import {InlineLink} from "@/components/ui/InlineLink";
 import {PopOutButton} from "@/components/ui/Buttons";
 import {PaperPlaneTilt, Toolbox} from "@phosphor-icons/react/dist/ssr";
 
+
 const Home = () => {
     const onConnectButtonClick = () => {
         window.open(meta.socials.linkedin, "_blank", "noopener,noreferrer");
