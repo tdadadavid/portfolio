@@ -30,12 +30,12 @@ const Home = () => {
                             Engineer</h2>
                     </div>
                 </div>
-                <h4 className={"mt-8 dark:text-gray-400 text-gray-500 leading-8"}>I am a backend engineer based in
+                <h4 className={"mt-8 dark:text-gray-300 text-gray-500 leading-8"}>I am a backend engineer based in
                     Lagos, Nigeria, with
                     over 5 years of experience building scalable, high-performance systems. I&apos;m passionate about
                     technology, arts, and entrepreneurship. I also have a keen interest in writing and web development.
                 </h4>
-                <h4 className={"mt-6 dark:text-gray-400 text-gray-500 leading-8"}>
+                <h4 className={"mt-6 dark:text-gray-300 text-gray-500 leading-8"}>
                     I&apos;ve worked on projects like{' '}
                     <InlineLink href={`${meta.github}/minired`}
                                 title={"minired"}
@@ -48,7 +48,7 @@ const Home = () => {
                     member of the Google Student Developer Club and a technical trainer at NitHub and
                     Engineering Career Expo (ECX).
                 </h4>
-                <section className={"flex gap-4 items-center"}>
+                <section className={"flex sm:gap-4 items-center flex-col sm:flex-row pb-4"}>
                     <PopOutButton
                         title={"View Works"}
                         icon={<Toolbox size={18} className={"dark:text-gray-300 text-gray-900"}
