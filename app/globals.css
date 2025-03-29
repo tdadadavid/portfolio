@@ -24,12 +24,12 @@
     --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background: #181b23;
-        --foreground: #ededed;
-    }
-}
+/*@media (prefers-color-scheme: dark) {*/
+/*    :root {*/
+/*        --background: #181b23;*/
+/*        --foreground: #ededed;*/
+/*    }*/
+/*}*/
 
 body {
     background: var(--background);
@@ -63,5 +63,5 @@ body {
 }
 
 [data-theme="dark"] .ghost-popup .popup {
-    background: oklch(30.88% 0.031 263.96);
+    background: oklch(0.346 0.031 259.712);
 }

@@ -7,7 +7,7 @@ import {Container} from "@/components/layout/Container"
 import {GridBackground} from "@/components/other/GridBackground";
 import {InlineLink} from "@/components/ui/InlineLink";
 import {PopOutButton} from "@/components/ui/Buttons";
-import {PaperPlaneTilt, PencilRuler} from "@phosphor-icons/react/dist/ssr";
+import {PaperPlaneTilt, Toolbox} from "@phosphor-icons/react/dist/ssr";
 
 const Home = () => {
     const onConnectButtonClick = () => {
@@ -51,8 +51,8 @@ const Home = () => {
                 <section className={"flex gap-4 items-center"}>
                     <PopOutButton
                         title={"View Works"}
-                        icon={<PencilRuler size={18} className={"dark:text-gray-300 text-gray-900"}
-                                           weight={"duotone"}/>}
+                        icon={<Toolbox size={18} className={"dark:text-gray-300 text-gray-900"}
+                                       weight={"duotone"}/>}
                         action={onViewWorksButtonClick}
                     />
                     <PopOutButton
