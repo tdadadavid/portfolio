@@ -1,5 +1,5 @@
 const meta = {
-    url: "https://tdadadavid.vercel.app",
+    url: "https://tdadadavid-portfolio.vercel.app",
     github: "https://github.com/tdadadavid",
     socials: {
         twitter: "https://x.com/dtrue_king",
