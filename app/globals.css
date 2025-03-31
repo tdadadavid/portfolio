@@ -8,12 +8,12 @@
 }
 
 [data-theme="dark"] {
-    --background: #181b23;
+    --background: #030c19;
     --foreground: #ededed;
 }
 
 @theme {
-    --color-nord: #181b23;
+    --color-nord: #030c19;
     --color-ice: #66aadb;
 }
 
@@ -23,13 +23,6 @@
     --font-sans: var(--font-geist-sans);
     --font-mono: var(--font-geist-mono);
 }
-
-/*@media (prefers-color-scheme: dark) {*/
-/*    :root {*/
-/*        --background: #181b23;*/
-/*        --foreground: #ededed;*/
-/*    }*/
-/*}*/
 
 body {
     background: var(--background);
