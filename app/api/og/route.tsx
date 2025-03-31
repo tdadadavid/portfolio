@@ -1,5 +1,5 @@
 import {ImageResponse} from "next/og";
-import type {NextRequest} from "next/server";
+import {NextRequest} from "next/server";
 
 export const runtime = "edge";
 
@@ -8,14 +8,6 @@ export async function GET(request: NextRequest) {
     const title = searchParams.get("title") || "David Dada";
     const description = searchParams.get("description") || "Computer Scientist and Experienced Backend Engineer.";
     const type = searchParams.get("type") || "website";
-
-    const fontDataRegular = await fetch(
-        "https://fonts.gstatic.com/s/geist/v2/7Au-p_0Qj6XQZX5DCpYGgLs.woff2"
-    ).then((res) => res.arrayBuffer());
-
-    const fontDataBold = await fetch(
-        "https://fonts.gstatic.com/s/geist/v2/7Au-p_0Qj6XQZXpOCJYGgLs.woff2"
-    ).then((res) => res.arrayBuffer());
 
     return new ImageResponse(
         (
@@ -27,19 +19,14 @@ export async function GET(request: NextRequest) {
                     flexDirection: "column",
                     alignItems: "flex-start",
                     justifyContent: "center",
-                    backgroundColor: "#f4f4f4",
-                    backgroundImage: "linear-gradient(to bottom right, #ffffff, #f0f0f0)",
+                    backgroundColor: "#1e3a8a",
+                    backgroundImage: "linear-gradient(to bottom right, #1e40af, #3b82f6)",
                     padding: 50,
-                    fontFamily: '"Geist", sans-serif',
+                    fontFamily: "Arial, sans-serif",
+                    color: "#fff",
                 }}
             >
-                <div
-                    style={{
-                        marginBottom: 40,
-                        display: "flex",
-                        alignItems: "center",
-                    }}
-                >
+                <div style={{marginBottom: 40, display: "flex", alignItems: "center"}}>
                     <div
                         style={{
                             width: 64,
@@ -56,20 +43,13 @@ export async function GET(request: NextRequest) {
                     >
                         DD
                     </div>
-                    <div
-                        style={{
-                            fontSize: 24,
-                            fontWeight: "bold",
-                        }}
-                    >
-                        David Dada
-                    </div>
+                    <div style={{fontSize: 24, fontWeight: "bold"}}>David Dada</div>
                 </div>
                 <div
                     style={{
                         fontSize: 64,
                         fontWeight: "bold",
-                        color: "#000",
+                        color: "#fff",
                         lineHeight: 1.1,
                         marginBottom: 24,
                         maxWidth: "70%",
@@ -77,24 +57,8 @@ export async function GET(request: NextRequest) {
                 >
                     {title}
                 </div>
-                <div
-                    style={{
-                        fontSize: 28,
-                        color: "#666",
-                        maxWidth: "60%",
-                    }}
-                >
-                    {description}
-                </div>
-                <div
-                    style={{
-                        position: "absolute",
-                        bottom: 50,
-                        left: 50,
-                        fontSize: 24,
-                        color: "#999",
-                    }}
-                >
+                <div style={{fontSize: 28, color: "#d1d5db", maxWidth: "60%"}}>{description}</div>
+                <div style={{position: "absolute", bottom: 50, left: 50, fontSize: 24, color: "#94a3b8"}}>
                     {type === "article" ? "Article" : "Portfolio"}
                 </div>
             </div>
@@ -102,20 +66,6 @@ export async function GET(request: NextRequest) {
         {
             width: 1200,
             height: 630,
-            fonts: [
-                {
-                    name: "Geist",
-                    data: fontDataRegular,
-                    weight: 400,
-                    style: "normal",
-                },
-                {
-                    name: "Geist",
-                    data: fontDataBold,
-                    weight: 700,
-                    style: "normal",
-                },
-            ],
         }
     );
 }
