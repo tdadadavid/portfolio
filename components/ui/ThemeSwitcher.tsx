@@ -21,7 +21,7 @@ export const ThemeSwitcher = () => {
 
     return (
         <div
-            className="cursor-pointer dark:text-gray-300 dark:hover:text-gray-100 text-gray-500 hover:text-gray-800"
+            className="cursor-pointer dark:text-[#6a7282] dark:hover:text-gray-100 text-gray-500 hover:text-gray-800"
             onClick={toggleTheme}
         >
             <AnimatePresence mode="wait" initial={false}>
