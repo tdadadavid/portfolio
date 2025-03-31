@@ -33,7 +33,7 @@ export const metadata: Metadata = {
         url: meta.url,
         images: [
             {
-                url: ogImageUrl.toString(),
+                url: '/api/og',
                 width: 1200,
                 height: 630,
                 alt: "David Dada",
