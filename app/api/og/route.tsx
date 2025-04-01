@@ -26,25 +26,25 @@ export async function GET(request: NextRequest) {
                     color: "#fff",
                 }}
             >
-                <div style={{marginBottom: 40, display: "flex", alignItems: "center"}}>
-                    <div
-                        style={{
-                            width: 64,
-                            height: 64,
-                            borderRadius: "50%",
-                            backgroundColor: "#000",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            color: "#fff",
-                            marginRight: 16,
-                            fontSize: 24,
-                        }}
-                    >
-                        DD
-                    </div>
-                    <div style={{fontSize: 24, fontWeight: "bold"}}>David Dada</div>
-                </div>
+                {/*<div style={{marginBottom: 40, display: "flex", alignItems: "center"}}>*/}
+                {/*    <div*/}
+                {/*        style={{*/}
+                {/*            width: 64,*/}
+                {/*            height: 64,*/}
+                {/*            borderRadius: "50%",*/}
+                {/*            backgroundColor: "#000",*/}
+                {/*            display: "flex",*/}
+                {/*            alignItems: "center",*/}
+                {/*            justifyContent: "center",*/}
+                {/*            color: "#fff",*/}
+                {/*            marginRight: 16,*/}
+                {/*            fontSize: 24,*/}
+                {/*        }}*/}
+                {/*    >*/}
+                {/*        DD*/}
+                {/*    </div>*/}
+                {/*    <div style={{fontSize: 24, fontWeight: "bold"}}>David Dada</div>*/}
+                {/*</div>*/}
                 <div
                     style={{
                         fontSize: 64,

@@ -11,7 +11,8 @@ const meta = {
         {title: "works", href: "/works"},
         {title: "contact", href: "/contact"},
         {title: "blog", href: "/blog"}
-    ]
+    ],
+    works: []
 }
 
 export default meta;
