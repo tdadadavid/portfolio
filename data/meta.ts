@@ -1,6 +1,7 @@
 const meta = {
     url: "https://tdadadavid-portfolio.vercel.app",
     github: "https://github.com/tdadadavid",
+    email: "davidtofunmidada@gmail.com",
     socials: {
         twitter: "https://x.com/dtrue_king",
         linkedin: "https://linkedin.com/in/obadafidi",
