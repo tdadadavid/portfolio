@@ -10,8 +10,8 @@ const ContactPage = () => {
         <Container>
             <NavBar currentPage={"contact"}/>
             <GridBackground>
-                <h2 className={"font-bold text-4xl dark:text-gray-200 text-gray-800"}>Let&apos;s Build
-                    Something Cool</h2>
+                <h2 className={"mt-4 font-bold text-4xl dark:text-gray-200 text-gray-800"}>Let&apos;s Build
+                    Something Cool!</h2>
                 <h3 className={"my-4 dark:text-gray-300 text-gray-500 leading-8"}>
                     I&apos;m a backend developer passionate about creating scalable and efficient solutions. If you have
                     a challenging problem to solve or a project that requires a strong backend foundation, let&apos;s
