@@ -7,7 +7,7 @@ import {Container} from "@/components/layout/Container"
 import {GridBackground} from "@/components/other/GridBackground";
 import {InlineLink} from "@/components/ui/InlineLink";
 import {PopOutButton} from "@/components/ui/Buttons";
-import {PaperPlaneTilt, Toolbox} from "@phosphor-icons/react/dist/ssr";
+import {Cursor, PaperPlaneTilt} from "@phosphor-icons/react/dist/ssr";
 
 
 const Home = () => {
@@ -51,16 +51,16 @@ const Home = () => {
                 </h4>
                 <section className={"flex sm:gap-4 items-center flex-col sm:flex-row pb-4"}>
                     <PopOutButton
-                        title={"View Works"}
-                        icon={<Toolbox size={18} className={"dark:text-gray-300 text-gray-900"}
-                                       weight={"duotone"}/>}
-                        action={onViewWorksButtonClick}
+                        title={"Let's connect"}
+                        icon={<PaperPlaneTilt size={18} className={"dark:text-gray-200 text-gray-900"}
+                                              weight={"fill"}/>}
+                        action={onConnectButtonClick}
                     />
                     <PopOutButton
-                        title={"Let's connect"}
-                        icon={<PaperPlaneTilt size={18} className={"dark:text-gray-300 text-gray-900"}
-                                              weight={"duotone"}/>}
-                        action={onConnectButtonClick}
+                        title={"View Works"}
+                        icon={<Cursor size={18} className={"transform -scale-x-100 dark:text-gray-200 text-gray-900"}
+                                      weight={"fill"}/>}
+                        action={onViewWorksButtonClick}
                     />
                 </section>
             </GridBackground>
