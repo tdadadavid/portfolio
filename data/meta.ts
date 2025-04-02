@@ -17,27 +17,31 @@ const meta = {
         {
             name: "Minired",
             url: "https://github.com/tdadadavid/minired",
-            description: "Core Redis functionality implemented in Go."
+            description: "cache database with publish-subscribe capabilities, developed in Go to emulate Redis " +
+                "functionalities. It supports essential commands like SET, GET, and PING, manages multiple client " +
+                "connections, and handles transactions."
         },
         {
             name: "Orchestra",
             url: "https://github.com/tdadadavid/orchestra",
-            description: "Project paused. Details coming soon."
+            description: "lightweight task orchestration tool built in Go, designed to manage and coordinate workers " +
+                "efficiently, inspired by Kubernetes.",
         },
         {
             name: "Search Engine",
             url: "https://github.com/tdadadavid/search-engine",
-            description: "A search engine written in C#."
+            description: "An efficient search engine written in C# and built for performance and reliability, " +
+                "it enables users to retrieve relevant information quickly.",
         },
         {
             name: "Google Analytics CLI",
             url: "https://github.com/tdadadavid/google-analytics",
-            description: "A CLI for interacting with Google Analytics."
+            description: "A web analytics tool that tracks page visits, user locations, and device usage."
         },
         {
-            name: "Nigerian AI Tutor",
+            name: "Slide Scribe: Nigerian AI Tutor",
             url: "https://github.com/tdadadavid/SlideScribeAI-Backend",
-            description: "An AI tutor built during a hackathon."
+            description: "(Hackathon) The backend for SlideScribeAI, an AI-powered tool for transcribing and processing slides."
         },
     ]
 }
