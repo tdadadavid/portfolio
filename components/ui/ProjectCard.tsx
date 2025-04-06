@@ -23,7 +23,7 @@ const ProjectCard = ({
                 className="absolute inset-0 -translate-x-2 translate-y-2 group-hover:bg-[var(--accent)] dark:bg-[#535E71FF] rounded-xl z-0"
                 style={{
                     '--accent': accentColor
-                }}
+                } as React.CSSProperties}
             />
 
             <div
@@ -45,13 +45,13 @@ const ProjectCard = ({
                     <div className="flex items-center gap-3 mb-3">
                         <div
                             className="group-hover:text-[var(--accent)] text-2xl transition-colors duration-300"
-                            style={{'--accent': accentColor}}
+                            style={{'--accent': accentColor} as React.CSSProperties}
                         >
                             {icon}
                         </div>
                         <h3
                             className="group-hover:text-[var(--accent)] text-xl  font-semibold transition-colors duration-300"
-                            style={{'--accent': accentColor}}
+                            style={{'--accent': accentColor} as React.CSSProperties}
                         >
                             {name.toLowerCase()}
                         </h3>
