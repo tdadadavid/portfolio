@@ -2,18 +2,21 @@ import {useEffect, useState} from "react";
 import {Spiral as Hamburger} from "hamburger-react";
 import {motion} from "framer-motion";
 import Link from "next/link";
-import meta from "@/data/meta";
 import {ThemeSwitcher} from "@/components/ui/ThemeSwitcher";
+import {cn} from "@/lib/utils";
 
 const navItems = [
+    {title: "Home", href: "/"},
     {title: "Contact", href: "/contact"},
     {title: "Works", href: "/works"},
     {title: "Blog", href: "/blog"},
-    {title: "GitHub", href: meta.github},
-    {title: "LinkedIn", href: meta.socials.linkedin},
 ];
 
-export const MobileNavBar = () => {
+interface MobileNavBarProps {
+    active: "Home" | "Contact" | "Works" | "Blog";
+}
+
+export const MobileNavBar = (props: MobileNavBarProps) => {
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
@@ -51,7 +54,10 @@ export const MobileNavBar = () => {
                     >
                         {navItems.map((item, idx) => (
                             <li key={idx}>
-                                <Link href={item.href} className="hover:underline" onClick={() => setIsOpen(false)}>
+                                <Link href={item.href} className={cn(
+                                    "hover:underline",
+                                    props.active == item.title.toLowerCase() && "underline text-blue-500 hover:text-blue-500"
+                                )} onClick={() => setIsOpen(false)}>
                                     {item.title}
                                 </Link>
                             </li>

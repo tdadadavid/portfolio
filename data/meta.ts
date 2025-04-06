@@ -13,35 +13,40 @@ const meta = {
         {title: "blog", href: "/blog"}
     ],
     works: [
-
         {
             name: "Minired",
             url: "https://github.com/tdadadavid/minired",
-            description: "cache database with publish-subscribe capabilities, developed in Go to emulate Redis " +
-                "functionalities. It supports essential commands like SET, GET, and PING, manages multiple client " +
-                "connections, and handles transactions."
+            description: "Implemented Redis core functionality in Golang from scratch.",
+            color: "#22c55e",
+            tags: ["golang", "redis", "backend", "database"],
         },
         {
             name: "Orchestra",
             url: "https://github.com/tdadadavid/orchestra",
-            description: "lightweight task orchestration tool built in Go, designed to manage and coordinate workers " +
-                "efficiently, inspired by Kubernetes.",
+            description: "Lightweight task orchestration tool built in Go, designed to manage and coordinate workers.",
+            color: "#3b82f6",
+            tags: ["golang", "kubernetes", "orchestration", "backend"],
         },
         {
             name: "Search Engine",
             url: "https://github.com/tdadadavid/search-engine",
-            description: "An efficient search engine written in C# and built for performance and reliability, " +
-                "it enables users to retrieve relevant information quickly.",
+            description: "An efficient search engine written in C# and built for performance and reliability.",
+            color: "#ef4444",
+            tags: ["c#", "backend", "algorithms", "performance"],
         },
         {
-            name: "Google Analytics CLI",
+            name: "Google Analytics",
             url: "https://github.com/tdadadavid/google-analytics",
-            description: "A web analytics tool that tracks page visits, user locations, and device usage."
+            description: "A web analytics tool that tracks page visits, user locations, and device usage.",
+            color: "#f59e0b",
+            tags: ["javascript", "analytics", "cli", "frontend"],
         },
         {
-            name: "Slide Scribe: Nigerian AI Tutor",
+            name: "Slide Scribe",
             url: "https://github.com/tdadadavid/SlideScribeAI-Backend",
-            description: "(Hackathon) The backend for SlideScribeAI, an AI-powered tool for transcribing and processing slides."
+            description: "(Hackathon) The backend for SlideScribeAI, an AI-powered tool for transcribing and processing slides.",
+            color: "#8b5cf6",
+            tags: ["hackathon", "ai", "backend", "typescript"],
         },
     ]
 }

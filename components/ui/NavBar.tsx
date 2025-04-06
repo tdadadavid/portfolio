@@ -47,7 +47,7 @@ export const NavBar = (props: NavBarProps) => {
                 ))}
             </ul>
             <ExternalLinks/>
-            <MobileNavBar/>
+            <MobileNavBar active={props.currentPage}/>
         </header>
     )
 }
