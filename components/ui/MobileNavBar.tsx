@@ -13,7 +13,7 @@ const navItems = [
 ];
 
 interface MobileNavBarProps {
-    active: "Home" | "Contact" | "Works" | "Blog";
+    active: "home" | "contact" | "works" | "blog";
 }
 
 export const MobileNavBar = (props: MobileNavBarProps) => {
