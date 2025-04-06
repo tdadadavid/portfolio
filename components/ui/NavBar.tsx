@@ -18,7 +18,7 @@ const HomeRow = () => {
             <Image width={24} height={24} src={icon} alt="David Dada" className={"sm:w-8 h-8"}/>
             <div className="flex flex-col">
                 <h4 className={"font-bold"}>David Dada</h4>
-                <h6 className="dark:text-gray-300 text-gray-500 text-xs">Software Engineer (Backend)</h6>
+                <h6 className="dark:text-gray-300 text-gray-500 hidden sm:visible text-xs">Software Engineer (Backend)</h6>
             </div>
         </div>
     )

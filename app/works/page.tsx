@@ -27,10 +27,10 @@ const WorksPage = () => {
         <Container>
             <NavBar currentPage={"works"}/>
             <GridBackground>
-                <h2 className="mt-4 font-bold text-4xl text-gray-800 dark:text-gray-200">
+                <h2 className="mt-4 font-bold text-3xl sm:text-5xl text-gray-800 dark:text-gray-200">
                     My Works
                 </h2>
-                <h3 className="my-4 text-gray-500 dark:text-gray-300 leading-7">
+                <h3 className="my-4 text-gray-500 dark:text-gray-300 leading-5">
                     A curated collection of my works, highlighting my past achievements
                     and present projects.
                 </h3>
