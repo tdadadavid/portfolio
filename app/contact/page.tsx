@@ -35,19 +35,19 @@ const ContactPage = () => {
              <PopOutButton
                title="GitHub"
                icon={<GithubLogo size={24} weight="fill" />}
-               action={() => handleNavigation(meta.socials.linkedin)}
+               action={() => handleNavigation(meta.github)}
                left={true}
              />
              <PopOutButton
                title="Email"
                icon={<EnvelopeOpen size={24} weight="fill" />}
-               action={() => handleNavigation(meta.socials.linkedin)}
+               action={() => handleNavigation(`mailto:${meta.email}`)}
                left={true}
              />
             <PopOutButton
                title="My Resume"
                icon={<ReadCvLogo size={24} weight="fill" />}
-               action={() => handleNavigation(meta.socials.linkedin)}
+               action={() => handleNavigation("/resume.pdf")}
                left={true}
             />
            </section>

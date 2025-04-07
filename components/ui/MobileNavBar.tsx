@@ -56,7 +56,7 @@ export const MobileNavBar = (props: MobileNavBarProps) => {
                             <li key={idx}>
                                 <Link href={item.href} className={cn(
                                     "hover:underline",
-                                    props.active == item.title.toLowerCase() && "underline text-blue-500 hover:text-blue-500"
+                                    props.active == item.title.toLowerCase() && "underline text-ice-500 hover:text-blue-500"
                                 )} onClick={() => setIsOpen(false)}>
                                     {item.title}
                                 </Link>
