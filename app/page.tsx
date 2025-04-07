@@ -31,7 +31,7 @@ const Home = () => {
                             Engineer</h2>
                     </div>
                 </div>
-                <h4 className={"mt-8 dark:text-gray-300 text-gray-500 leading-5"}>I am a backend engineer based in
+                <h4 className={"mt-8 dark:text-gray-300 text-gray-500 leading-8"}>I am a backend engineer based in
                     Lagos, Nigeria, with
                     over 5 years of experience building scalable, high-performance systems. I&apos;m passionate about
                     technology, arts, and entrepreneurship. I also have a keen interest in writing and web development.

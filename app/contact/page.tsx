@@ -14,7 +14,7 @@ const ContactPage = () => {
                     <h2 className="mt-6 font-extrabold text-3xl sm:text-5xl dark:text-gray-100 text-gray-900">
                         Let&apos;s Build Something Cool!
                     </h2>
-                    <p className="my-4 text-lg dark:text-gray-300 text-gray-600 leading-5">
+                    <p className="my-4 text-lg dark:text-gray-300 text-gray-600 leading-7">
                         I&apos;m a backend developer passionate about building scalable and efficient systems.
                         If you have an exciting challenge or a project that needs a solid backend foundation, let&apos;s
                         connect.
