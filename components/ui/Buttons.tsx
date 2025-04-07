@@ -1,22 +1,41 @@
-import {ReactNode} from "react";
+import { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 interface PopOutButtonProps {
-    title: string
-    icon: ReactNode,
-    action: () => void
+  title: string;
+  icon: ReactNode;
+  action: () => void;
+  topMargin?: boolean;
+  left?: boolean;
 }
 
-export const PopOutButton = (props: PopOutButtonProps) => {
-    return (
-        <button className={"ghost-popup flex items-center justify-center w-full sm:w-[200px]"}>
-            <div
-                className={"content mt-8 w-full min-w-full sm:max-w[200px] sm:w-[200px] py-3 px-4 flex items-center justify-center gap-4 text-sm sm:text-base " +
-                    "rounded-sm dark:text-gray-200 text-gray-900 border-2 dark:bg-ice dark:border-[#1a2949] border-gray-900 bg-white cursor-pointer"}
-                onClick={props.action}>
-                <span className={"font-bold"}>{props.title}</span>
-                {props.icon}
-            </div>
-            <div className="popup"></div>
-        </button>
-    )
-}
+export const PopOutButton = ({
+  title,
+  icon,
+  action,
+  topMargin = true,
+  left = false,
+}: PopOutButtonProps) => {
+  return (
+    <div
+      className={cn(
+        "ghost-popup relative w-full sm:w-[200px]",
+        topMargin && "mt-4"
+      )}
+    >
+      <div className="popup" />
+      <button
+        onClick={action}
+        className={cn(
+          "content relative z-10 flex items-center justify-center gap-3 w-full py-3 px-4 text-sm sm:text-base font-semibold border-2 rounded-sm transition duration-200",
+          "dark:bg-ice bg-white text-gray-800 border-2 dark:border-ice border-gray-800 dark:text-white hover:brightness-110"
+        )}
+      >
+        {left && <>{icon}</>}
+        <span>{title}</span>
+        {!left && <>{icon}</>}
+      </button>
+    </div>
+  );
+};
+

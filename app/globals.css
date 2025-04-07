@@ -3,61 +3,58 @@
 @variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 :root {
-    --background: #ffffff;
-    --foreground: #171717;
-    --font-dank-mono: var(--font-dank-mono)
+  --background: #ffffff;
+  --foreground: #171717;
+  --font-dank-mono: var(--font-dank-mono)
 }
 
 [data-theme="dark"] {
-    --background: #030c19;
-    --foreground: #ededed;
+  --background: #030c19;
+  --foreground: #ededed;
 }
 
 @theme {
-    --color-nord: #030c19;
-    --color-ice: #66aadb;
+  --color-nord: #030c19;
+  --color-ice: #66aadb;
 }
 
 @theme inline {
-    --font-sans: var(--font-dank-mono);
-    --font-mono: var(--font-dank-mono);
+  --font-sans: var(--font-dank-mono);
+  --font-mono: var(--font-dank-mono);
 }
 
 body {
-    background: var(--background);
-    color: var(--foreground);
-    font-family: var(--font-dank-mono);
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-dank-mono);
 }
 
-.ghost-popup, .project-popup {
-    position: relative;
+.ghost-popup,
+.project-popup {
+  position: relative;
 }
 
 .ghost-popup .content {
-    transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 
 .ghost-popup:hover .content {
-    transform: translate(4px, -4px);
+  transform: translate(4px, -4px);
 }
 
 .ghost-popup .popup {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 60%;
-    bottom: -8px;
-    left: -8px;
-    background: oklch(0.48 0.034 261.351);
-    z-index: -1;
-    border-radius: 4px;
-    animation: ghost 0.355ms 0.5s ease backwards;
-}
-
-.project-popup {
-
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 80%;
+  bottom: -8px;
+  left: -8px;
+  background: oklch(0.48 0.034 261.351);
+  z-index: -1;
+  border-radius: 4px;
+  animation: ghost 0.355ms 0.5s ease backwards;
 }
 
 [data-theme="dark"] .ghost-popup .popup {
-    background: oklch(0.277 0.059 264.032);
+  background: oklch(0.277 0.059 264.032);
 }
