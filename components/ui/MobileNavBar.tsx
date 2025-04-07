@@ -50,7 +50,7 @@ export const MobileNavBar = (props: MobileNavBarProps) => {
                         exit={{x: "100%"}}
                         transition={{type: "tween", duration: 0.3}}
                         className="flex flex-col gap-6 text-white text-2xl"
-                        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+                        onClick={(e) => e.stopPropagation()}
                     >
                         {navItems.map((item, idx) => (
                             <li key={idx}>

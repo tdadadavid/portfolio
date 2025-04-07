@@ -7,6 +7,7 @@ interface ProjectCardProps {
     icon: React.ReactNode;
     tags: string[];
     accentColor?: string;
+    onTagClick?: (tag: string) => void;
 }
 
 const ProjectCard = ({
@@ -15,7 +16,8 @@ const ProjectCard = ({
                          url,
                          icon,
                          tags = [],
-                         accentColor = '#22c55e',
+                         accentColor,
+                         onTagClick,
                      }: ProjectCardProps) => {
     return (
         <div className="relative group w-full max-w-md mx-auto">
@@ -61,11 +63,12 @@ const ProjectCard = ({
                         {description}
                     </p>
 
-                    <div className="flex flex-wrap gap-2 mt-auto my-4">
+                    <div className="flex flex-wrap gap-2 my-4">
                         {tags.map((tag, index) => (
                             <span
                                 key={index}
-                                className="inline-block px-2 py-1 text-xs font-mono border border-dashed border-gray-400 dark:border-gray-500 text-gray-600 dark:text-gray-300 rounded"
+                                onClick={() => onTagClick?.(tag)}
+                                className="inline-block px-2 py-1 text-xs font-mono border border-dashed border-gray-400 dark:border-gray-500 text-gray-600 dark:text-gray-300 rounded cursor-pointer hover:border-gray-300"
                             >
                 {tag}
               </span>
@@ -76,7 +79,7 @@ const ProjectCard = ({
                         href={url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm font-mono text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity hover:underline"
+                        className="mt-auto my-1 text-sm font-mono text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity hover:underline"
                     >
                         View on GitHub →
                     </a>

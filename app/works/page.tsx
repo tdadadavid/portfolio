@@ -1,5 +1,6 @@
 "use client"
 
+import {useState} from "react"
 import {Container} from "@/components/layout/Container";
 import {NavBar} from "@/components/ui/NavBar";
 import {GridBackground} from "@/components/other/GridBackground";
@@ -23,6 +24,16 @@ const projectIcons: Record<ProjectName, React.ReactNode> = {
 };
 
 const WorksPage = () => {
+    const [selectedTag, setSelectedTag] = useState<string | null>(null);
+
+    const handleTagClick = (tag: string) => {
+        setSelectedTag(prev => (prev === tag ? null : tag));
+    };
+
+    const filteredProjects = selectedTag
+        ? meta.works.filter(project => project.tags.includes(selectedTag))
+        : meta.works;
+
     return (
         <Container>
             <NavBar currentPage={"works"}/>
@@ -34,8 +45,14 @@ const WorksPage = () => {
                     A curated collection of my works, highlighting my past achievements
                     and present projects.
                 </h3>
+                       {selectedTag && (
+                    <div className="my-8 text-sm font-mono text-center text-gray-600 dark:text-gray-300">
+                        Filtering by tag: <strong>{selectedTag}</strong>{' '}
+                        <button onClick={() => setSelectedTag(null)} className="ml-2 underline text-ice">Clear</button>
+                    </div>
+                )}
                 <section className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {meta.works.map((project, index) => (
+                    {filteredProjects.map((project, index) => (
                         <ProjectCard
                             key={index}
                             name={project.name}
@@ -44,6 +61,7 @@ const WorksPage = () => {
                             icon={projectIcons[project.name as ProjectName]}
                             tags={project.tags}
                             accentColor={project.color}
+                            onTagClick={handleTagClick}
                         />
                     ))}
                 </section>

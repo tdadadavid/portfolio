@@ -18,21 +18,21 @@ const meta = {
             url: "https://github.com/tdadadavid/minired",
             description: "Implemented Redis core functionality in Golang from scratch.",
             color: "#3b82f6",
-            tags: ["golang", "redis", "backend", "database"],
+            tags: ["golang", "backend", "database"],
         },
         {
             name: "Orchestra",
             url: "https://github.com/tdadadavid/orchestra",
             description: "Lightweight task orchestration tool built in Go, designed to manage and coordinate workers.",
             color: "#3b82f6",
-            tags: ["golang", "kubernetes", "orchestration", "backend"],
+            tags: ["golang", "backend"],
         },
         {
             name: "Search Engine",
             url: "https://github.com/tdadadavid/search-engine",
             description: "An efficient search engine written in C# and built for performance and reliability.",
             color: "#3b82f6",
-            tags: ["c#", "backend", "algorithms", "performance"],
+            tags: ["c#", "backend", "algorithms"],
         },
         {
             name: "Google Analytics",
@@ -46,7 +46,7 @@ const meta = {
             url: "https://github.com/tdadadavid/SlideScribeAI-Backend",
             description: "(Hackathon) The backend for SlideScribeAI, an AI-powered tool for transcribing and processing slides.",
             color: "#3b82f6",
-            tags: ["hackathon", "ai", "backend", "typescript"],
+            tags: ["hackathon", "backend", "typescript"],
         },
     ]
 }
