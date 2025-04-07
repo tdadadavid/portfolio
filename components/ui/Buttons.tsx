@@ -27,7 +27,7 @@ export const PopOutButton = ({
       <button
         onClick={action}
         className={cn(
-          "content relative z-10 flex items-center justify-center gap-3 w-full py-3 px-4 text-sm sm:text-base font-semibold border-2 rounded-sm transition duration-200",
+          "cursor-pointer content relative z-10 flex items-center justify-center gap-3 w-full py-3 px-4 text-sm sm:text-base font-semibold border-2 rounded-sm transition duration-200",
           "dark:bg-ice bg-white text-gray-800 border-2 dark:border-ice border-gray-800 dark:text-white hover:brightness-110"
         )}
       >

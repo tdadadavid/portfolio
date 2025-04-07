@@ -27,6 +27,12 @@ const ContactPage = () => {
           </p>
             <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
              <PopOutButton
+               title="Email"
+               icon={<EnvelopeOpen size={24} weight="fill" />}
+               action={() => handleNavigation(`mailto:${meta.email}`)}
+               left={true}
+             />
+             <PopOutButton
                 title="LinkedIn"
                 icon={<LinkedinLogo size={24} weight="fill" />}
                 action={() => handleNavigation(meta.socials.linkedin)}
@@ -36,12 +42,6 @@ const ContactPage = () => {
                title="GitHub"
                icon={<GithubLogo size={24} weight="fill" />}
                action={() => handleNavigation(meta.github)}
-               left={true}
-             />
-             <PopOutButton
-               title="Email"
-               icon={<EnvelopeOpen size={24} weight="fill" />}
-               action={() => handleNavigation(`mailto:${meta.email}`)}
                left={true}
              />
             <PopOutButton
