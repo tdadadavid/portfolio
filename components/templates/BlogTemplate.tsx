@@ -48,6 +48,7 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
 
     const handleTagClick = (tag: string) => {
         // TODO: implementation
+        console.log(tag);
     }
 
     const tags = getTagFrequencyMap(blogs);
