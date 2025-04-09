@@ -3,10 +3,6 @@ import meta from '@/data/meta';
 import { BlogInterface, getBlog, getBlogs } from '@/lib/blogs';
 import { notFound } from 'next/navigation';
 
-interface PageParams {
-    params: { slug: string | string[] };
-}
-
 export const generateStaticParams = async () => {
     try {
         const blogFiles = await getBlogs();
@@ -16,6 +12,7 @@ export const generateStaticParams = async () => {
     }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const generateMetadata = async ({ params }: { params: any }) => {
     const blog = await getBlog(params.slug as string);
     if (!blog) {
@@ -44,6 +41,7 @@ export const generateMetadata = async ({ params }: { params: any }) => {
     };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const BlogPage = async ({ params }: { params: any }) => {
     const blog: BlogInterface | null = await getBlog(params.slug);
     if (!blog) {
