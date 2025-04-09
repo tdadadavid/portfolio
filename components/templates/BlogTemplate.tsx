@@ -5,12 +5,16 @@ import { Container } from '../layout/Container';
 import { NavBar } from '../ui/NavBar';
 import { FrequencyTag } from '../ui/blog/FrequencyTag';
 import { BlogCard } from '../ui/blog/BlogCard';
+import { useEffect, useState } from 'react';
 
 interface BlogTemplateProps {
     blogs: BlogInterface[];
 }
 
 const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
+    const [filterTag, setFilterTag] = useState<String | null>(null);
+    const [filteredPosts, setFilteredPosts] = useState<Record<string, Array<BlogInterface>> | null>(null);
+
     // Returns a set of each individual tag
     const getAllTags = (source: BlogInterface[]) => {
         const tags: string[] = [];
@@ -63,7 +67,11 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
     };
 
     const tags = getTagFrequencyMap(blogs);
-    const organizedPosts = organizePostsIntoYears(blogs);
+
+    // Effects
+    useEffect(() => {
+        setFilteredPosts(organizePostsIntoYears(blogs));
+    }, [])
 
     return (
         <Container>
@@ -87,7 +95,7 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
 
             {/* Blog cards */}
             <section className="my-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {Object.entries(organizedPosts)
+                {filteredPosts && Object.entries(filteredPosts)
                     .sort(([a], [b]) => Number(b) - Number(a)) // sort years newest first
                     .map(([year, posts], idx) => (
                     <section key={idx} className="my-6">
