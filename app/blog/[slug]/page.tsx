@@ -17,8 +17,8 @@ export const generateStaticParams = async () => {
 };
 
 export const generateMetadata = async ({ params }: PageParams) => {
-    const { slug } = await params;
-    const blog = await getBlog(slug);
+    const { slug } = params;
+    const blog = await getBlog(slug as string);
     if (!blog) {
         return {
             title: 'This Page Does Not Exist',
