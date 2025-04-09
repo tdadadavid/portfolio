@@ -2,9 +2,9 @@ import { cn } from '@/lib/utils';
 
 interface FrequencyTagProps {
     title: string;
-    isSelected: Boolean;
-    onClick: (tag: string) => void;
+    isSelected: boolean;
     tiny?: boolean;
+    onClick: (tag: string) => void;
 }
 
 export const FrequencyTag = (props: FrequencyTagProps) => {
