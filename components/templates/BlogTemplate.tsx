@@ -36,20 +36,31 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
     // Organize posts into years for clarity
     const organizePostsIntoYears = (source: BlogInterface[]) => {
         const organizedPosts: Record<string, Array<BlogInterface>> = {};
+        
         for (const post of source) {
             // If this is the first post, create an array to hold them
             if (!organizedPosts[post.metadata.year]) {
-                organizedPosts[post.metadata.year] = []
+                organizedPosts[post.metadata.year] = [];
             }
             organizedPosts[post.metadata.year].push(post);
         }
+        
+        // Sort posts by ISO date (descending within each year)
+        Object.keys(organizedPosts).forEach((year) => {
+            organizedPosts[year].sort(
+                (a, b) =>
+                    new Date(b.metadata.publishedOn).getTime() -
+                    new Date(a.metadata.publishedOn).getTime()
+            );
+        });
+        
         return organizedPosts;
-    }
+    };
 
     const handleTagClick = (tag: string) => {
         // TODO: implementation
         console.log(tag);
-    }
+    };
 
     const tags = getTagFrequencyMap(blogs);
     const organizedPosts = organizePostsIntoYears(blogs);
@@ -62,15 +73,23 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
             <section className="mt-12">
                 <h3 className="text-3xl">Frequent</h3>
                 <section className="my-4 flex gap-2 items-center">
-                    {Object.entries(tags).map(([key, value], idx) => (
-                        <FrequencyTag key={idx} title={`${key} (${value})`} onClick={handleTagClick} />
-                    ))}
+                    {Object.entries(tags)
+                        .sort(([, a], [, b]) => b - a) // sort by frequency count
+                        .map(([key, value], idx) => (
+                            <FrequencyTag
+                                key={idx}
+                                title={`${key} (${value})`}
+                                onClick={handleTagClick}
+                            />
+                        ))}
                 </section>
             </section>
 
             {/* Blog cards */}
             <section className="my-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {Object.entries(organizedPosts).map(([year, posts], idx) => (
+                {Object.entries(organizedPosts)
+                    .sort(([a], [b]) => Number(b) - Number(a)) // sort years newest first
+                    .map(([year, posts], idx) => (
                     <section key={idx} className="my-6">
                         <h3 className="my-2 text-ice">{year}</h3>
                         {posts.map((post, idx) => (
