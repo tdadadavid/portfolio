@@ -1,5 +1,6 @@
 import fs from 'fs';
 import matter from 'gray-matter';
+import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import path from 'path';
 
@@ -14,7 +15,7 @@ export type BlogMetadata = {
 
 export interface BlogInterface {
     metadata: BlogMetadata;
-    content: any;
+    content: MDXRemoteSerializeResult<Record<string, unknown>, Record<string, unknown>>;
     slug: string;
 }
 

@@ -1,13 +1,12 @@
 "use client"
 
-import { MDXRemote } from 'next-mdx-remote';
+import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 
 interface RendererProps {
-    content: any;
+    content: MDXRemoteSerializeResult<Record<string, unknown>, Record<string, unknown>>;
 }
 
 const MdxRenderer = ({ content }: RendererProps) => {
-    console.log("content:", content);
     return (
         <article>
             <MDXRemote {...content} />
