@@ -12,7 +12,7 @@ interface BlogTemplateProps {
 }
 
 const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
-    const [filterTag, setFilterTag] = useState<String>('');
+    const [filterTag, setFilterTag] = useState<string>('');
     const [filteredPosts, setFilteredPosts] = useState<Record<
         string,
         Array<BlogInterface>
@@ -79,7 +79,7 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
             setFilteredPosts(organized);
         } else {
             setFilterTag('');
-            setFilteredPosts(organizePostsIntoYears(blogs))
+            setFilteredPosts(organizePostsIntoYears(blogs));
         }
     };
 
@@ -121,7 +121,9 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
                         .sort(([a], [b]) => Number(b) - Number(a)) // sort years newest first
                         .map(([year, posts], idx) => (
                             <section key={idx} className="my-6">
-                                <h3 className="my-2 font-bold text-ice">{year}</h3>
+                                <h3 className="my-2 font-bold text-ice">
+                                    {year}
+                                </h3>
                                 {posts.map((post, idx) => (
                                     <BlogCard key={idx} meta={post.metadata} />
                                 ))}
