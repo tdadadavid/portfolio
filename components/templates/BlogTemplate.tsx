@@ -4,7 +4,6 @@ import { BlogInterface } from '@/lib/getBlogs';
 import { Container } from '../layout/Container';
 import { NavBar } from '../ui/NavBar';
 import { FrequencyTag } from '../ui/blog/FrequencyTag';
-import { Yesteryear } from 'next/font/google';
 import { BlogCard } from '../ui/blog/BlogCard';
 
 interface BlogTemplateProps {
