@@ -1,6 +1,7 @@
-import fs from "fs"
-import matter from "gray-matter";
-import path from "path"
+import fs from 'fs';
+import matter from 'gray-matter';
+import { serialize } from 'next-mdx-remote/serialize';
+import path from 'path';
 
 export type BlogMetadata = {
     title: string;
@@ -13,7 +14,7 @@ export type BlogMetadata = {
 
 export interface BlogInterface {
     metadata: BlogMetadata;
-    content: string;
+    content: any;
     slug: string;
 }
 
@@ -29,14 +30,19 @@ export const getBlogs = async () => {
             const filepath = path.join(BLOG_DIRECTORY, blog);
             const fileContent = fs.readFileSync(filepath, 'utf-8');
             const { data, content } = matter(fileContent);
-
+            const mdxContent = await serialize(content);
             return {
                 metadata: data as BlogMetadata,
-                content: content as string,
+                content: mdxContent,
                 slug: blog.replace(/\.mdx?$/, ''),
             };
         })
     );
 
     return blogPosts;
-}
+};
+
+export const getBlog = async (slug: string) => {
+    const blogs = await getBlogs();
+    return blogs.find((blog) => blog.slug == slug) ?? null;
+};

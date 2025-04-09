@@ -1,6 +1,6 @@
 'use client';
 
-import { BlogInterface } from '@/lib/getBlogs';
+import { BlogInterface } from '@/lib/blogs';
 import { Container } from '../layout/Container';
 import { NavBar } from '../ui/NavBar';
 import { FrequencyTag } from '../ui/blog/FrequencyTag';

@@ -1,4 +1,4 @@
-import { BlogMetadata } from '@/lib/getBlogs';
+import { BlogMetadata } from '@/lib/blogs';
 import { FrequencyTag } from './FrequencyTag';
 
 interface BlogCardProps {
@@ -23,7 +23,13 @@ export const BlogCard = ({ meta }: BlogCardProps) => {
             </p>
             <section className="flex gap-2 items-center">
                 {meta.tags.map((tag, idx) => (
-                    <FrequencyTag key={idx} title={tag} onClick={() => {}} isSelected={false} tiny={true} />
+                    <FrequencyTag
+                        key={idx}
+                        title={tag}
+                        onClick={() => {}}
+                        isSelected={false}
+                        tiny={true}
+                    />
                 ))}
             </section>
         </section>
