@@ -16,9 +16,8 @@ export const generateStaticParams = async () => {
     }
 };
 
-export const generateMetadata = async ({ params }: PageParams) => {
-    const { slug } = params;
-    const blog = await getBlog(slug as string);
+export const generateMetadata = async ({ params }: { params: any }) => {
+    const blog = await getBlog(params.slug as string);
     if (!blog) {
         return {
             title: 'This Page Does Not Exist',
@@ -45,9 +44,8 @@ export const generateMetadata = async ({ params }: PageParams) => {
     };
 };
 
-const BlogPage = async ({ params }: PageParams) => {
-    const { slug } = await params;
-    const blog: BlogInterface | null = await getBlog(slug);
+const BlogPage = async ({ params }: { params: any }) => {
+    const blog: BlogInterface | null = await getBlog(params.slug);
     if (!blog) {
         return notFound();
     }
