@@ -38,6 +38,7 @@ const geistMono = Geist_Mono({
 // });
 
 const ogImageUrl = new URL(`${meta.url}/api/og`)
+
 ogImageUrl.searchParams.append("title", "David Dada")
 ogImageUrl.searchParams.append("description", "Computer Scientist and Experienced Backend Engineer.")
 ogImageUrl.searchParams.append("type", "website")
@@ -76,13 +77,13 @@ export default function RootLayout({children}: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" className={geistSans.className}>
         <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-        <ThemeSwitchProvider>
-            {children}
-        </ThemeSwitchProvider>
+            <ThemeSwitchProvider>
+                {children}
+            </ThemeSwitchProvider>
         </body>
         </html>
     );

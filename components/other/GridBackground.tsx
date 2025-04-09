@@ -23,7 +23,7 @@ export const GridBackground = ({children, isCentered = false}: GridBackgroundPro
                 className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-nord"></div>
             <div
                 className={cn(
-                    "relative z-20 sm:px-16 sm:py-16 py-8 px-0",
+                    "relative z-20 sm:py-16 py-8",
                     isCentered && "flex flex-col items-center justify-center text-center mx-auto"
                 )}
             >

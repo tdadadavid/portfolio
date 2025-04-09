@@ -2,10 +2,12 @@ import fs from "fs"
 import matter from "gray-matter";
 import path from "path"
 
-type BlogMetadata = {
+export type BlogMetadata = {
     title: string;
     summary: string;
     publishedOn: string;
+    year: string;
+    slug: string;
     tags: string[];
 };
 
