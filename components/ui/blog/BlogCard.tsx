@@ -8,7 +8,7 @@ interface BlogCardProps {
 export const BlogCard = ({ meta }: BlogCardProps) => {
     return (
         <section className="py-2 mb-8">
-            <h3 className="mb-2">
+            <h3 className="mb-2 text-sm">
                 {new Date(meta.publishedOn).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
