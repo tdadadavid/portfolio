@@ -13,7 +13,10 @@ interface BlogTemplateProps {
 
 const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
     const [filterTag, setFilterTag] = useState<String | null>(null);
-    const [filteredPosts, setFilteredPosts] = useState<Record<string, Array<BlogInterface>> | null>(null);
+    const [filteredPosts, setFilteredPosts] = useState<Record<
+        string,
+        Array<BlogInterface>
+    > | null>(null);
 
     // Returns a set of each individual tag
     const getAllTags = (source: BlogInterface[]) => {
@@ -40,7 +43,7 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
     // Organize posts into years for clarity
     const organizePostsIntoYears = (source: BlogInterface[]) => {
         const organizedPosts: Record<string, Array<BlogInterface>> = {};
-        
+
         for (const post of source) {
             // If this is the first post, create an array to hold them
             if (!organizedPosts[post.metadata.year]) {
@@ -48,7 +51,7 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
             }
             organizedPosts[post.metadata.year].push(post);
         }
-        
+
         // Sort posts by ISO date (descending within each year)
         Object.keys(organizedPosts).forEach((year) => {
             organizedPosts[year].sort(
@@ -57,13 +60,22 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
                     new Date(a.metadata.publishedOn).getTime()
             );
         });
-        
+
         return organizedPosts;
     };
 
+    // Filter each post in the post groups by tag
     const handleTagClick = (tag: string) => {
-        // TODO: implementation
-        console.log(tag);
+        setFilterTag(tag);
+        
+        // Case-insensitive filtering
+        const caseInsensitiveTag = tag.toLowerCase();
+        const filtered = blogs.filter((post) =>
+            post.metadata.tags.some(t => t.toLowerCase() == caseInsensitiveTag)
+        );
+        const organized = organizePostsIntoYears(filtered);
+
+        setFilteredPosts(organized);
     };
 
     const tags = getTagFrequencyMap(blogs);
@@ -71,7 +83,7 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
     // Effects
     useEffect(() => {
         setFilteredPosts(organizePostsIntoYears(blogs));
-    }, [])
+    }, []);
 
     return (
         <Container>
@@ -83,11 +95,11 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
                 <section className="my-4 flex gap-2 items-center">
                     {Object.entries(tags)
                         .sort(([, a], [, b]) => b - a) // sort by frequency count
-                        .map(([key, value], idx) => (
+                        .map(([tag, count], idx) => (
                             <FrequencyTag
                                 key={idx}
-                                title={`${key} (${value})`}
-                                onClick={handleTagClick}
+                                title={`${tag} (${count})`}
+                                onClick={() => handleTagClick(tag)}
                             />
                         ))}
                 </section>
@@ -95,16 +107,17 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
 
             {/* Blog cards */}
             <section className="my-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {filteredPosts && Object.entries(filteredPosts)
-                    .sort(([a], [b]) => Number(b) - Number(a)) // sort years newest first
-                    .map(([year, posts], idx) => (
-                    <section key={idx} className="my-6">
-                        <h3 className="my-2 text-ice">{year}</h3>
-                        {posts.map((post, idx) => (
-                            <BlogCard key={idx} meta={post.metadata} />
+                {filteredPosts &&
+                    Object.entries(filteredPosts)
+                        .sort(([a], [b]) => Number(b) - Number(a)) // sort years newest first
+                        .map(([year, posts], idx) => (
+                            <section key={idx} className="my-6">
+                                <h3 className="my-2 text-ice">{year}</h3>
+                                {posts.map((post, idx) => (
+                                    <BlogCard key={idx} meta={post.metadata} />
+                                ))}
+                            </section>
                         ))}
-                    </section>
-                ))}
             </section>
         </Container>
     );
