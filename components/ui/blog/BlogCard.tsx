@@ -7,7 +7,7 @@ interface BlogCardProps {
 
 export const BlogCard = ({ meta }: BlogCardProps) => {
     return (
-        <section className="py-2">
+        <section className="py-2 mb-8">
             <h3 className="mb-2">
                 {new Date(meta.publishedOn).toLocaleDateString('en-US', {
                     year: 'numeric',
