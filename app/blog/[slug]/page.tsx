@@ -4,7 +4,7 @@ import { BlogInterface, getBlog, getBlogs } from '@/lib/blogs';
 import { notFound } from 'next/navigation';
 
 interface PageParams {
-    params: { slug: string };
+    params: { slug: any };
 }
 
 export const generateStaticParams = async () => {
