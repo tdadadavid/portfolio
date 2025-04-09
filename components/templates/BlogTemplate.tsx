@@ -12,7 +12,7 @@ interface BlogTemplateProps {
 }
 
 const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
-    const [filterTag, setFilterTag] = useState<String | null>(null);
+    const [filterTag, setFilterTag] = useState<String>('');
     const [filteredPosts, setFilteredPosts] = useState<Record<
         string,
         Array<BlogInterface>
@@ -66,16 +66,21 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
 
     // Filter each post in the post groups by tag
     const handleTagClick = (tag: string) => {
-        setFilterTag(tag);
-        
-        // Case-insensitive filtering
+        // Toggle-able based on whether the string is empty or not
         const caseInsensitiveTag = tag.toLowerCase();
-        const filtered = blogs.filter((post) =>
-            post.metadata.tags.some(t => t.toLowerCase() == caseInsensitiveTag)
-        );
-        const organized = organizePostsIntoYears(filtered);
-
-        setFilteredPosts(organized);
+        if (filterTag == '' || filterTag != caseInsensitiveTag) {
+            setFilterTag(caseInsensitiveTag);
+            const filtered = blogs.filter((post) =>
+                post.metadata.tags.some(
+                    (t) => t.toLowerCase() == caseInsensitiveTag
+                )
+            );
+            const organized = organizePostsIntoYears(filtered);
+            setFilteredPosts(organized);
+        } else {
+            setFilterTag('');
+            setFilteredPosts(organizePostsIntoYears(blogs))
+        }
     };
 
     const tags = getTagFrequencyMap(blogs);
@@ -99,6 +104,10 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
                             <FrequencyTag
                                 key={idx}
                                 title={`${tag} (${count})`}
+                                isSelected={
+                                    filterTag.toLowerCase() ===
+                                    tag.toLowerCase()
+                                }
                                 onClick={() => handleTagClick(tag)}
                             />
                         ))}
@@ -112,7 +121,7 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
                         .sort(([a], [b]) => Number(b) - Number(a)) // sort years newest first
                         .map(([year, posts], idx) => (
                             <section key={idx} className="my-6">
-                                <h3 className="my-2 text-ice">{year}</h3>
+                                <h3 className="my-2 font-bold text-ice">{year}</h3>
                                 {posts.map((post, idx) => (
                                     <BlogCard key={idx} meta={post.metadata} />
                                 ))}

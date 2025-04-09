@@ -23,7 +23,7 @@ export const BlogCard = ({ meta }: BlogCardProps) => {
             </p>
             <section className="flex gap-2 items-center">
                 {meta.tags.map((tag, idx) => (
-                    <FrequencyTag key={idx} title={tag} onClick={() => {}} />
+                    <FrequencyTag key={idx} title={tag} onClick={() => {}} isSelected={false} tiny={true} />
                 ))}
             </section>
         </section>
