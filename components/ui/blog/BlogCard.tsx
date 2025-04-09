@@ -8,7 +8,14 @@ interface BlogCardProps {
 export const BlogCard = ({ meta }: BlogCardProps) => {
     return (
         <section className="py-2">
-            <h3 className="underline text-gray-800 text-base mb-1 hover:text-ice dark:text-gray-400">
+            <h3 className="mb-2">
+                {new Date(meta.publishedOn).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                })}
+            </h3>
+            <h3 className="underline text-gray-800 text-base mb-4 hover:text-ice dark:text-gray-400">
                 <a href={`/blog/${meta.slug}`}>{meta.title}</a>
             </h3>
             <p className="text-gray-500 text-sm mb-4 dark:text-gray-200">
