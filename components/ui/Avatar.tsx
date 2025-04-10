@@ -1,5 +1,3 @@
-import Icon from '@/public/svg/avatar.svg';
-
 export const Avatar = () => {
     return (
         <div className="text-gray-800 dark:text-gray-200">
