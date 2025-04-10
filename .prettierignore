@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+public/
+
+.env*
+.idea/
+.vscode/
+
+prettier.config.js
+postcss.config.mjs
+tailwind.config.js
+
+coverage/
+*.log

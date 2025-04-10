@@ -55,7 +55,7 @@ export const MobileNavBar = (props: MobileNavBarProps) => {
                         exit={{ x: '100%' }}
                         transition={{ type: 'tween', duration: 0.3 }}
                         className="flex flex-col gap-6 text-white text-2xl"
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={e => e.stopPropagation()}
                     >
                         {navItems.map((item, idx) => (
                             <li key={idx}>
@@ -63,9 +63,8 @@ export const MobileNavBar = (props: MobileNavBarProps) => {
                                     href={item.href}
                                     className={cn(
                                         'hover:underline',
-                                        props.active ==
-                                            item.title.toLowerCase() &&
-                                            'underline text-ice-500 hover:text-blue-500'
+                                        props.active == item.title.toLowerCase() &&
+                                            'underline text-ice-500 hover:text-blue-500',
                                     )}
                                     onClick={() => setIsOpen(false)}
                                 >

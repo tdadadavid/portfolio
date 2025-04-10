@@ -1,1 +1,1 @@
-export type NavLinkType = "home" | "works" | "contact" | "blog";
+export type NavLinkType = 'home' | 'works' | 'contact' | 'blog';

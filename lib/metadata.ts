@@ -1,36 +1,36 @@
-import type {Metadata} from "next"
-import meta from "@/data/meta"
+import type { Metadata } from 'next';
+import meta from '@/data/meta';
 
 type MetadataParams = {
-    title: string
-    description: string
-    path: string
-    ogTitle?: string
-    ogDescription?: string
-    ogType?: "website" | "article"
-}
+    title: string;
+    description: string;
+    path: string;
+    ogTitle?: string;
+    ogDescription?: string;
+    ogType?: 'website' | 'article';
+};
 
 /**
  * Generate metadata for a page with dynamic OG image
  */
 export function createMetadata({
-                                   title,
-                                   description,
-                                   path,
-                                   ogTitle,
-                                   ogDescription,
-                                   ogType = "website",
-                               }: MetadataParams): Metadata {
+    title,
+    description,
+    path,
+    ogTitle,
+    ogDescription,
+    ogType = 'website',
+}: MetadataParams): Metadata {
     // Use provided OG title/description or fall back to regular title/description
-    const finalOgTitle = ogTitle || title
-    const finalOgDescription = ogDescription || description
+    const finalOgTitle = ogTitle || title;
+    const finalOgDescription = ogDescription || description;
 
-    const ogUrl = new URL(`${meta.url}/api/og`)
-    ogUrl.searchParams.append("title", finalOgTitle)
-    ogUrl.searchParams.append("description", finalOgDescription)
-    ogUrl.searchParams.append("type", ogType)
+    const ogUrl = new URL(`${meta.url}/api/og`);
+    ogUrl.searchParams.append('title', finalOgTitle);
+    ogUrl.searchParams.append('description', finalOgDescription);
+    ogUrl.searchParams.append('type', ogType);
 
-    const fullTitle = path === "/" ? title : `${title} | David Dada`
+    const fullTitle = path === '/' ? title : `${title} | David Dada`;
 
     return {
         title: fullTitle,
@@ -50,11 +50,10 @@ export function createMetadata({
             ],
         },
         twitter: {
-            card: "summary_large_image",
+            card: 'summary_large_image',
             title: finalOgTitle,
             description: finalOgDescription,
             images: [ogUrl.toString()],
         },
-    }
+    };
 }
-

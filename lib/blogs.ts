@@ -22,12 +22,10 @@ export interface BlogInterface {
 export const getBlogs = async () => {
     const BLOG_DIRECTORY = path.join('content/blog');
 
-    const blogs = fs
-        .readdirSync(BLOG_DIRECTORY)
-        .filter((file) => path.extname(file) == '.mdx');
+    const blogs = fs.readdirSync(BLOG_DIRECTORY).filter(file => path.extname(file) == '.mdx');
 
     const blogPosts = await Promise.all(
-        blogs.map(async (blog) => {
+        blogs.map(async blog => {
             const filepath = path.join(BLOG_DIRECTORY, blog);
             const fileContent = fs.readFileSync(filepath, 'utf-8');
             const { data, content } = matter(fileContent);
@@ -37,7 +35,7 @@ export const getBlogs = async () => {
                 content: mdxContent,
                 slug: blog.replace(/\.mdx?$/, ''),
             };
-        })
+        }),
     );
 
     return blogPosts;
@@ -45,5 +43,5 @@ export const getBlogs = async () => {
 
 export const getBlog = async (slug: string) => {
     const blogs = await getBlogs();
-    return blogs.find((blog) => blog.slug == slug) ?? null;
+    return blogs.find(blog => blog.slug == slug) ?? null;
 };

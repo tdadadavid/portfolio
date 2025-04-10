@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation';
 export const generateStaticParams = async () => {
     try {
         const blogFiles = await getBlogs();
-        return blogFiles.map((blog) => ({ slug: blog.slug }));
+        return blogFiles.map(blog => ({ slug: blog.slug }));
     } catch {
         return [];
     }
@@ -18,8 +18,7 @@ export const generateMetadata = async ({ params }: { params: any }) => {
     if (!blog) {
         return {
             title: 'This Page Does Not Exist',
-            description:
-                "There seems to be a typo, we couldn't find this page.",
+            description: "There seems to be a typo, we couldn't find this page.",
             type: 'website',
             icons: {
                 shortcut: 'icon.svg',

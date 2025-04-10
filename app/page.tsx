@@ -40,50 +40,31 @@ const Home = () => {
                         </h2>
                     </div>
                 </div>
-                <h4
-                    className={
-                        'mt-8 dark:text-gray-300 text-gray-500 leading-8'
-                    }
-                >
-                    I am a backend engineer based in Lagos, Nigeria, with over 5
-                    years of experience building scalable, high-performance
-                    systems. I&apos;m passionate about technology, arts, and
-                    entrepreneurship. I also have a keen interest in writing and
-                    web development.
+                <h4 className={'mt-8 dark:text-gray-300 text-gray-500 leading-8'}>
+                    I am a backend engineer based in Lagos, Nigeria, with over 5 years of experience
+                    building scalable, high-performance systems. I&apos;m passionate about
+                    technology, arts, and entrepreneurship. I also have a keen interest in writing
+                    and web development.
                 </h4>
-                <h4
-                    className={
-                        'mt-6 dark:text-gray-300 text-gray-500 leading-8'
-                    }
-                >
+                <h4 className={'mt-6 dark:text-gray-300 text-gray-500 leading-8'}>
                     I&apos;ve worked on projects like{' '}
-                    <InlineLink
-                        href={`${meta.github}/minired`}
-                        title={'minired'}
-                        external={true}
-                    />
+                    <InlineLink href={`${meta.github}/minired`} title={'minired'} external={true} />
                     , implementing core redis functionality from scratch in Go,{' '}
                     <InlineLink
                         href={`${meta.github}/search-engine`}
                         title={'a search engine'}
                         external={true}
                     />{' '}
-                    written in C#, and contributed to big Open Source projects
-                    like{' '}
+                    written in C#, and contributed to big Open Source projects like{' '}
                     <InlineLink
                         title={'DiceDB'}
                         href={'https://github.com/DiceDB/dice'}
                         external={true}
                     />
-                    . I&apos;m also member of the Google Student Developer Club
-                    and a technical trainer at NitHub and Engineering Career
-                    Expo (ECX).
+                    . I&apos;m also member of the Google Student Developer Club and a technical
+                    trainer at NitHub and Engineering Career Expo (ECX).
                 </h4>
-                <section
-                    className={
-                        'flex sm:gap-4 items-center flex-col sm:flex-row pb-4 mt-4'
-                    }
-                >
+                <section className={'flex sm:gap-4 items-center flex-col sm:flex-row pb-4 mt-4'}>
                     <PopOutButton
                         title={"Let's connect"}
                         icon={

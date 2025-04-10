@@ -1,26 +1,27 @@
-"use client"
+'use client';
 
-import {useState} from "react"
-import {Container} from "@/components/layout/Container";
-import {NavBar} from "@/components/ui/NavBar";
-import {GridBackground} from "@/components/other/GridBackground";
-import meta from "@/data/meta";
-import ProjectCard from "@/components/ui/ProjectCard";
-import {ChartLine, Database, Lifebuoy, MagnifyingGlass, Presentation} from '@phosphor-icons/react/dist/ssr';
+import { useState } from 'react';
+import { Container } from '@/components/layout/Container';
+import { NavBar } from '@/components/ui/NavBar';
+import { GridBackground } from '@/components/other/GridBackground';
+import meta from '@/data/meta';
+import ProjectCard from '@/components/ui/ProjectCard';
+import {
+    ChartLine,
+    Database,
+    Lifebuoy,
+    MagnifyingGlass,
+    Presentation,
+} from '@phosphor-icons/react/dist/ssr';
 
-type ProjectName =
-    | "Minired"
-    | "Orchestra"
-    | "Search Engine"
-    | "Google Analytics"
-    | "Slide Scribe";
+type ProjectName = 'Minired' | 'Orchestra' | 'Search Engine' | 'Google Analytics' | 'Slide Scribe';
 
 const projectIcons: Record<ProjectName, React.ReactNode> = {
-    "Minired": <Database weight={"fill"}/>,
-    "Orchestra": <Lifebuoy weight={"fill"}/>,
-    "Search Engine": <MagnifyingGlass weight={"fill"}/>,
-    "Google Analytics": <ChartLine weight={"fill"}/>,
-    "Slide Scribe": <Presentation weight={"fill"}/>
+    Minired: <Database weight={'fill'} />,
+    Orchestra: <Lifebuoy weight={'fill'} />,
+    'Search Engine': <MagnifyingGlass weight={'fill'} />,
+    'Google Analytics': <ChartLine weight={'fill'} />,
+    'Slide Scribe': <Presentation weight={'fill'} />,
 };
 
 const WorksPage = () => {
@@ -36,19 +37,24 @@ const WorksPage = () => {
 
     return (
         <Container>
-            <NavBar currentPage={"works"}/>
+            <NavBar currentPage={'works'} />
             <GridBackground>
                 <h2 className="mt-4 font-bold text-3xl sm:text-5xl text-gray-800 dark:text-gray-200">
                     My Works
                 </h2>
                 <h3 className="my-4 text-gray-500 dark:text-gray-300 leading-7">
-                    A curated collection of my works, highlighting my past achievements
-                    and present projects.
+                    A curated collection of my works, highlighting my past achievements and present
+                    projects.
                 </h3>
-                       {selectedTag && (
+                {selectedTag && (
                     <div className="my-8 text-sm font-mono text-center text-gray-600 dark:text-gray-300">
                         Filtering by tag: <strong>{selectedTag}</strong>{' '}
-                        <button onClick={() => setSelectedTag(null)} className="ml-2 underline text-ice">Clear</button>
+                        <button
+                            onClick={() => setSelectedTag(null)}
+                            className="ml-2 underline text-ice"
+                        >
+                            Clear
+                        </button>
                     </div>
                 )}
                 <section className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -13,16 +13,15 @@ interface BlogTemplateProps {
 
 const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
     const [filterTag, setFilterTag] = useState<string>('');
-    const [filteredPosts, setFilteredPosts] = useState<Record<
-        string,
-        Array<BlogInterface>
-    > | null>(null);
+    const [filteredPosts, setFilteredPosts] = useState<Record<string, Array<BlogInterface>> | null>(
+        null,
+    );
 
     // Returns a set of each individual tag
     const getAllTags = (source: BlogInterface[]) => {
         const tags: string[] = [];
-        source.forEach((blog) => {
-            blog.metadata.tags.forEach((tag) => {
+        source.forEach(blog => {
+            blog.metadata.tags.forEach(tag => {
                 tags.push(tag);
             });
         });
@@ -34,8 +33,7 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
         const tags = Array.from(getAllTags(source));
         const frequencyMap: Record<string, number> = {};
         for (const tag of tags) {
-            frequencyMap[tag as string] =
-                (frequencyMap[tag as string] || 0) + 1;
+            frequencyMap[tag as string] = (frequencyMap[tag as string] || 0) + 1;
         }
         return frequencyMap;
     };
@@ -53,11 +51,11 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
         }
 
         // Sort posts by ISO date (descending within each year)
-        Object.keys(organizedPosts).forEach((year) => {
+        Object.keys(organizedPosts).forEach(year => {
             organizedPosts[year].sort(
                 (a, b) =>
                     new Date(b.metadata.publishedOn).getTime() -
-                    new Date(a.metadata.publishedOn).getTime()
+                    new Date(a.metadata.publishedOn).getTime(),
             );
         });
 
@@ -70,10 +68,8 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
         const caseInsensitiveTag = tag.toLowerCase();
         if (filterTag == '' || filterTag != caseInsensitiveTag) {
             setFilterTag(caseInsensitiveTag);
-            const filtered = blogs.filter((post) =>
-                post.metadata.tags.some(
-                    (t) => t.toLowerCase() == caseInsensitiveTag
-                )
+            const filtered = blogs.filter(post =>
+                post.metadata.tags.some(t => t.toLowerCase() == caseInsensitiveTag),
             );
             const organized = organizePostsIntoYears(filtered);
             setFilteredPosts(organized);
@@ -104,10 +100,7 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
                             <FrequencyTag
                                 key={idx}
                                 title={`${tag} (${count})`}
-                                isSelected={
-                                    filterTag.toLowerCase() ===
-                                    tag.toLowerCase()
-                                }
+                                isSelected={filterTag.toLowerCase() === tag.toLowerCase()}
                                 onClick={() => handleTagClick(tag)}
                             />
                         ))}
@@ -121,9 +114,7 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
                         .sort(([a], [b]) => Number(b) - Number(a)) // sort years newest first
                         .map(([year, posts], idx) => (
                             <section key={idx} className="my-6">
-                                <h3 className="my-2 font-bold text-ice">
-                                    {year}
-                                </h3>
+                                <h3 className="my-2 font-bold text-ice">{year}</h3>
                                 {posts.map((post, idx) => (
                                     <BlogCard key={idx} meta={post.metadata} />
                                 ))}

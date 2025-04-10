@@ -3,7 +3,7 @@ import BlogTemplate from '@/components/templates/BlogTemplate';
 import { BlogInterface, getBlogs } from '@/lib/blogs';
 
 const BlogPage = async () => {
-    const allBlogs: BlogInterface[] = await getBlogs(); 
+    const allBlogs: BlogInterface[] = await getBlogs();
 
     return (
         <Container>

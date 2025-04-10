@@ -1,6 +1,6 @@
-import { BlogInterface } from "@/lib/blogs";
-import { Container } from "../layout/Container";
-import MdxRenderer from "../mdx/MdxRenderer";
+import { BlogInterface } from '@/lib/blogs';
+import { Container } from '../layout/Container';
+import MdxRenderer from '../mdx/MdxRenderer';
 
 interface BlogContentTemplateProps {
     blog: BlogInterface;
