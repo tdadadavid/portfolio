@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     title: 'David Dada',
     description: 'Computer Scientist and Experienced Backend Engineer.',
     icons: {
-        shortcut: 'icon.svg',
+        shortcut: meta.shortcutIcon,
     },
     openGraph: {
         locale: 'en_US',

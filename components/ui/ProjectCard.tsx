@@ -39,7 +39,6 @@ const ProjectCard = ({
           h-[360px]
         `}
                 style={{
-                    backgroundImage: `url('/noise-texture.png')`,
                     backgroundBlendMode: 'overlay',
                     backgroundSize: 'cover',
                 }}

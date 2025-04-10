@@ -2,7 +2,7 @@ import { Container } from '@/components/layout/Container';
 import BlogTemplate from '@/components/templates/BlogTemplate';
 import { BlogInterface, getBlogs } from '@/lib/blogs';
 
-const BlogPage = async () => {
+const BlogsPage = async () => {
     const allBlogs: BlogInterface[] = await getBlogs();
 
     return (
@@ -12,4 +12,4 @@ const BlogPage = async () => {
     );
 };
 
-export default BlogPage;
+export default BlogsPage;

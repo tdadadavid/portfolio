@@ -7,6 +7,7 @@ import { ThemeSwitcher } from '@/components/ui/ThemeSwitcher';
 import { IconLink } from './IconLink';
 import { NavLinkType } from '@/types/types.navigation';
 import { MobileNavBar } from '@/components/ui/MobileNavBar';
+import { Avatar } from './Avatar';
 
 interface NavBarProps {
     currentPage: NavLinkType;
@@ -15,10 +16,11 @@ interface NavBarProps {
 const HomeRow = () => {
     return (
         <div className="flex items-center gap-3">
-            <Image width={24} height={24} src={icon} alt="David Dada" className={'sm:w-8 h-8'} />
+            {/* <Image width={24} height={24} src={icon} alt="David Dada" className={'sm:w-8 h-8'} /> */}
+            <Avatar />
             <div className="flex flex-col">
-                <h4 className={'font-bold'}>David Dada</h4>
-                <h6 className="dark:text-gray-300 text-gray-500 hidden sm:visible text-xs">
+                <h4 className={'font-bold'}>Òbàdàfídì</h4>
+                <h6 className="dark:text-gray-300 text-gray-500 hidden text-xs">
                     Software Engineer (Backend)
                 </h6>
             </div>
