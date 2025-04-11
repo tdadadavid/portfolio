@@ -2,6 +2,19 @@
 
 @variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
+::-moz-selection {
+    background: #577fbc;
+    color: #ffffff;
+}
+::-webkit-selection {
+    background: #577fbc;
+    color: #ffffff;
+}
+::selection {
+    background: #577fbc;
+    color: #ffffff;
+}
+
 :root {
     --background: #ffffff;
     --foreground: #171717;
@@ -58,4 +71,25 @@ body {
 
 [data-theme='dark'] .ghost-popup .popup {
     background: oklch(0.277 0.059 264.032);
+}
+
+code {
+    @apply !leading-loose rounded-xs;
+    background-color: #e1e2e5;
+    padding: 1px 2px;
+}
+
+blockquote.mdx {
+    position: relative;
+    padding-left: 60px;
+}
+
+blockquote.mdx::before {
+    position: absolute;
+    content: '“';
+    display: block;
+    top: 0px;
+    left: 15px;
+    font-size: 64px;
+    color: #577fbc;
 }

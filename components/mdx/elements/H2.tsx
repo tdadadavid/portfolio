@@ -1,10 +1,10 @@
 import { HTMLAttributes, ReactNode } from "react";
 
-interface H1Props extends HTMLAttributes<HTMLHeadElement> {
+interface H2Props extends HTMLAttributes<HTMLHeadElement> {
     children: ReactNode;
 }
 
-const H2 = ({ children, className="", ...props }: H1Props) => {
+const H2 = ({ children, className="", ...props }: H2Props) => {
     return (
         <h1
             {...props}

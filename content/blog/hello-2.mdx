@@ -46,9 +46,30 @@ String value = store.get("hello"); // returns "world"
 
 You’ll need to implement command handlers for `SET`, `GET`, `DEL`, etc., and ensure you have proper error handling and response formatting. Bonus points if you can mirror Redis responses (`+OK\r\n`, `$5\r\nworld\r\n`, etc.).
 
-## Final Thoughts
+## Resources, Images, and Extras
 
-> “Simplicity is prerequisite for reliability.” — Edsger Dijkstra
+If you’re looking to go further, here are some helpful resources:
 
-This quote is a guiding principle when building something like Minired. Start small, keep your code modular, and gradually introduce features like expiration times, persistence (RDB or AOF style), or pub/sub mechanics. Keep a checklist of Redis commands and chip away at them. If you’re ambitious, containerize it and run performance benchmarks to compare against the real Redis.
+- [Redis Protocol specification (RESP)](https://redis.io/docs/reference/protocol-spec/)
+- [Designing Data-Intensive Applications by Martin Kleppmann](https://dataintensive.net/)
+- [How Redis works under the hood](https://redis.io/docs/)
 
+You’ll also want to familiarize yourself with tools and technologies that make development smoother:
+
+1. Docker for containerizing your clone  
+2. JMH for benchmarking performance  
+3. Wireshark for analyzing protocol behavior  
+
+Here’s a Redis logo just to keep things aesthetic:
+
+![Redis Logo](https://upload.wikimedia.org/wikipedia/commons/6/64/Logo-redis.svg)
+
+And for fun, here are some nice-to-have features you could add:
+
+- ⏳ Key expiration
+- 📦 Disk persistence
+- 📣 Pub/Sub system
+- 🔐 Basic auth
+- 🧪 Test coverage using JUnit or similar
+
+> A successful return from write() does not make any guarantee that data has been committed to disk. On some filesystems, including NFS, it does not even guarantee that space has successfully been reserved for the data. In this case, some errors might be delayed until a future write(), fsync(2), or even close(2). The only way to be sure is to call fsync(2) after you are done writing all your data.
