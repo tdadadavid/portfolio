@@ -50,31 +50,40 @@ You’ll need to implement command handlers for `SET`, `GET`, `DEL`, etc., and e
 
 If you’re looking to go further, here are some helpful resources:
 
-- [Redis Protocol specification (RESP)](https://redis.io/docs/reference/protocol-spec/)
-- [Designing Data-Intensive Applications by Martin Kleppmann](https://dataintensive.net/)
-- [How Redis works under the hood](https://redis.io/docs/)
+-   [Redis Protocol specification (RESP)](https://redis.io/docs/reference/protocol-spec/)
+-   [Designing Data-Intensive Applications by Martin Kleppmann](https://dataintensive.net/)
+-   [How Redis works under the hood](https://redis.io/docs/)
 
 You’ll also want to familiarize yourself with tools and technologies that make development smoother:
 
-1. Docker for containerizing your clone  
-2. JMH for benchmarking performance  
-3. Wireshark for analyzing protocol behavior  
+1. Docker for containerizing your clone
+2. JMH for benchmarking performance
+3. Wireshark for analyzing protocol behavior
 
 Here’s a Redis logo just to keep things aesthetic:
 
-![Redis Logo](https://upload.wikimedia.org/wikipedia/commons/6/64/Logo-redis.svg)
+<ResizableImg
+    src="https://upload.wikimedia.org/wikipedia/commons/6/64/Logo-redis.svg"
+    alt="google"
+    width={400}
+    height={200}
+/>
 
+Here is another resizable image
 
-Now here is a reiszable image!
-
-<ResizableImg src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="google" width={400} height={200} />
+<ResizableImg
+    src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg"
+    alt="google"
+    width={400}
+    height={200}
+/>
 
 And for fun, here are some nice-to-have features you could add:
 
-- ⏳ Key expiration
-- 📦 Disk persistence
-- 📣 Pub/Sub system
-- 🔐 Basic auth
-- 🧪 Test coverage using JUnit or similar
+-   ⏳ Key expiration
+-   📦 Disk persistence
+-   📣 Pub/Sub system
+-   🔐 Basic auth
+-   🧪 Test coverage using JUnit or similar
 
 > A successful return from write() does not make any guarantee that data has been committed to disk. On some filesystems, including NFS, it does not even guarantee that space has successfully been reserved for the data. In this case, some errors might be delayed until a future write(), fsync(2), or even close(2). The only way to be sure is to call fsync(2) after you are done writing all your data.
