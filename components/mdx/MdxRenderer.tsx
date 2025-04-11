@@ -6,6 +6,8 @@ import H2 from './elements/H2';
 import OL from './elements/OL';
 import UL from './elements/UL';
 import BlockQuote from './elements/BlockQuote';
+import Img from './elements/Img';
+import ResizableImg from './elements/ResizeableImg'; 
 
 interface RendererProps {
     content: MDXRemoteSerializeResult<Record<string, unknown>, Record<string, unknown>>;
@@ -21,7 +23,9 @@ const MdxRenderer = ({ content }: RendererProps) => {
                     h2: H2,
                     ol: OL,
                     ul: UL,
-                    blockquote: BlockQuote
+                    blockquote: BlockQuote,
+                    img: Img,
+                    ResizableImg
                 }}
             />
         </article>
