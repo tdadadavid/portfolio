@@ -7,6 +7,48 @@ publishedOn: '2025-04-08T00:00:00Z'
 year: '2025'
 ---
 
-# Test II
+## Building Minired: A Lightweight Redis Clone
 
-Hello again
+Creating a Redis clone like `minired` forces you to distill complex systems into minimal, understandable components. Redis itself is an in-memory data structure store, which supports a variety of types like strings, hashes, lists, and sets. To start, it's essential to understand how TCP servers work in your language of choice. For example, in Java, you might use a `ServerSocket` to listen for incoming client connections:
+
+```java
+ServerSocket serverSocket = new ServerSocket(6379);
+Socket clientSocket = serverSocket.accept();
+```
+
+This sets the stage for your in-memory key-value store. Once a client connects, you can begin parsing commands and mapping them to internal handlers.
+
+## Parsing and Protocol Design
+
+One of the most critical parts of building a Redis clone is command parsing. Redis uses its own protocol called RESP (REdis Serialization Protocol). A sample command from a client might look like this:
+
+```text
+*3
+$3
+SET
+$5
+hello
+$5
+world
+```
+
+Parsing this into usable commands requires understanding the protocol's structure and writing a robust tokenizer. Don't underestimate this step — it’s where performance can be won or lost.
+
+## Core Storage Logic
+
+With the protocol decoded, we move to the core logic. You'll typically back your key-value store with something like a `ConcurrentHashMap` or a thread-safe dictionary depending on your language. Here's a rough sketch in Java:
+
+```java
+Map<String, String> store = new ConcurrentHashMap<>();
+store.put("hello", "world");
+String value = store.get("hello"); // returns "world"
+```
+
+You’ll need to implement command handlers for `SET`, `GET`, `DEL`, etc., and ensure you have proper error handling and response formatting. Bonus points if you can mirror Redis responses (`+OK\r\n`, `$5\r\nworld\r\n`, etc.).
+
+## Final Thoughts
+
+> “Simplicity is prerequisite for reliability.” — Edsger Dijkstra
+
+This quote is a guiding principle when building something like Minired. Start small, keep your code modular, and gradually introduce features like expiration times, persistence (RDB or AOF style), or pub/sub mechanics. Keep a checklist of Redis commands and chip away at them. If you’re ambitious, containerize it and run performance benchmarks to compare against the real Redis.
+

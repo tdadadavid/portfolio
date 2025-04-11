@@ -1,7 +1,5 @@
 import meta from '@/data/meta';
 import { NavLink } from './NavLink';
-import icon from '@/app/icon.svg';
-import Image from 'next/image';
 import { GithubLogo, LinkedinLogo } from '@phosphor-icons/react/dist/ssr';
 import { ThemeSwitcher } from '@/components/ui/ThemeSwitcher';
 import { IconLink } from './IconLink';
