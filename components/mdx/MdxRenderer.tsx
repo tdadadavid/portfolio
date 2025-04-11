@@ -8,6 +8,7 @@ import UL from './elements/UL';
 import BlockQuote from './elements/BlockQuote';
 import Img from './elements/Img';
 import ResizableImg from './elements/ResizeableImg'; 
+import A from './elements/A';
 
 interface RendererProps {
     content: MDXRemoteSerializeResult<Record<string, unknown>, Record<string, unknown>>;
@@ -19,6 +20,7 @@ const MdxRenderer = ({ content }: RendererProps) => {
             <MDXRemote 
                 {...content}
                 components={{
+                    a: A,
                     h1: H1,
                     h2: H2,
                     ol: OL,
