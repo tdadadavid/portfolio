@@ -52,7 +52,7 @@ export const BlogContentTemplate = ({ blog }: BlogContentTemplateProps) => {
                     date={blog.metadata.publishedOn}
                     tags={blog.metadata.tags}
                 />
-                <section className="text-gray-800">
+                <section className="text-gray-500">
                     <MdxRenderer content={blog.content} />
                 </section>
             </article>
