@@ -7,7 +7,7 @@ interface ULProps extends HTMLAttributes<HTMLUListElement> {
 
 const UL = ({ children, className = '', ...props }: ULProps) => {
     return (
-        <ol {...props} className={cn('my-2 list-disc list-inside pl-8', className)}>
+        <ol {...props} className={cn('my-4 list-disc list-inside pl-8', className)}>
             {children}
         </ol>
     );

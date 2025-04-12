@@ -18,8 +18,8 @@ interface BlogMetaDisplayProps {
 
 const BlogMetaDisplay = ({ title, date, tags }: BlogMetaDisplayProps) => {
     return (
-        <header className="mt-4 mb-8 border-b border-b-gray-300 pt-8 pb-4">
-            <h4 className="text-gray-500 text-base mb-2">
+        <header className="dark:border-b-[#212d40] mt-4 mb-8 border-b border-b-gray-300 pt-8 pb-4">
+            <h4 className="dark:text-ice text-gray-500 text-base mb-2">
                 {new Date(date).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
@@ -52,7 +52,7 @@ export const BlogContentTemplate = ({ blog }: BlogContentTemplateProps) => {
                     date={blog.metadata.publishedOn}
                     tags={blog.metadata.tags}
                 />
-                <section className="text-gray-500">
+                <section className="dark:text-gray-400 text-gray-500">
                     <MdxRenderer content={blog.content} />
                 </section>
             </article>

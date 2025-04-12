@@ -7,7 +7,7 @@ interface BlockQuoteProps extends HTMLAttributes<HTMLQuoteElement> {
 
 const BlockQuote = ({ children, className = '', ...props }: BlockQuoteProps) => {
     return (
-        <blockquote {...props} className={cn('mdx my-4 bg-[#e1e2e5] p-8', className)}>
+        <blockquote {...props} className={cn('mdx my-4 dark:!bg-[#151b30] bg-[#e1e2e5] p-8', className)}>
             {children}
         </blockquote>
     );

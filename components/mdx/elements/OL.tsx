@@ -7,7 +7,7 @@ interface OLProps extends HTMLAttributes<HTMLOListElement> {
 
 const OL = ({ children, className = '', ...props }: OLProps) => {
     return (
-        <ol {...props} className={cn('my-2 list-decimal list-inside pl-8', className)}>
+        <ol {...props} className={cn('my-4 list-decimal list-inside pl-8', className)}>
             {children}
         </ol>
     );
