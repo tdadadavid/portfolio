@@ -6,6 +6,7 @@ import { NavBar } from '../ui/NavBar';
 import { FrequencyTag } from '../ui/blog/FrequencyTag';
 import { BlogCard } from '../ui/blog/BlogCard';
 import { useEffect, useState } from 'react';
+import { GridBackground } from '../other/GridBackground';
 
 interface BlogTemplateProps {
     blogs: BlogInterface[];
@@ -89,38 +90,39 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
     return (
         <Container>
             <NavBar currentPage="blog" />
-
-            {/* Frequency tags */}
-            <section className="mt-12">
-                <h3 className="text-3xl">Frequent</h3>
-                <section className="my-4 flex gap-2 items-center">
-                    {Object.entries(tags)
-                        .sort(([, a], [, b]) => b - a) // sort by frequency count
-                        .map(([tag, count], idx) => (
-                            <FrequencyTag
-                                key={idx}
-                                title={`${tag} (${count})`}
-                                isSelected={filterTag.toLowerCase() === tag.toLowerCase()}
-                                onClick={() => handleTagClick(tag)}
-                            />
-                        ))}
+            <GridBackground>
+                {/* Frequency tags */}
+                <section className="mt-6">
+                    <h3 className="text-3xl">Frequent</h3>
+                    <section className="my-4 flex gap-2 items-center">
+                        {Object.entries(tags)
+                            .sort(([, a], [, b]) => b - a) // sort by frequency count
+                            .map(([tag, count], idx) => (
+                                <FrequencyTag
+                                    key={idx}
+                                    title={`${tag} (${count})`}
+                                    isSelected={filterTag.toLowerCase() === tag.toLowerCase()}
+                                    onClick={() => handleTagClick(tag)}
+                                />
+                            ))}
+                    </section>
                 </section>
-            </section>
 
-            {/* Blog cards */}
-            <section className="my-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {filteredPosts &&
-                    Object.entries(filteredPosts)
-                        .sort(([a], [b]) => Number(b) - Number(a)) // sort years newest first
-                        .map(([year, posts], idx) => (
-                            <section key={idx} className="my-6">
-                                <h3 className="my-2 font-bold text-ice">{year}</h3>
-                                {posts.map((post, idx) => (
-                                    <BlogCard key={idx} meta={post.metadata} />
-                                ))}
-                            </section>
-                        ))}
-            </section>
+                {/* Blog cards */}
+                <section className="my-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {filteredPosts &&
+                        Object.entries(filteredPosts)
+                            .sort(([a], [b]) => Number(b) - Number(a)) // sort years newest first
+                            .map(([year, posts], idx) => (
+                                <section key={idx} className="my-6">
+                                    <h3 className="my-2 font-bold text-ice">{year}</h3>
+                                    {posts.map((post, idx) => (
+                                        <BlogCard key={idx} meta={post.metadata} />
+                                    ))}
+                                </section>
+                            ))}
+                </section>
+            </GridBackground>
         </Container>
     );
 };
