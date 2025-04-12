@@ -1,6 +1,6 @@
 export const Avatar = () => {
     return (
-        <div className="text-ice">
+        <div className="text-gray-800 dark:text-gray-300/50">
             <svg
                 version="1.1"
                 id="svg1"
