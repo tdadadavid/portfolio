@@ -1,3 +1,4 @@
+import meta from '@/data/meta';
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 
@@ -20,37 +21,21 @@ export async function GET(request: NextRequest) {
                     flexDirection: 'column',
                     alignItems: 'flex-start',
                     justifyContent: 'center',
-                    backgroundColor: '#1e3a8a',
-                    backgroundImage: 'linear-gradient(to bottom right, #1e40af, #3b82f6)',
+                    backgroundColor: '#FFFFFF',
                     padding: 50,
                     fontFamily: 'Arial, sans-serif',
                     color: '#fff',
                 }}
             >
-                {/*<div style={{marginBottom: 40, display: "flex", alignItems: "center"}}>*/}
-                {/*    <div*/}
-                {/*        style={{*/}
-                {/*            width: 64,*/}
-                {/*            height: 64,*/}
-                {/*            borderRadius: "50%",*/}
-                {/*            backgroundColor: "#000",*/}
-                {/*            display: "flex",*/}
-                {/*            alignItems: "center",*/}
-                {/*            justifyContent: "center",*/}
-                {/*            color: "#fff",*/}
-                {/*            marginRight: 16,*/}
-                {/*            fontSize: 24,*/}
-                {/*        }}*/}
-                {/*    >*/}
-                {/*        DD*/}
-                {/*    </div>*/}
-                {/*    <div style={{fontSize: 24, fontWeight: "bold"}}>David Dada</div>*/}
-                {/*</div>*/}
+                <div style={{ display: "flex", maxWidth: "9%", marginBottom: "32px" }}>
+                   <img src={`${meta.url}/svg/avatar.svg`}/>
+                </div>
+                
                 <div
                     style={{
                         fontSize: 64,
                         fontWeight: 'bold',
-                        color: '#fff',
+                        color: '#577fbc',
                         lineHeight: 1.1,
                         marginBottom: 24,
                         maxWidth: '70%',
@@ -58,7 +43,8 @@ export async function GET(request: NextRequest) {
                 >
                     {title}
                 </div>
-                <div style={{ fontSize: 28, color: '#d1d5db', maxWidth: '60%' }}>{description}</div>
+                <div style={{ fontSize: 28, color: '#7C8498', maxWidth: '60%' }}>{description}</div>
+
                 <div
                     style={{
                         position: 'absolute',

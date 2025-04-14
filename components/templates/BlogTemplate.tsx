@@ -92,7 +92,7 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
             <NavBar currentPage="blog" />
             <GridBackground>
                 {/* Frequency tags */}
-                <section className="mt-6">
+                <section className="mb-12">
                     <h3 className="text-3xl">Frequent</h3>
                     <section className="my-4 flex gap-2 items-center">
                         {Object.entries(tags)
@@ -109,17 +109,19 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
                 </section>
 
                 {/* Blog cards */}
-                <section className="my-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <section className="columns-1 sm:columns-2 lg:columns-3 gap-12 space-y-6">
                     {filteredPosts &&
                         Object.entries(filteredPosts)
-                            .sort(([a], [b]) => Number(b) - Number(a)) // sort years newest first
+                            .sort(([a], [b]) => Number(b) - Number(a)) // newest year first
                             .map(([year, posts], idx) => (
-                                <section key={idx} className="my-6">
-                                    <h3 className="my-2 font-bold text-ice">{year}</h3>
-                                    {posts.map((post, idx) => (
-                                        <BlogCard key={idx} meta={post.metadata} />
-                                    ))}
-                                </section>
+                                <div key={idx} className="break-inside-avoid">
+                                    <h3 className="text-lg font-bold text-ice mb-2">{year}</h3>
+                                    <div className="flex flex-col gap-2">
+                                        {posts.map((post, idx) => (
+                                            <BlogCard key={idx} meta={post.metadata} />
+                                        ))}
+                                    </div>
+                                </div>
                             ))}
                 </section>
             </GridBackground>

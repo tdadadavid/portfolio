@@ -123,3 +123,7 @@ blockquote.mdx::before {
     font-size: 64px;
     color: #577fbc;
 }
+
+.break-inside-avoid {
+    break-inside: avoid;
+}
