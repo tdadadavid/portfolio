@@ -44,7 +44,7 @@ const Home = () => {
                     I am a backend engineer based in Lagos, Nigeria, with over 5 years of experience
                     building scalable, high-performance systems. My technical expertise centres on distributed systems, network protocols, 
                     Database architecture and infrastructure optimisation—areas where I&apos;ve consistently delivered robust solutions for 
-                    complex engineering challenges. Beyond my technical pursuits, I nurture a deep appreciation for the arts.
+                    complex engineering challenges. Beyond my technical pursuits, I nurture a deep appreciation for arts and poems.
                 </h4>
                 <h4 className={'mt-6 dark:text-gray-300 text-gray-500 leading-8'}>
                     I&apos;ve worked on projects like{' '}
