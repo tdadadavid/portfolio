@@ -36,20 +36,20 @@ const Home = () => {
                                 'mt-4 text-xl sm:text-3xl underline dark:text-gray-200 text-gray-800'
                             }
                         >
-                            Backend Engineer
+                            Software Engineer
                         </h2>
                     </div>
                 </div>
                 <h4 className={'mt-8 dark:text-gray-300 text-gray-500 leading-8'}>
                     I am a backend engineer based in Lagos, Nigeria, with over 5 years of experience
-                    building scalable, high-performance systems. I&apos;m passionate about
-                    technology, arts, and entrepreneurship. I also have a keen interest in writing
-                    and web development.
+                    building scalable, high-performance systems. My technical expertise centres on distributed systems, network protocols, 
+                    Database architecture and infrastructure optimisation—areas where I&apos;ve consistently delivered robust solutions for 
+                    complex engineering challenges. Beyond my technical pursuits, I nurture a deep appreciation for arts and poems.
                 </h4>
                 <h4 className={'mt-6 dark:text-gray-300 text-gray-500 leading-8'}>
                     I&apos;ve worked on projects like{' '}
                     <InlineLink href={`${meta.github}/minired`} title={'minired'} external={true} />
-                    , implementing core redis functionality from scratch in Go,{' '}
+                    , implementing core Redis functionality from scratch in Go,{''}
                     <InlineLink
                         href={`${meta.github}/search-engine`}
                         title={'a search engine'}
@@ -61,8 +61,8 @@ const Home = () => {
                         href={'https://github.com/DiceDB/dice'}
                         external={true}
                     />
-                    . I&apos;m also member of the Google Student Developer Club and a technical
-                    trainer at NitHub and Engineering Career Expo (ECX).
+                    . I&apos;m also a member of the Google Student Developer Club, Github Campus Expert Unilag, and a technical
+                    trainer at NitHub, where I contribute & give back to the community.
                 </h4>
                 <section className={'flex sm:gap-4 items-center flex-col sm:flex-row pb-4 mt-4'}>
                     <PopOutButton
