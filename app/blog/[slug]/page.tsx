@@ -30,6 +30,7 @@ export const generateMetadata = async ({ params }: { params: any }) => {
         title: `${blog.metadata.title} | David Dada`,
         description: blog.metadata.summary,
         type: 'article',
+        status: blog.metadata.status,
         icons: {
             shortcut: meta.shortcutIcon,
         },
@@ -37,6 +38,7 @@ export const generateMetadata = async ({ params }: { params: any }) => {
             title: blog.metadata.title,
             description: blog.metadata.summary,
             url: `${meta.url}/blog/${slug}`,
+            status: blog.metadata.status,
         },
     };
 };

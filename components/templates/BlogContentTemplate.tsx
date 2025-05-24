@@ -1,6 +1,6 @@
 'use client';
 
-import { BlogInterface } from '@/lib/blogs';
+import { BlogInterface, BlogStatus } from '@/lib/blogs';
 import { Container } from '../layout/Container';
 import MdxRenderer from '../mdx/MdxRenderer';
 import { NavBar } from '../ui/NavBar';
@@ -14,20 +14,39 @@ interface BlogMetaDisplayProps {
     title: string;
     date: string;
     tags: string[];
+    status: BlogStatus;
 }
 
-const BlogMetaDisplay = ({ title, date, tags }: BlogMetaDisplayProps) => {
+const BlogMetaDisplay = ({ title, date, tags, status }: BlogMetaDisplayProps) => {
+    // Status styling configuration
+    const statusConfig = getStatusConfig(status);
+
     return (
         <header className="dark:border-b-[#212d40] mt-4 mb-8 border-b border-b-gray-300 pt-8 pb-4">
-            <h4 className="dark:text-ice text-gray-500 text-base mb-2">
-                {new Date(date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                })}
-            </h4>
-            <h2 className="font-semibold text-2xl">{title}</h2>
-            <section className="my-4 flex gap-2 items-center">
+            <div className="flex items-center justify-between mb-2">
+                <h4 className="dark:text-ice text-gray-500 text-base">
+                    {new Date(date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    })}
+                </h4>
+
+                {/* Status Badge */}
+                <div
+                    className={`
+                    inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border
+                    ${statusConfig.bgColor} ${statusConfig.textColor} ${statusConfig.borderColor}
+                `}
+                >
+                    <span className="text-xs">{statusConfig.icon}</span>
+                    <span>{statusConfig.text}</span>
+                </div>
+            </div>
+
+            <h2 className="font-semibold text-2xl mb-4">{title}</h2>
+
+            <section className="flex gap-2 items-center">
                 {tags.map((tag, idx) => (
                     <FrequencyTag
                         key={idx}
@@ -51,6 +70,7 @@ export const BlogContentTemplate = ({ blog }: BlogContentTemplateProps) => {
                     title={blog.metadata.title}
                     date={blog.metadata.publishedOn}
                     tags={blog.metadata.tags}
+                    status={blog.metadata.status}
                 />
                 <section className="dark:text-gray-400 text-gray-500">
                     <MdxRenderer content={blog.content} />
@@ -58,4 +78,33 @@ export const BlogContentTemplate = ({ blog }: BlogContentTemplateProps) => {
             </article>
         </Container>
     );
+};
+
+export const getStatusConfig = (status: BlogStatus) => {
+    switch (status) {
+        case 'done':
+            return {
+                text: 'Published',
+                icon: '✓',
+                bgColor: 'bg-green-100 dark:bg-green-900/30',
+                textColor: 'text-green-700 dark:text-green-300',
+                borderColor: 'border-green-200 dark:border-green-700',
+            };
+        case 'in-progress':
+            return {
+                text: 'In Progress',
+                icon: '⏳',
+                bgColor: 'bg-yellow-100 dark:bg-yellow-900/30',
+                textColor: 'text-yellow-700 dark:text-yellow-300',
+                borderColor: 'border-yellow-200 dark:border-yellow-700',
+            };
+        default:
+            return {
+                text: 'Draft',
+                icon: '📝',
+                bgColor: 'bg-gray-100 dark:bg-gray-800',
+                textColor: 'text-gray-700 dark:text-gray-300',
+                borderColor: 'border-gray-200 dark:border-gray-600',
+            };
+    }
 };

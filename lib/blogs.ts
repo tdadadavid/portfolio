@@ -5,6 +5,8 @@ import { serialize } from 'next-mdx-remote/serialize';
 import path from 'path';
 import rehypePrettyCode from 'rehype-pretty-code';
 
+export type BlogStatus = 'done' | 'in-progress' | 'draft';
+
 export type BlogMetadata = {
     title: string;
     summary: string;
@@ -12,6 +14,7 @@ export type BlogMetadata = {
     year: string;
     slug: string;
     tags: string[];
+    status: BlogStatus;
 };
 
 export interface BlogInterface {
