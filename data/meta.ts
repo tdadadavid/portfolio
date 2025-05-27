@@ -1,6 +1,6 @@
 const meta = {
-    url: 'https://tdadadavid-portfolio.vercel.app',
-    shortcutIcon: 'favicon.ico',
+    url: 'https://www.obadafidi.com',
+    shortcutIcon: 'icon.svg',
     github: 'https://github.com/tdadadavid',
     email: 'davidtofunmidada@gmail.com',
     socials: {
