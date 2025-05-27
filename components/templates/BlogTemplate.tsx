@@ -14,9 +14,7 @@ interface BlogTemplateProps {
 
 const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
     const [filterTag, setFilterTag] = useState<string>('');
-    const [filteredPosts, setFilteredPosts] = useState<Record<string, Array<BlogInterface>> | null>(
-        null,
-    );
+    const [flattenedPosts, setFlattenedPosts] = useState<Array<{ year: string; post: BlogInterface }> | null>(null);
 
     // Returns a set of each individual tag
     const getAllTags = (source: BlogInterface[]) => {
@@ -34,33 +32,20 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
         const tags = Array.from(getAllTags(source));
         const frequencyMap: Record<string, number> = {};
         for (const tag of tags) {
-            frequencyMap[tag as string] = (frequencyMap[tag as string] || 0) + 1;
+            frequencyMap[tag] = (frequencyMap[tag] || 0) + 1;
         }
         return frequencyMap;
     };
 
-    // Organize posts into years for clarity
-    const organizePostsIntoYears = (source: BlogInterface[]) => {
-        const organizedPosts: Record<string, Array<BlogInterface>> = {};
-
-        for (const post of source) {
-            // If this is the first post, create an array to hold them
-            if (!organizedPosts[post.metadata.year]) {
-                organizedPosts[post.metadata.year] = [];
-            }
-            organizedPosts[post.metadata.year].push(post);
-        }
-
-        // Sort posts by ISO date (descending within each year)
-        Object.keys(organizedPosts).forEach(year => {
-            organizedPosts[year].sort(
-                (a, b) =>
-                    new Date(b.metadata.publishedOn).getTime() -
-                    new Date(a.metadata.publishedOn).getTime(),
-            );
-        });
-
-        return organizedPosts;
+    // Flattens posts into a sorted array with year labels
+    const flattenPosts = (source: BlogInterface[]) => {
+        const sorted = [...source].sort(
+            (a, b) => new Date(b.metadata.publishedOn).getTime() - new Date(a.metadata.publishedOn).getTime(),
+        );
+        return sorted.map(post => ({
+            year: post.metadata.year,
+            post,
+        }));
     };
 
     // Filter each post in the post groups by tag
@@ -72,11 +57,10 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
             const filtered = blogs.filter(post =>
                 post.metadata.tags.some(t => t.toLowerCase() == caseInsensitiveTag),
             );
-            const organized = organizePostsIntoYears(filtered);
-            setFilteredPosts(organized);
+            setFlattenedPosts(flattenPosts(filtered));
         } else {
             setFilterTag('');
-            setFilteredPosts(organizePostsIntoYears(blogs));
+            setFlattenedPosts(flattenPosts(blogs));
         }
     };
 
@@ -84,46 +68,54 @@ const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
 
     // Effects
     useEffect(() => {
-        setFilteredPosts(organizePostsIntoYears(blogs));
+        setFlattenedPosts(flattenPosts(blogs));
     }, []);
+
+    // Track when a year label has already been shown
+    const yearDisplayed: Record<string, boolean> = {};
 
     return (
         <Container>
             <NavBar currentPage="blog" />
             <GridBackground>
-                {/* Frequency tags */}
-                <section className="mb-12">
-                    <h3 className="text-3xl">Frequent</h3>
-                    <section className="my-4 flex gap-2 items-center">
-                        {Object.entries(tags)
-                            .sort(([, a], [, b]) => b - a) // sort by frequency count
-                            .map(([tag, count], idx) => (
-                                <FrequencyTag
-                                    key={idx}
-                                    title={`${tag} (${count})`}
-                                    isSelected={filterTag.toLowerCase() === tag.toLowerCase()}
-                                    onClick={() => handleTagClick(tag)}
-                                />
-                            ))}
+                <div className="overflow-x-hidden">
+                    {/* Frequency tags */}
+                    <section className="mb-12">
+                        <h3 className="text-3xl">Frequent</h3>
+                        <section className="my-4 flex flex-wrap gap-2 items-center overflow-x-auto max-w-full">
+                            {Object.entries(tags)
+                                .sort(([, a], [, b]) => b - a) // sort by frequency count
+                                .map(([tag, count], idx) => (
+                                    <FrequencyTag
+                                        key={idx}
+                                        title={`${tag} (${count})`}
+                                        isSelected={filterTag.toLowerCase() === tag.toLowerCase()}
+                                        onClick={() => handleTagClick(tag)}
+                                    />
+                                ))}
+                        </section>
                     </section>
-                </section>
 
-                {/* Blog cards */}
-                <section className="columns-1 sm:columns-2 lg:columns-3 gap-12 space-y-6">
-                    {filteredPosts &&
-                        Object.entries(filteredPosts)
-                            .sort(([a], [b]) => Number(b) - Number(a)) // newest year first
-                            .map(([year, posts], idx) => (
-                                <div key={idx} className="break-inside-avoid">
-                                    <h3 className="text-lg font-bold text-ice mb-2">{year}</h3>
-                                    <div className="flex flex-col gap-2">
-                                        {posts.map((post, idx) => (
-                                            <BlogCard key={idx} meta={post.metadata} />
-                                        ))}
-                                    </div>
+                    {/* Blog cards grid */}
+                    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {flattenedPosts?.map(({ year, post }, idx) => {
+                            let showYear = false;
+                            if (!yearDisplayed[year]) {
+                                showYear = true;
+                                yearDisplayed[year] = true;
+                            }
+
+                            return (
+                                <div key={idx} className="col-span-1 space-y-1">
+                                    {showYear && (
+                                        <h3 className="text-lg font-bold text-ice">{year}</h3>
+                                    )}
+                                    <BlogCard meta={post.metadata} />
                                 </div>
-                            ))}
-                </section>
+                            );
+                        })}
+                    </section>
+                </div>
             </GridBackground>
         </Container>
     );
