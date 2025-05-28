@@ -1,34 +1,26 @@
----
-title: Distributed systems - 1
-summary: Introduction to Distributed Systems [The Problem]
-slug: distributedsys
-tags: ['distributed-systems', 'Storage', 'Communication', 'Computation', 'go']
-publishedOn: '2025-05-22T22:00:18.147Z'
-year: '2025'
-status: 'done'
----
-
 # Table of Content
+
 1. Introduction - Distributed Systems
 2. The Problem
 3. The Conversation
 4. The Questions
 5. Conclusion
 
-
 # Distributed System
-__Distributed systems consist of autonomous computers that work together to give the appearance of a single coherent system.__
+
+**Distributed systems consist of autonomous computers that work together to give the appearance of a single coherent system.**
 
 ## The Problem
-Distributed systems, a terminology you might have heard if you've been in tech for while, but what is it about? why do we need to care about it? or is it just one of those 
-buzz words?  
 
+Distributed systems, a terminology you might have heard if you've been in tech for while, but what is it about? why do we need to care about it? or is it just one of those
+buzz words?
 
 ## The Conversation
+
 A while ago I had a conversation with my friend, Davidmark, that will serve as the foundation
 
 ```markdown
-Davidmark: "why do we need multiple computers to perform several tasks?" 
+Davidmark: "why do we need multiple computers to perform several tasks?"
 ```
 
 ```markdown
@@ -36,7 +28,7 @@ Me: for better performance
 ```
 
 ```markdown
-Davidmark: Why can't we have one computer then increase the capacity in terms of Disk size 
+Davidmark: Why can't we have one computer then increase the capacity in terms of Disk size
 and processor speed
 ```
 
@@ -63,25 +55,28 @@ Me: 🤯
 
 This was a gotcha moment for me cause it was really simple, "an increase in hardware brings a direct increase in _Heat_ serving as a fundamental issue for performance".
 Now we are in a state of dilema where we need to
-* Efficienty process more tasks
-* Increase disk and processors, yet this does not neccessarily gaurantee performance
-* Increase disk and processors which leads to greater heat generation
 
+-   Efficienty process more tasks
+-   Increase disk and processors, yet this does not neccessarily gaurantee performance
+-   Increase disk and processors which leads to greater heat generation
 
 ## The Question
+
 All these leads us to ask several thoughts provking questions
-* How do we solve the _ever growing tasks_ the computer needs to process with the most optimal computing resources?
-* Can we divide these tasks between different computers?
-* If we can couple different computers, How do we couple unreliable systems to form a reliable system?
-* What are the costs/disadvantages that comes with this decision
-* Should every system be distributed? When should we design a distributed system?
-* What problems need distributed systems? What problems don't need? 
+
+-   How do we solve the _ever growing tasks_ the computer needs to process with the most optimal computing resources?
+-   Can we divide these tasks between different computers?
+-   If we can couple different computers, How do we couple unreliable systems to form a reliable system?
+-   What are the costs/disadvantages that comes with this decision
+-   Should every system be distributed? When should we design a distributed system?
+-   What problems need distributed systems? What problems don't need?
 
 ## The Conclusion
+
 Looking at all these we can say distributed systems solves critical problems and its a fun field to explore and dig into.
 
-<br/>
-----
-<br/>
+## <br/>
+
+<br />
 
 Next: [Distributed Systems -2](./the-solution)

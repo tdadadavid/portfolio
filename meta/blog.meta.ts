@@ -1,43 +1,43 @@
-import { BlogMetadata } from "@/types/blog.type";
+import { BlogMetadata } from '@/types/blog.type';
 
-// TODO: use the real blog metadata
-// NOTE: No need to manually edit slug anymore, handles that
-// automatically
+// NOTE: No need to manually edit slug anymore, it handles that
+// automatically. 
+// The object key must still be set to the directory name.
 export const blogMetadata: Record<string, BlogMetadata> = {
     'distributed-sys': {
-        title: 'Understanding Distributed Systems',
-        summary: 'A deep dive into distributed systems architecture and patterns',
-        publishedOn: '2025-01-15',
+        title: 'Distributed Systems I',
+        summary: 'Introduction to Distributed Systems [The Problem]',
+        publishedOn: '2025-05-22T22:00:18.147Z',
         year: '2025',
         slug: '',
-        tags: ['distributed-systems', 'architecture'],
-        status: 'draft' 
-    },
-    'false-assumptions': {
-        title: 'False Assumptions in Software Development',
-        summary: 'Common misconceptions that lead to system failures',
-        publishedOn: '2025-01-15',
-        year: '2025',
-        slug: '',
-        tags: ['distributed-systems', 'architecture'],
-        status: 'draft' 
-    },
-    'map-reduce': {
-        title: 'MapReduce: Simplified Data Processing',
-        summary: 'Understanding the MapReduce programming model',
-        publishedOn: '2025-01-15',
-        year: '2025',
-        slug: '',
-        tags: ['distributed-systems', 'architecture'],
-        status: 'draft' 
+        tags: ['distributed-systems', 'storage', 'communication', 'go'],
+        status: 'done',
     },
     'the-solution': {
-        title: 'The Solution to Complex Problems',
-        summary: 'Breaking down complex problems into manageable pieces',
-        publishedOn: '2025-01-15',
+        title: 'Distributed Systems II',
+        summary: 'Introduction to Distributed Systems [The Solution]',
+        publishedOn: '2025-05-22T22:00:18.147Z',
         year: '2025',
         slug: '',
-        tags: ['distributed-systems', 'architecture'],
-        status: 'draft' 
+        tags: ['distributed-systems', 'storage', 'communication'],
+        status: 'draft',
+    },
+    'false-assumptions': {
+        title: 'Distributed Systems III',
+        summary: 'Introduction to Distributed Systems [Assumptions]',
+        publishedOn: '2025-05-22T22:00:18.147Z',
+        year: '2025',
+        slug: '',
+        tags: ['distributed-systems', 'network', 'communication'],
+        status: 'draft',
+    },
+    'map-reduce': {
+        title: 'MapReduce',
+        summary: 'Distributed System Framework',
+        publishedOn: '2025-05-22T22:00:18.147Z',
+        year: '2025',
+        slug: '',
+        tags: ['distributed-systems', 'go', 'mapreduce'],
+        status: 'draft',
     },
 };
