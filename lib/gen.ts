@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import meta from '@/misc/meta';
+import meta from '@/misc/info';
 
 type MetadataParams = {
     title: string;

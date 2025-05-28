@@ -1,4 +1,4 @@
-import meta from '@/misc/meta';
+import meta from '@/misc/info';
 import { NavLink } from './NavLink';
 import { GithubLogo, LinkedinLogo } from '@phosphor-icons/react/dist/ssr';
 import { ThemeSwitcher } from '@/components/ui/ThemeSwitcher';

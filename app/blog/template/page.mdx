@@ -1,3 +1,13 @@
+import { getBlogMetadata } from "@/lib/blogs"
+import meta from "@/misc/info"
+import { BlogTemplate } from "@/components/templates/BlogTemplate"
+
+export const metadata = {
+  title: `${getBlogMetadata('distributed-sys')?.title} | ${meta.me}`,
+  description: getBlogMetadata('distributed-sys')?.summary,
+};
+
+
 # This is a Heading
 
 Some paragraphs to test rendering.
@@ -33,3 +43,12 @@ This is yet another paragraph!
 Yes! And [links too](https://google.com)
 
 ![yes](https://upload.wikimedia.org/wikipedia/commons/6/64/Logo-redis.svg)
+
+export default function Page({ children }) {
+  const metadata = getBlogMetadata('distributed-sys');
+  return (
+    <BlogTemplate metadata={metadata}>
+      {children}
+    </BlogTemplate>
+  );
+}

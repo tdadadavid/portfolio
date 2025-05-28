@@ -1,5 +1,5 @@
 // Generate site map
-import meta from '@/misc/meta';
+import meta from '@/misc/info';
 
 export default async function sitemap() {
     const routes = ['/', '/works', '/contact', '/blog'].map(route => ({

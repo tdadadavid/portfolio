@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Container } from '@/components/layout/Container';
 import { NavBar } from '@/components/ui/NavBar';
 import { GridBackground } from '@/components/other/GridBackground';
-import meta from '@/misc/meta';
+import meta from '@/misc/info';
 import ProjectCard from '@/components/ui/ProjectCard';
 import {
     ChartLine,
@@ -36,10 +36,10 @@ const WorksPage = () => {
         ? meta.works.filter(project => project.tags.includes(selectedTag))
         : meta.works;
 
+    const pageTitle = 'Works - David Dada';
+    const pageDescription =
+        'A curated collection of my works, highlighting my past achievements and present projects.';
 
-    const pageTitle = "Works - David Dada"
-    const pageDescription = "A curated collection of my works, highlighting my past achievements and present projects."
-    
     return (
         <>
             <Head>

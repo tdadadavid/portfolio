@@ -1,124 +1,110 @@
 'use client';
 
-import { BlogInterface } from '@/lib/blogs';
+import { BlogMetadata, BlogStatus } from '@/types/blog.type';
 import { Container } from '../layout/Container';
 import { NavBar } from '../ui/NavBar';
 import { FrequencyTag } from '../ui/blog/FrequencyTag';
-import { BlogCard } from '../ui/blog/BlogCard';
-import { useEffect, useState } from 'react';
-import { GridBackground } from '../other/GridBackground';
 
 interface BlogTemplateProps {
-    blogs: BlogInterface[];
+    children: React.ReactNode;
+    metadata: BlogMetadata;
 }
 
-const BlogTemplate = ({ blogs }: BlogTemplateProps) => {
-    const [filterTag, setFilterTag] = useState<string>('');
-    const [flattenedPosts, setFlattenedPosts] = useState<Array<{ year: string; post: BlogInterface }> | null>(null);
+interface BlogMetaProps {
+    title: string;
+    date: string;
+    tags: string[];
+    status: BlogStatus;
+}
 
-    // Returns a set of each individual tag
-    const getAllTags = (source: BlogInterface[]) => {
-        const tags: string[] = [];
-        source.forEach(blog => {
-            blog.metadata.tags.forEach(tag => {
-                tags.push(tag);
-            });
-        });
-        return tags;
-    };
+const BlogMeta = ({ title, date, tags, status }: BlogMetaProps) => {
+    // Status styling configuration
+    const statusConfig = getStatusConfig(status);
 
-    // Returns a map containing how many times each tag occurs
-    const getTagFrequencyMap = (source: BlogInterface[]) => {
-        const tags = Array.from(getAllTags(source));
-        const frequencyMap: Record<string, number> = {};
-        for (const tag of tags) {
-            frequencyMap[tag] = (frequencyMap[tag] || 0) + 1;
-        }
-        return frequencyMap;
-    };
+    return (
+        <header className="dark:border-b-[#212d40] mt-4 mb-8 border-b border-b-gray-300 pt-8 pb-4">
+            <div className="flex items-center justify-between mb-2">
+                <h4 className="dark:text-ice text-gray-500 text-base">
+                    {new Date(date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    })}
+                </h4>
 
-    // Flattens posts into a sorted array with year labels
-    const flattenPosts = (source: BlogInterface[]) => {
-        const sorted = [...source].sort(
-            (a, b) => new Date(b.metadata.publishedOn).getTime() - new Date(a.metadata.publishedOn).getTime(),
-        );
-        return sorted.map(post => ({
-            year: post.metadata.year,
-            post,
-        }));
-    };
+                {/* Status Badge */}
+                <div
+                    className={`
+                    inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border
+                    ${statusConfig.bgColor} ${statusConfig.textColor} ${statusConfig.borderColor}
+                `}
+                >
+                    <span className="text-xs">{statusConfig.icon}</span>
+                    <span>{statusConfig.text}</span>
+                </div>
+            </div>
 
-    // Filter each post in the post groups by tag
-    const handleTagClick = (tag: string) => {
-        // Toggle-able based on whether the string is empty or not
-        const caseInsensitiveTag = tag.toLowerCase();
-        if (filterTag == '' || filterTag != caseInsensitiveTag) {
-            setFilterTag(caseInsensitiveTag);
-            const filtered = blogs.filter(post =>
-                post.metadata.tags.some(t => t.toLowerCase() == caseInsensitiveTag),
-            );
-            setFlattenedPosts(flattenPosts(filtered));
-        } else {
-            setFilterTag('');
-            setFlattenedPosts(flattenPosts(blogs));
-        }
-    };
+            <h2 className="font-semibold text-2xl mb-4">{title}</h2>
 
-    const tags = getTagFrequencyMap(blogs);
+            <section className="flex gap-2 items-center">
+                {tags.map((tag, idx) => (
+                    <FrequencyTag
+                        key={idx}
+                        title={tag}
+                        tiny={true}
+                        isSelected={false}
+                        onClick={() => {}}
+                    />
+                ))}
+            </section>
+        </header>
+    );
+};
 
-    // Effects
-    useEffect(() => {
-        setFlattenedPosts(flattenPosts(blogs));
-    }, []);
-
-    // Track when a year label has already been shown
-    const yearDisplayed: Record<string, boolean> = {};
-
+export const BlogTemplate = ({ children, metadata }: BlogTemplateProps) => {
     return (
         <Container>
             <NavBar currentPage="blog" />
-            <GridBackground>
-                <div className="overflow-x-hidden">
-                    {/* Frequency tags */}
-                    <section className="mb-12">
-                        <h3 className="text-3xl">Frequent</h3>
-                        <section className="my-4 flex flex-wrap gap-2 items-center overflow-x-auto max-w-full">
-                            {Object.entries(tags)
-                                .sort(([, a], [, b]) => b - a) // sort by frequency count
-                                .map(([tag, count], idx) => (
-                                    <FrequencyTag
-                                        key={idx}
-                                        title={`${tag} (${count})`}
-                                        isSelected={filterTag.toLowerCase() === tag.toLowerCase()}
-                                        onClick={() => handleTagClick(tag)}
-                                    />
-                                ))}
-                        </section>
-                    </section>
-
-                    {/* Blog cards grid */}
-                    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {flattenedPosts?.map(({ year, post }, idx) => {
-                            let showYear = false;
-                            if (!yearDisplayed[year]) {
-                                showYear = true;
-                                yearDisplayed[year] = true;
-                            }
-
-                            return (
-                                <div key={idx} className="col-span-1 space-y-1">
-                                    {showYear && (
-                                        <h3 className="text-lg font-bold text-ice">{year}</h3>
-                                    )}
-                                    <BlogCard meta={post.metadata} />
-                                </div>
-                            );
-                        })}
-                    </section>
-                </div>
-            </GridBackground>
+            <article>
+                <BlogMeta
+                    title={metadata.title}
+                    date={metadata.publishedOn}
+                    tags={metadata.tags}
+                    status={metadata.status}
+                />
+                <section className="dark:text-gray-400 text-gray-500">
+                   {children}
+                </section>
+            </article>
         </Container>
     );
 };
 
-export default BlogTemplate;
+export const getStatusConfig = (status: BlogStatus) => {
+    switch (status) {
+        case 'done':
+            return {
+                text: 'Published',
+                icon: '✓',
+                bgColor: 'bg-green-100 dark:bg-green-900/30',
+                textColor: 'text-green-700 dark:text-green-300',
+                borderColor: 'border-green-200 dark:border-green-700',
+            };
+        case 'in-progress':
+            return {
+                text: 'In Progress',
+                icon: '⏳',
+                bgColor: 'bg-yellow-100 dark:bg-yellow-900/30',
+                textColor: 'text-yellow-700 dark:text-yellow-300',
+                borderColor: 'border-yellow-200 dark:border-yellow-700',
+            };
+        default:
+            return {
+                text: 'Draft',
+                icon: '📝',
+                bgColor: 'bg-gray-100 dark:bg-gray-800',
+                textColor: 'text-gray-700 dark:text-gray-300',
+                borderColor: 'border-gray-200 dark:border-gray-600',
+            };
+    }
+};
