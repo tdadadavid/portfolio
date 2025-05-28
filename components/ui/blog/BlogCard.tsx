@@ -1,5 +1,5 @@
 import { BlogMetadata } from '@/types/blog.type';
-import { FrequencyTag } from './FrequencyTag';
+// import { FrequencyTag } from './FrequencyTag';
 
 interface BlogCardProps {
     meta: BlogMetadata;
