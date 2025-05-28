@@ -1,6 +1,6 @@
 'use client';
 
-import meta from '@/data/meta';
+import meta from '@/misc/meta';
 
 import { NavBar } from '@/components/ui/NavBar';
 import { Container } from '@/components/layout/Container';

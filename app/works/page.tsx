@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Container } from '@/components/layout/Container';
 import { NavBar } from '@/components/ui/NavBar';
 import { GridBackground } from '@/components/other/GridBackground';
-import meta from '@/data/meta';
+import meta from '@/misc/meta';
 import ProjectCard from '@/components/ui/ProjectCard';
 import {
     ChartLine,

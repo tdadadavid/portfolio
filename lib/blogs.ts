@@ -1,59 +1,48 @@
 import fs from 'fs';
-import matter from 'gray-matter';
-import { MDXRemoteSerializeResult } from 'next-mdx-remote';
-import { serialize } from 'next-mdx-remote/serialize';
 import path from 'path';
+import matter from 'gray-matter';
+import { serialize } from 'next-mdx-remote/serialize';
 import rehypePrettyCode from 'rehype-pretty-code';
 
-export type BlogStatus = 'done' | 'in-progress' | 'draft';
-
-export type BlogMetadata = {
-    title: string;
-    summary: string;
-    publishedOn: string;
-    year: string;
-    slug: string;
-    tags: string[];
-    status: BlogStatus;
-};
-
-export interface BlogInterface {
-    metadata: BlogMetadata;
-    content: MDXRemoteSerializeResult<Record<string, unknown>, Record<string, unknown>>;
-    slug: string;
-}
+const BLOG_DIRECTORY = path.join(process.cwd(), 'content/blog');
 
 export const getBlogs = async () => {
-    const BLOG_DIRECTORY = path.join('content/blog');
-
-    const blogs = fs.readdirSync(BLOG_DIRECTORY).filter(file => path.extname(file) == '.mdx');
+    const blogDirs = fs
+        .readdirSync(BLOG_DIRECTORY)
+        .filter(dir => fs.statSync(path.join(BLOG_DIRECTORY, dir)).isDirectory());
 
     const rehypePrettyCodeOptions = {
-        theme: "poimandres",
+        theme: 'poimandres',
     };
 
-    const blogPosts = await Promise.all(
-        blogs.map(async blog => {
-            const filepath = path.join(BLOG_DIRECTORY, blog);
-            const fileContent = fs.readFileSync(filepath, 'utf-8');
-            const { data, content } = matter(fileContent);
-            const mdxContent = await serialize(content, {
+    const blogs = await Promise.all(
+        blogDirs.map(async slug => {
+            const mdxPath = path.join(BLOG_DIRECTORY, slug, 'index.mdx');
+            const metaPath = path.join(BLOG_DIRECTORY, slug, 'meta.json');
+
+            const mdxRaw = fs.readFileSync(mdxPath, 'utf8');
+            const { content } = matter(mdxRaw); 
+
+            const metadata = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+
+            const serialized = await serialize(content, {
                 mdxOptions: {
                     rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]],
                 },
             });
+
             return {
-                metadata: data as BlogMetadata,
-                content: mdxContent,
-                slug: blog.replace(/\.mdx?$/, ''),
+                slug,
+                metadata,
+                content: serialized,
             };
         }),
     );
 
-    return blogPosts;
+    return blogs;
 };
 
 export const getBlog = async (slug: string) => {
     const blogs = await getBlogs();
-    return blogs.find(blog => blog.slug == slug) ?? null;
+    return blogs.find(b => b.slug === slug) ?? null;
 };

@@ -1,4 +1,5 @@
 const meta = {
+    me: 'òbàdàfídì',
     url: 'https://www.obadafidi.com',
     shortcutIcon: 'icon.svg',
     github: 'https://github.com/tdadadavid',

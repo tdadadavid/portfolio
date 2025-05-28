@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 import createMDX from '@next/mdx';
 
-/** @type {import('next').NextConfig }*/
+/** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
     pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
     webpack(config) {
@@ -12,11 +12,9 @@ const nextConfig: NextConfig = {
         });
         return config;
     },
-    reactStrictMode: true,
+    // reactStrictMode: true,
 };
 
-const withMDX = createMDX({
-   // add plugins here 
-});
+const withMDX = createMDX({});
 
 export default withMDX(nextConfig);

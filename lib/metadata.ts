@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import meta from '@/data/meta';
+import meta from '@/misc/meta';
 
 type MetadataParams = {
     title: string;
@@ -35,6 +35,9 @@ export function createMetadata({
     return {
         title: fullTitle,
         description,
+        icons: {
+            shortcut: meta.shortcutIcon,
+        },
         openGraph: {
             title: finalOgTitle,
             description: finalOgDescription,

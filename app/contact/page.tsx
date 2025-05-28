@@ -4,7 +4,7 @@ import { Container } from '@/components/layout/Container';
 import { NavBar } from '@/components/ui/NavBar';
 import { GridBackground } from '@/components/other/GridBackground';
 import { PopOutButton } from '@/components/ui/Buttons';
-import meta from '@/data/meta';
+import meta from '@/misc/meta';
 import { LinkedinLogo, ReadCvLogo, EnvelopeOpen, GithubLogo } from '@phosphor-icons/react';
 
 const ContactPage = () => {
