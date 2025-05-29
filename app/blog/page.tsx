@@ -59,7 +59,7 @@ const BlogsPage = () => {
     // Effects
     useEffect(() => {
         setFlattenedPosts(flattenPosts(blogs));
-    }, []);
+    }, [blogs]);
 
     // Track when a year label has already been shown
     const yearDisplayed: Record<string, boolean> = {};

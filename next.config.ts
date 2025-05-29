@@ -1,5 +1,5 @@
-import type { NextConfig } from 'next';
 import createMDX from '@next/mdx';
+import type { NextConfig } from 'next';
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
@@ -8,11 +8,15 @@ const nextConfig: NextConfig = {
         config.module.rules.push({
             test: /\.svg$/,
             issuer: /\.[jt]sx?$/,
-            use: ['@svgr/webpack'], // we need this to import svgs as react components
+            // we need this to import svgs as react components
+            use: ['@svgr/webpack'], 
         });
         return config;
     },
-    // reactStrictMode: true,
+    experimental: {
+        mdxRs: true,
+    },
+    reactStrictMode: true,
 };
 
 const withMDX = createMDX({});

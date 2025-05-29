@@ -9,6 +9,8 @@ import Img from '@/components/mdx/elements/Img';
 import ResizableImg from '@/components/mdx/elements/ResizeableImg';
 import A from '@/components/mdx/elements/A';
 import HR from '@/components/mdx/elements/HR';
+import { ComponentPropsWithoutRef } from 'react';
+import { highlight } from 'sugar-high';
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
     return {
@@ -21,6 +23,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         ResizableImg,
         a: A,
         hr: HR,
+        code: ({ children, ...props }: ComponentPropsWithoutRef<'code'>) => {
+            const codeHTML = highlight(children as string);
+            return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
+          },
         ...components,
     };
 }

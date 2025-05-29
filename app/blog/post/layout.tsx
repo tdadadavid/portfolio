@@ -6,6 +6,7 @@ import { NavBar } from '@/components/ui/NavBar';
 import { getBlogMetadata } from '@/lib/blogs';
 import { BlogStatus } from '@/types/blog.type';
 import { notFound, usePathname } from 'next/navigation';
+import '../../code.css';
 
 interface BlogMetaDisplayProps {
     title: string;
