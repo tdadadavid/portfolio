@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import { Container } from '@/components/layout/Container';
 import { FrequencyTag } from '@/components/ui/blog/FrequencyTag';
@@ -14,13 +14,9 @@ interface BlogMetaDisplayProps {
     status: BlogStatus;
 }
 
-export default async function BlogLayout({
-    children,
-}: {
-    children: React.ReactNode
-}) {
+export default function BlogLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
-    const slug = pathname.split('/').filter(Boolean).pop(); 
+    const slug = pathname.split('/').filter(Boolean).pop();
     if (!slug) {
         return notFound();
     }
@@ -79,7 +75,7 @@ const BlogMetaDisplay = ({ title, date, tags, status }: BlogMetaDisplayProps) =>
     );
 };
 
-export const getStatusConfig = (status: BlogStatus) => {
+const getStatusConfig = (status: BlogStatus) => {
     switch (status) {
         case 'done':
             return {
