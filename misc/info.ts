@@ -1,4 +1,4 @@
-const meta = {
+const info = {
     me: 'òbàdàfídì',
     url: 'https://www.obadafidi.com',
     shortcutIcon: 'icon.svg',
@@ -57,4 +57,4 @@ const meta = {
     ],
 };
 
-export default meta;
+export default info;

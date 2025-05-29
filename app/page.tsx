@@ -1,6 +1,6 @@
 'use client';
 
-import meta from '@/misc/info';
+import info from '@/misc/info';
 
 import { NavBar } from '@/components/ui/NavBar';
 import { Container } from '@/components/layout/Container';
@@ -11,7 +11,7 @@ import { Cursor, PaperPlaneTilt } from '@phosphor-icons/react/dist/ssr';
 
 const Home = () => {
     const onConnectButtonClick = () => {
-        window.open(meta.socials.linkedin, '_blank', 'noopener,noreferrer');
+        window.open(info.socials.linkedin, '_blank', 'noopener,noreferrer');
     };
 
     const onViewWorksButtonClick = () => {
@@ -50,10 +50,10 @@ const Home = () => {
                 </h4>
                 <h4 className={'mt-6 dark:text-gray-300 text-gray-500 leading-8'}>
                     I&apos;ve worked on projects like{' '}
-                    <InlineLink href={`${meta.github}/minired`} title={'minired'} external={true} />
+                    <InlineLink href={`${info.github}/minired`} title={'minired'} external={true} />
                     , implementing core Redis functionality from scratch in Go,{''}
                     <InlineLink
-                        href={`${meta.github}/search-engine`}
+                        href={`${info.github}/search-engine`}
                         title={'a search engine'}
                         external={true}
                     />{' '}

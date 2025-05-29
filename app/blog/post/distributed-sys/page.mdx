@@ -1,3 +1,16 @@
+import { getBlogMetadata } from "@/lib/blogs.ts";
+import info from "@/misc/info";
+
+export const key = 'distributed-sys';
+
+export const metadata = {
+    title: `${getBlogMetadata(key).title} | ${info.me}`,
+    description: getBlogMetadata(key).summary,
+    icons: {
+        icon: '/icon.svg'
+    }
+}
+
 # Table of Content
 
 1. Introduction - Distributed Systems

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Container } from '@/components/layout/Container';
 import { NavBar } from '@/components/ui/NavBar';
 import { GridBackground } from '@/components/other/GridBackground';
-import meta from '@/misc/info';
+import info from '@/misc/info';
 import ProjectCard from '@/components/ui/ProjectCard';
 import {
     ChartLine,
@@ -33,8 +33,8 @@ const WorksPage = () => {
     };
 
     const filteredProjects = selectedTag
-        ? meta.works.filter(project => project.tags.includes(selectedTag))
-        : meta.works;
+        ? info.works.filter(project => project.tags.includes(selectedTag))
+        : info.works;
 
     const pageTitle = 'Works - David Dada';
     const pageDescription =
@@ -47,13 +47,13 @@ const WorksPage = () => {
                 <meta name="description" content={pageDescription} />
                 <meta property="og:title" content={pageTitle} />
                 <meta property="og:description" content={pageDescription} />
-                <meta property="og:url" content={meta.url} />
+                <meta property="og:url" content={info.url} />
                 <meta property="og:image" content="/api/og" />
                 <meta property="og:type" content="website" />
                 <meta name="twitter:title" content={pageTitle} />
                 <meta name="twitter:description" content={pageDescription} />
                 <meta name="twitter:image" content="/api/og" />
-                <link rel="icon" href={meta.shortcutIcon} />
+                <link rel="icon" href={info.shortcutIcon} />
             </Head>
             <Container>
                 <NavBar currentPage={'works'} />

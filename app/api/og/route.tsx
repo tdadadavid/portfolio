@@ -1,4 +1,4 @@
-import meta from '@/misc/info';
+import info from '@/misc/info';
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
                 }}
             >
                 <div style={{ display: 'flex', maxWidth: '9%', marginBottom: '32px' }}>
-                    <img src={`${meta.url}/svg/avatar.svg`} />
+                    <img src={`${info.url}/svg/avatar.svg`} />
                 </div>
 
                 <div
