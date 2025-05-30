@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import meta from '@/data/meta';
-import ThemeSwitchProvider from '@/providers/ThemeSwitchProvider';
+import info from '@/misc/info';
+import { ThemeProvider } from 'next-themes';
+import ogImageUrl from '@/misc/og';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -14,27 +15,18 @@ const geistMono = Geist_Mono({
     subsets: ['latin'],
 });
 
-const ogImageUrl = new URL(`${meta.url}/api/og`);
-
-ogImageUrl.searchParams.append('title', 'David Dada');
-ogImageUrl.searchParams.append(
-    'description',
-    'Computer Scientist and Experienced Backend Engineer.',
-);
-ogImageUrl.searchParams.append('type', 'website');
-
 export const metadata: Metadata = {
     title: 'David Dada',
     description: 'Computer Scientist and Experienced Backend Engineer.',
     icons: {
-        shortcut: meta.shortcutIcon,
+        shortcut: info.shortcutIcon,
     },
     openGraph: {
         locale: 'en_US',
         title: 'David Dada',
         siteName: 'David Dada',
         description: 'Computer Scientist and Experienced Backend Engineer.',
-        url: meta.url,
+        url: info.url,
         images: [
             {
                 url: '/api/og',
@@ -50,7 +42,7 @@ export const metadata: Metadata = {
         description: 'Computer Scientist and Experienced Backend Engineer.',
         images: [ogImageUrl.toString()],
     },
-    metadataBase: new URL(meta.url),
+    metadataBase: new URL(info.url),
 };
 
 export default function RootLayout({
@@ -60,8 +52,24 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" className={geistSans.className}>
+            <head>
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                            (function() {
+                                try {
+                                var theme = localStorage.getItem('theme');
+                                if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                                    document.documentElement.classList.add('dark');
+                                }
+                                } catch (_) {}
+                            })();
+                        `,
+                    }}
+                />
+            </head>
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <ThemeSwitchProvider>{children}</ThemeSwitchProvider>
+                <ThemeProvider>{children}</ThemeProvider>
             </body>
         </html>
     );

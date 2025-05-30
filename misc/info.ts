@@ -1,6 +1,7 @@
-const meta = {
-    url: 'https://tdadadavid-portfolio.vercel.app',
-    shortcutIcon: 'favicon.ico',
+const info = {
+    me: 'òbàdàfídì',
+    url: 'https://www.obadafidi.com',
+    shortcutIcon: 'icon.svg',
     github: 'https://github.com/tdadadavid',
     email: 'davidtofunmidada@gmail.com',
     socials: {
@@ -56,4 +57,4 @@ const meta = {
     ],
 };
 
-export default meta;
+export default info;

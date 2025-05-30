@@ -1,6 +1,6 @@
 'use client';
 
-import meta from '@/data/meta';
+import info from '@/misc/info';
 
 import { NavBar } from '@/components/ui/NavBar';
 import { Container } from '@/components/layout/Container';
@@ -11,7 +11,7 @@ import { Cursor, PaperPlaneTilt } from '@phosphor-icons/react/dist/ssr';
 
 const Home = () => {
     const onConnectButtonClick = () => {
-        window.open(meta.socials.linkedin, '_blank', 'noopener,noreferrer');
+        window.open(info.socials.linkedin, '_blank', 'noopener,noreferrer');
     };
 
     const onViewWorksButtonClick = () => {
@@ -42,16 +42,18 @@ const Home = () => {
                 </div>
                 <h4 className={'mt-8 dark:text-gray-300 text-gray-500 leading-8'}>
                     I am a backend engineer based in Lagos, Nigeria, with over 5 years of experience
-                    building scalable, high-performance systems. My technical expertise centres on distributed systems, network protocols, 
-                    Database architecture and infrastructure optimisation—areas where I&apos;ve consistently delivered robust solutions for 
-                    complex engineering challenges. Beyond my technical pursuits, I nurture a deep appreciation for arts and poems.
+                    building scalable, high-performance systems. My technical expertise centres on
+                    distributed systems, network protocols, Database architecture and infrastructure
+                    optimisation—areas where I&apos;ve consistently delivered robust solutions for
+                    complex engineering challenges. Beyond my technical pursuits, I nurture a deep
+                    appreciation for arts and poems.
                 </h4>
                 <h4 className={'mt-6 dark:text-gray-300 text-gray-500 leading-8'}>
                     I&apos;ve worked on projects like{' '}
-                    <InlineLink href={`${meta.github}/minired`} title={'minired'} external={true} />
+                    <InlineLink href={`${info.github}/minired`} title={'minired'} external={true} />
                     , implementing core Redis functionality from scratch in Go,{''}
                     <InlineLink
-                        href={`${meta.github}/search-engine`}
+                        href={`${info.github}/search-engine`}
                         title={'a search engine'}
                         external={true}
                     />{' '}
@@ -61,8 +63,9 @@ const Home = () => {
                         href={'https://github.com/DiceDB/dice'}
                         external={true}
                     />
-                    . I&apos;m also a member of the Google Student Developer Club, Github Campus Expert Unilag, and a technical
-                    trainer at NitHub, where I contribute & give back to the community.
+                    . I&apos;m also a member of the Google Student Developer Club, Github Campus
+                    Expert Unilag, and a technical trainer at NitHub, where I contribute & give back
+                    to the community.
                 </h4>
                 <section className={'flex sm:gap-4 items-center flex-col sm:flex-row pb-4 mt-4'}>
                     <PopOutButton

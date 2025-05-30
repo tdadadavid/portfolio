@@ -1,21 +1,30 @@
----
-title: Distributed systems - 3
-summary: Introduction to Distributed Systems [Assumptions]
-slug: false-assumptions-in-ds
-tags: ['distributed-systems', 'network', 'false-assumptions', 'Communication', 'Computation']
-publishedOn: '2025-05-22T22:00:18.147Z'
-year: '2025'
-status: 'draft'
----
+{/* ========================= SEO/METADATA =========================== */}
 
+import { getBlogMetadata } from "@/lib/blogs.ts";
+import info from "@/misc/info";
+
+export const key = 'false-assumptions';
+
+export const metadata = {
+    title: `${getBlogMetadata(key).title} | ${info.me}`,
+    description: getBlogMetadata(key).summary,
+    icons: {
+        icon: '/icon.svg'
+    }
+}
+
+{/* ================================================================== */}
 
 # Why do developers create unneccesarily complex systems?
+
 ---
+
 > "You know you have one when the crash of a computer you've never heard of stops you from getting any work done." - Leslie Lam-port
 
 Peter Deutsch, then at Sun
 Microsystems, formulated these mistakes as the following false assumptions that
 everyone makes when developing a distributed application for the first time:
+
 1. The network is reliable.
 2. The network is secure.
 3. The network is homogeneous.

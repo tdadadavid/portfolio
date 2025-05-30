@@ -4,7 +4,7 @@ import { Container } from '@/components/layout/Container';
 import { NavBar } from '@/components/ui/NavBar';
 import { GridBackground } from '@/components/other/GridBackground';
 import { PopOutButton } from '@/components/ui/Buttons';
-import meta from '@/data/meta';
+import info from '@/misc/info';
 import { LinkedinLogo, ReadCvLogo, EnvelopeOpen, GithubLogo } from '@phosphor-icons/react';
 
 const ContactPage = () => {
@@ -29,19 +29,19 @@ const ContactPage = () => {
                         <PopOutButton
                             title="Email"
                             icon={<EnvelopeOpen size={24} weight="fill" />}
-                            action={() => handleNavigation(`mailto:${meta.email}`)}
+                            action={() => handleNavigation(`mailto:${info.email}`)}
                             left={true}
                         />
                         <PopOutButton
                             title="LinkedIn"
                             icon={<LinkedinLogo size={24} weight="fill" />}
-                            action={() => handleNavigation(meta.socials.linkedin)}
+                            action={() => handleNavigation(info.socials.linkedin)}
                             left={true}
                         />
                         <PopOutButton
                             title="GitHub"
                             icon={<GithubLogo size={24} weight="fill" />}
-                            action={() => handleNavigation(meta.github)}
+                            action={() => handleNavigation(info.github)}
                             left={true}
                         />
                         <PopOutButton

@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+:root {
+  --sh-class: #ffcb8b;
+  --sh-sign: #d6deeb;
+  --sh-string: #ecc48d;
+  --sh-keyword: #c792ea;
+  --sh-comment: #637777;
+  --sh-jsxliterals: #82aaff;
+  --sh-property: #addb67;
+  --sh-entity: #f78c6c;
+  --sh-identifier: #82aaff;
+}
+
+pre {
+    background-color: #0c1021;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    padding: 1.5rem 2rem; 
+    margin: 1.5rem 0;
+    line-height: 1.5;
+}
+
+pre::-webkit-scrollbar {
+    display: none;
+}
+
+pre {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+code {
+    font-family: 'JetBrains Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    color: #d6deeb;
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
+    border: none;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.sh__line {
+    padding-left: 24px !important;
+}
+
+code:not(pre code) {
+    background-color: rgba(130, 170, 255, 0.1);
+    padding: 0.2em 0.4em;
+    border-radius: 0.3em;
+    color: #82aaff;
+    font-family: 'JetBrains Mono', monospace;
+}

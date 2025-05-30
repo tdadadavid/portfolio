@@ -1,14 +1,12 @@
 'use client';
 
-import { BlogInterface, BlogStatus } from '@/lib/blogs';
-import { Container } from '../layout/Container';
-import MdxRenderer from '../mdx/MdxRenderer';
-import { NavBar } from '../ui/NavBar';
-import { FrequencyTag } from '../ui/blog/FrequencyTag';
-
-interface BlogContentTemplateProps {
-    blog: BlogInterface;
-}
+import { Container } from '@/components/layout/Container';
+import { FrequencyTag } from '@/components/ui/blog/FrequencyTag';
+import { NavBar } from '@/components/ui/NavBar';
+import { getBlogMetadata } from '@/lib/blogs';
+import { BlogStatus } from '@/types/blog.type';
+import { notFound, usePathname } from 'next/navigation';
+import '../../code.css';
 
 interface BlogMetaDisplayProps {
     title: string;
@@ -17,10 +15,31 @@ interface BlogMetaDisplayProps {
     status: BlogStatus;
 }
 
-const BlogMetaDisplay = ({ title, date, tags, status }: BlogMetaDisplayProps) => {
-    // Status styling configuration
-    const statusConfig = getStatusConfig(status);
+export default function BlogLayout({ children }: { children: React.ReactNode }) {
+    const pathname = usePathname();
+    const slug = pathname.split('/').filter(Boolean).pop();
+    if (!slug) {
+        return notFound();
+    }
+    const blog = getBlogMetadata(slug);
+    return (
+        <Container>
+            <NavBar currentPage="blog" />
+            <article>
+                <BlogMetaDisplay
+                    title={blog.title}
+                    date={blog.publishedOn}
+                    tags={blog.tags}
+                    status={blog.status}
+                />
+                <section className="dark:text-gray-400 text-gray-500">{children}</section>
+            </article>
+        </Container>
+    );
+}
 
+const BlogMetaDisplay = ({ title, date, tags, status }: BlogMetaDisplayProps) => {
+    const statusConfig = getStatusConfig(status);
     return (
         <header className="dark:border-b-[#212d40] mt-4 mb-8 border-b border-b-gray-300 pt-8 pb-4">
             <div className="flex items-center justify-between mb-2">
@@ -31,8 +50,6 @@ const BlogMetaDisplay = ({ title, date, tags, status }: BlogMetaDisplayProps) =>
                         day: 'numeric',
                     })}
                 </h4>
-
-                {/* Status Badge */}
                 <div
                     className={`
                     inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border
@@ -43,9 +60,7 @@ const BlogMetaDisplay = ({ title, date, tags, status }: BlogMetaDisplayProps) =>
                     <span>{statusConfig.text}</span>
                 </div>
             </div>
-
             <h2 className="font-semibold text-2xl mb-4">{title}</h2>
-
             <section className="flex gap-2 items-center">
                 {tags.map((tag, idx) => (
                     <FrequencyTag
@@ -61,26 +76,7 @@ const BlogMetaDisplay = ({ title, date, tags, status }: BlogMetaDisplayProps) =>
     );
 };
 
-export const BlogContentTemplate = ({ blog }: BlogContentTemplateProps) => {
-    return (
-        <Container>
-            <NavBar currentPage="blog" />
-            <article>
-                <BlogMetaDisplay
-                    title={blog.metadata.title}
-                    date={blog.metadata.publishedOn}
-                    tags={blog.metadata.tags}
-                    status={blog.metadata.status}
-                />
-                <section className="dark:text-gray-400 text-gray-500">
-                    <MdxRenderer content={blog.content} />
-                </section>
-            </article>
-        </Container>
-    );
-};
-
-export const getStatusConfig = (status: BlogStatus) => {
+const getStatusConfig = (status: BlogStatus) => {
     switch (status) {
         case 'done':
             return {

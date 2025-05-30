@@ -1,0 +1,18 @@
+{/* ========================= SEO/METADATA =========================== */}
+
+import { getBlogMetadata } from "@/lib/blogs.ts";
+import info from "@/misc/info";
+
+export const key = 'map-reduce';
+
+export const metadata = {
+    title: `${getBlogMetadata(key).title} | ${info.me}`,
+    description: getBlogMetadata(key).summary,
+    icons: {
+        icon: '/icon.svg'
+    }
+}
+
+{/* ================================================================== */}
+
+# MapReduce

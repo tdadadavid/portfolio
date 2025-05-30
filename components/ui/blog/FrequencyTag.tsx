@@ -12,7 +12,7 @@ export const FrequencyTag = (props: FrequencyTagProps) => {
         <button
             onClick={() => props.onClick(props.title)}
             className={cn(
-                'text-xs py-1 px-2 bg-gray-200 border-b border-gray-400 cursor-pointer hover:bg-ice/40 dark:bg-gray-800 dark:hover:bg-ice/50',
+                'whitespace-nowrap flex-nowrap text-xs py-1 px-2 bg-gray-200 border-b border-gray-400 cursor-pointer hover:bg-ice/40 dark:bg-gray-800 dark:hover:bg-ice/50',
                 props.tiny && [
                     'scale-90 !cursor-default !pointer-events-none',
                     'hover:!bg-transparent dark:!hover:bg-transparent',

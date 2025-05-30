@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import meta from '@/data/meta';
+import info from '@/misc/info';
 
 type MetadataParams = {
     title: string;
@@ -25,7 +25,7 @@ export function createMetadata({
     const finalOgTitle = ogTitle || title;
     const finalOgDescription = ogDescription || description;
 
-    const ogUrl = new URL(`${meta.url}/api/og`);
+    const ogUrl = new URL(`${info.url}/api/og`);
     ogUrl.searchParams.append('title', finalOgTitle);
     ogUrl.searchParams.append('description', finalOgDescription);
     ogUrl.searchParams.append('type', ogType);
@@ -35,11 +35,14 @@ export function createMetadata({
     return {
         title: fullTitle,
         description,
+        icons: {
+            shortcut: info.shortcutIcon,
+        },
         openGraph: {
             title: finalOgTitle,
             description: finalOgDescription,
             type: ogType,
-            url: `${meta.url}${path}`,
+            url: `${info.url}${path}`,
             images: [
                 {
                     url: ogUrl.toString(),
