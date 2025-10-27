@@ -20,6 +20,6 @@ export const blogMetadata: Record<string, BlogMetadata> = {
         year: '2025',
         slug: 'dns-server-in-go',
         tags: ['dns', 'go'],
-        status: 'done',
+        status: 'in-progress',
     },
 };
