@@ -15,10 +15,11 @@ import {
 } from '@phosphor-icons/react/dist/ssr';
 import Head from 'next/head';
 
-type ProjectName = 'Minired' | 'Orchestra' | 'Search Engine' | 'Google Analytics' | 'Slide Scribe';
+type ProjectName = 'Minired' | 'DNS' | 'Orchestra' | 'Search Engine' | 'Google Analytics' | 'Slide Scribe';
 
 const projectIcons: Record<ProjectName, React.ReactNode> = {
     Minired: <Database weight={'fill'} />,
+    DNS: <Database weight={'fill'} />,
     Orchestra: <Lifebuoy weight={'fill'} />,
     'Search Engine': <MagnifyingGlass weight={'fill'} />,
     'Google Analytics': <ChartLine weight={'fill'} />,
