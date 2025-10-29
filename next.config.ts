@@ -1,4 +1,6 @@
 import createMDX from '@next/mdx';
+import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
 import type { NextConfig } from 'next';
 
 /** @type {import('next').NextConfig} */
@@ -9,7 +11,7 @@ const nextConfig: NextConfig = {
             test: /\.svg$/,
             issuer: /\.[jt]sx?$/,
             // we need this to import svgs as react components
-            use: ['@svgr/webpack'], 
+            use: ['@svgr/webpack'],
         });
         return config;
     },
@@ -19,6 +21,11 @@ const nextConfig: NextConfig = {
     reactStrictMode: true,
 };
 
-const withMDX = createMDX({});
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [rehypeRaw],
+  }
+});
 
 export default withMDX(nextConfig);

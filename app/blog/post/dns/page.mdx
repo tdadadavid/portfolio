@@ -2,6 +2,7 @@
 
 import { getBlogMetadata } from "@/lib/blogs.ts";
 import info from "@/misc/info";
+import Mermaid from '@/components/ui/blog/Mermaid';
 
 export const key = 'dns';
 
@@ -32,7 +33,6 @@ This category of records contains the information about the IP address of a doma
 <img src="../../../../public/image/dig_google_A.png" alt="dig output for google.com"/>
 
 ```bash
-
     # get the ipv6 address of google.com
     dig google.com -t AAAA
 ```
@@ -88,7 +88,7 @@ This record is how servers know which mail server to use for a domain name. It i
 5. Then the mail server on `yahoo.com` will authenticate the email message to ensure it is from a trusted source.
 6. The mail server on `yahoo.com` will then deliver the email message to the recipient's email once verification is complete.
 
-```mermaid
+<Mermaid chart={`
 sequenceDiagram
     participant Obadafidi as Obadafidi@example.com
     participant GMail as GMail Mail Server
@@ -96,9 +96,9 @@ sequenceDiagram
     participant Yahoo as Yahoo Mail Server
     participant Tolulope as tolulope@yahoo.com
 
-    Note over Bob,GMail: MX Record Resolution & Mail Delivery Process
+    Note over Obadafidi,GMail: MX Record Resolution & Mail Delivery Process
 
-    Bob->>GMail: (1) Sends email to tolulope@yahoo.com
+    Obadafidi->>GMail: (1) Sends email to tolulope@yahoo.com
     GMail->>DNS: (2) Requests MX record for yahoo.com
     DNS-->>GMail: (3) Returns MX record (Yahoo Mail Server details)
     GMail->>DNS: (3b) Resolves A record to get IP address of Yahoo Mail Server
@@ -106,7 +106,7 @@ sequenceDiagram
     Yahoo->>DNS: (5) Verifies that sending mail server (GMail) is authenticated
     DNS-->>Yahoo: Returns authentication confirmation (SPF/DKIM/DMARC)
     Yahoo->>Tolulope: (6) Delivers email to tolulope@yahoo.com
-```
+`} />
 ---
 
 ## Results
