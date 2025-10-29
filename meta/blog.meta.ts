@@ -19,7 +19,7 @@ export const blogMetadata: Record<string, BlogMetadata> = {
         publishedOn: '2025-10-27T19:16:03',
         year: '2025',
         slug: 'dns-server-in-go',
-        tags: ['dns', 'go', 'eventual consistency'],
+        tags: ['dns', 'go'],
         status: 'in-progress',
     },
 };
