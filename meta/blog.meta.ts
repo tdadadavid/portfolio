@@ -13,7 +13,7 @@ export const blogMetadata: Record<string, BlogMetadata> = {
         tags: ['distributed-systems', 'consensus', 'go', 'raft'],
         status: 'done',
     },
-    'DNS': {
+    'dns': {
         title: 'DNS Server in Go',
         summary: 'DNS',
         publishedOn: '2025-10-27T19:16:03',
