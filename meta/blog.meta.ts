@@ -14,7 +14,7 @@ export const blogMetadata: Record<string, BlogMetadata> = {
         status: 'done',
     },
     'dns': {
-        title: 'DNS in Go',
+        title: 'Domain Name System (DNS)',
         summary: 'DNS',
         publishedOn: '2025-10-27T19:16:03',
         year: '2025',

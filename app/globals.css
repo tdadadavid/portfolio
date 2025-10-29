@@ -127,3 +127,26 @@ blockquote.mdx::before {
 .break-inside-avoid {
     break-inside: avoid;
 }
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.prose th {
+  background-color: #f9f9f9;
+  font-weight: 600;
+}
+
+.prose tr:nth-child(even) {
+  background-color: #fafafa;
+}

@@ -32,7 +32,7 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
                     tags={blog.tags}
                     status={blog.status}
                 />
-                <section className="dark:text-gray-400 text-gray-500">{children}</section>
+                <section className="dark:text-gray-400 text-gray-500 prose max-w-4xl mx-auto py-10">{children}</section>
             </article>
         </Container>
     );
