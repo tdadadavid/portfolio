@@ -2,100 +2,159 @@
 
 @variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-::-moz-selection {
-    background: #577fbc;
-    color: #ffffff;
-}
-::-webkit-selection {
-    background: #577fbc;
-    color: #ffffff;
-}
-::selection {
-    background: #577fbc;
-    color: #ffffff;
-}
-
 :root {
-    --background: #ffffff;
-    --foreground: #030c19;
-    --font-geist: var(--font-geist);
-    --font-dank-mono: var(--font-dank-mono);
+    --paper: #f3eee3;
+    --paper-soft: #fbf8f1;
+    --paper-ink: #101826;
+    --paper-muted: #5f6775;
+    --paper-line: #d8d0c1;
+    --paper-accent: #111827;
+    --paper-accent-soft: #e2dfd7;
+    --shadow-strong: 0 16px 55px -32px rgb(24 36 58 / 0.5);
 }
 
 [data-theme='dark'] {
-    --background: #030c19;
-    --foreground: #ededed;
+    --paper: #0f1624;
+    --paper-soft: #121d2d;
+    --paper-ink: #edf1f7;
+    --paper-muted: #a4b2c8;
+    --paper-line: #2a3347;
+    --paper-accent: #e2e8f0;
+    --paper-accent-soft: #1a2737;
+    --shadow-strong: 0 16px 48px -28px rgb(0 0 0 / 0.75);
 }
 
 @theme {
-    --color-nord: #030c19;
-    --color-ice: #66aadb;
+    --color-nord: #0f1624;
+    --color-ice: #2d6cdf;
 }
 
 @theme inline {
-    --font-sans: var(--font-geist);
-    --font-mono: var(--font-dank-mono);
+    --font-sans: var(--font-sans);
+    --font-serif: var(--font-serif);
+    --font-mono: var(--font-mono);
+}
+
+::-moz-selection,
+::-webkit-selection,
+::selection {
+    background: #2d6cdf;
+    color: #fff;
 }
 
 body {
-    background: var(--background);
-    color: var(--foreground);
-    font-family: var(--font-geist);
+    color: var(--paper-ink);
+    font-family: var(--font-sans);
+    background-color: var(--paper);
+    background-image:
+        radial-gradient(circle at 18% 22%, rgb(255 255 255 / 0.62), transparent 40%),
+        radial-gradient(circle at 82% -10%, rgb(235 220 192 / 0.3), transparent 42%),
+        linear-gradient(152deg, #f7f3ec, var(--paper));
 }
 
-.ghost-popup,
-.project-popup {
+[data-theme='dark'] body {
+    background-image:
+        radial-gradient(circle at 12% 16%, rgb(60 92 140 / 0.18), transparent 34%),
+        radial-gradient(circle at 100% 0%, rgb(90 109 157 / 0.15), transparent 40%),
+        linear-gradient(145deg, #0e1624, #101a2a 40%, #0f1624);
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.33;
+    background-image: radial-gradient(rgb(20 28 38 / 0.12) 0.35px, transparent 0.35px);
+    background-size: 3px 3px;
+}
+
+[data-theme='dark'] body::before {
+    opacity: 0.18;
+    background-image: radial-gradient(rgb(255 255 255 / 0.18) 0.35px, transparent 0.35px);
+}
+
+a {
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+}
+
+.paper-frame {
+    border: 1px solid var(--paper-line);
+    border-radius: 22px;
+    background: color-mix(in oklab, var(--paper-soft) 92%, white 8%);
+    box-shadow: var(--shadow-strong);
+}
+
+.paper-grid {
     position: relative;
 }
 
-.ghost-popup .content {
-    transition: transform 0.2s ease-in-out;
-}
-
-.ghost-popup:hover .content {
-    transform: translate(4px, -4px);
-}
-
-.ghost-popup .popup {
+.paper-grid::before {
     content: '';
     position: absolute;
-    width: 100%;
-    height: 80%;
-    bottom: -8px;
-    left: -8px;
-    background: oklch(0.48 0.034 261.351);
-    z-index: -1;
-    border-radius: 4px;
-    animation: ghost 0.355ms 0.5s ease backwards;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0.75;
+    background-image:
+        linear-gradient(to right, color-mix(in oklab, var(--paper-line) 70%, transparent) 1px, transparent 1px),
+        linear-gradient(to bottom, color-mix(in oklab, var(--paper-line) 70%, transparent) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(circle at 50% 35%, black, transparent 85%);
 }
 
-[data-theme='dark'] .ghost-popup .popup {
-    background: oklch(0.277 0.059 264.032);
+.paper-surface {
+    background: color-mix(in oklab, var(--paper-soft) 86%, white 14%);
+    border: 1px solid color-mix(in oklab, var(--paper-line) 70%, transparent);
+    border-radius: 16px;
+}
+
+[data-theme='dark'] .paper-surface {
+    background: color-mix(in oklab, var(--paper-soft) 90%, #0e1624 10%);
+}
+
+.ink-muted {
+    color: var(--paper-muted);
+}
+
+.ink-link {
+    color: var(--paper-ink);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklab, var(--paper-ink) 62%, transparent);
+}
+
+.ink-link:hover {
+    text-decoration-color: var(--paper-ink);
 }
 
 code {
-    @apply !leading-loose rounded-xs;
-    background-color: #e1e2e5;
-    padding: 1px 2px;
+    @apply !leading-loose rounded-sm;
+    background-color: #e6e7eb;
+    padding: 1px 4px;
+    font-family: var(--font-code), 'Fira Code', monospace;
 }
 
 [data-theme='dark'] code {
-    background-color: #151b30;
+    background-color: #21262d;
 }
 
 figure[data-rehype-pretty-code-figure=''] {
-    margin: 24px 0px;
+    margin: 24px 0;
 }
 
 pre {
     @apply !px-0 rounded-md;
-    background-color: #151b30 !important;
+    background-color: #0d1117 !important;
+    border: 1px solid #30363d;
     position: relative;
 }
 
 pre > code {
     counter-reset: line;
-    background: #151b30 !important;
+    background: #0d1117 !important;
+    color: #e6edf3 !important;
     @apply py-2;
 }
 
@@ -111,17 +170,18 @@ figure {
 
 blockquote.mdx {
     position: relative;
-    padding-left: 60px;
+    padding-left: 56px;
 }
 
 blockquote.mdx::before {
     position: absolute;
     content: '“';
     display: block;
-    top: 0px;
-    left: 15px;
-    font-size: 64px;
-    color: #577fbc;
+    top: -8px;
+    left: 8px;
+    font-family: var(--font-serif);
+    font-size: 62px;
+    color: #2d6cdf;
 }
 
 .break-inside-avoid {
@@ -129,24 +189,24 @@ blockquote.mdx::before {
 }
 
 .prose table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1em 0;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
 }
 
 .prose th,
 .prose td {
-  border: 1px solid #ccc;
-  padding: 8px 12px;
-  text-align: left;
-  vertical-align: middle;
+    border: 1px solid color-mix(in oklab, var(--paper-line) 72%, transparent);
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: middle;
 }
 
 .prose th {
-  background-color: #f9f9f9;
-  font-weight: 600;
+    background-color: color-mix(in oklab, var(--paper-soft) 92%, white 8%);
+    font-weight: 600;
 }
 
 .prose tr:nth-child(even) {
-  background-color: #fafafa;
+    background-color: color-mix(in oklab, var(--paper-soft) 82%, transparent);
 }

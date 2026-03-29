@@ -11,7 +11,7 @@ export const blogMetadata: Record<string, BlogMetadata> = {
         year: '2025',
         slug: '',
         tags: ['distributed-systems', 'consensus', 'go', 'raft'],
-        status: 'done',
+        status: 'draft',
     },
     'dns': {
         title: 'Domain Name System (DNS)',
@@ -20,6 +20,6 @@ export const blogMetadata: Record<string, BlogMetadata> = {
         year: '2025',
         slug: 'dns-server-in-go',
         tags: ['dns', 'go'],
-        status: 'in-progress',
+        status: 'done',
     },
 };

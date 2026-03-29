@@ -20,9 +20,9 @@ const ProjectCard = ({
     onTagClick,
 }: ProjectCardProps) => {
     return (
-        <div className="relative group w-full max-w-md mx-auto">
+        <div className="group relative mx-auto w-full max-w-sm">
             <div
-                className="absolute inset-0 -translate-x-2 translate-y-2 group-hover:bg-[var(--accent)] dark:bg-[#535E71FF] rounded-xl z-0"
+                className="absolute inset-0 z-0 translate-x-1.5 translate-y-1.5 rounded-xl bg-[var(--paper-accent-soft)] transition duration-300 group-hover:translate-y-1"
                 style={
                     {
                         '--accent': accentColor,
@@ -32,41 +32,38 @@ const ProjectCard = ({
 
             <div
                 className={`
-          relative z-10 p-6 rounded-xl border border-gray-300 dark:border-gray-700
-          bg-white dark:bg-nord shadow-md
-          transition-all duration-300 ease-out
-          hover:-translate-y-2 hover:translate-x-2 hover:shadow-xl
-          h-[360px]
+          relative z-10 min-h-[250px] rounded-xl border border-[var(--paper-line)]
+          bg-[var(--paper-soft)] p-4 transition-all duration-300 ease-out hover:-translate-y-1
         `}
                 style={{
                     backgroundBlendMode: 'overlay',
                     backgroundSize: 'cover',
                 }}
             >
-                <div className="flex flex-col flex-1 h-full">
-                    <div className="flex items-center gap-3 mb-3">
+                <div className="flex h-full flex-col">
+                    <div className="mb-2 flex items-center gap-2.5">
                         <div
-                            className="group-hover:text-[var(--accent)] text-2xl transition-colors duration-300"
+                            className="text-xl text-[var(--paper-muted)] transition-colors duration-300 group-hover:text-[var(--accent)]"
                             style={{ '--accent': accentColor } as React.CSSProperties}
                         >
                             {icon}
                         </div>
                         <h3
-                            className="group-hover:text-[var(--accent)] text-xl  font-semibold transition-colors duration-300"
+                            className="font-[family-name:var(--font-serif)] text-2xl capitalize leading-tight transition-colors duration-300 group-hover:text-[var(--accent)]"
                             style={{ '--accent': accentColor } as React.CSSProperties}
                         >
-                            {name.toLowerCase()}
+                            {name}
                         </h3>
                     </div>
 
-                    <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">{description}</p>
+                    <p className="ink-muted mb-3 text-sm leading-5">{description}</p>
 
-                    <div className="flex flex-wrap gap-2 my-4">
+                    <div className="my-3 flex flex-wrap gap-1.5">
                         {tags.map((tag, index) => (
                             <span
                                 key={index}
                                 onClick={() => onTagClick?.(tag)}
-                                className="inline-block px-2 py-1 text-xs font-mono border border-dashed border-gray-400 dark:border-gray-500 text-gray-600 dark:text-gray-300 rounded cursor-pointer hover:border-gray-300"
+                                className="inline-block cursor-pointer rounded-full border border-dashed border-[var(--paper-line)] px-2 py-0.5 text-[11px] font-mono text-[var(--paper-muted)] hover:border-[var(--paper-muted)]"
                             >
                                 {tag}
                             </span>
@@ -77,7 +74,7 @@ const ProjectCard = ({
                         href={url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-auto my-1 text-sm font-mono text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity hover:underline"
+                        className="mt-auto pt-1 text-xs font-mono uppercase tracking-[0.12em] text-[var(--paper-muted)] opacity-80 transition-opacity group-hover:opacity-100 hover:underline"
                     >
                         View on GitHub →
                     </a>

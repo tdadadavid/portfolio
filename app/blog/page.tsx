@@ -7,105 +7,157 @@ import { FrequencyTag } from '@/components/ui/blog/FrequencyTag';
 import { NavBar } from '@/components/ui/NavBar';
 import { getAllBlogs } from '@/lib/blogs';
 import { BlogMetadata } from '@/types/blog.type';
-import { useEffect, useState } from 'react';
+import { FunnelSimple, MagnifyingGlass } from '@phosphor-icons/react/dist/ssr';
+import { motion } from 'framer-motion';
+import { useMemo, useState } from 'react';
+
+const emptyTag = 'All Topics';
 
 const BlogsPage = () => {
-    const blogs = getAllBlogs();
-
+    const blogs = useMemo(() => getAllBlogs(), []);
     const [filterTag, setFilterTag] = useState<string>('');
-    const [flattenedPosts, setFlattenedPosts] = useState<{ year: string; post: BlogMetadata }[]>(
-        [],
-    );
+    const [query, setQuery] = useState('');
 
-    // Flattens posts into a sorted array with year labels
-    const flattenPosts = (source: BlogMetadata[]) => {
-        const sorted = [...source].sort(
-            (a, b) => new Date(b.publishedOn).getTime() - new Date(a.publishedOn).getTime(),
-        );
-        return sorted.map(post => ({
-            year: post.year,
-            post,
-        }));
-    };
-
-    // Returns a map containing how many times each tag occurs
-    const getTagFrequencyMap = (source: BlogMetadata[]) => {
+    const tags = useMemo(() => {
         const frequencyMap: Record<string, number> = {};
-        source.forEach(blog => {
+        blogs.forEach(blog => {
             blog.tags.forEach(tag => {
                 frequencyMap[tag] = (frequencyMap[tag] || 0) + 1;
             });
         });
-        return frequencyMap;
-    };
-
-    const tags = getTagFrequencyMap(blogs);
-
-    // Filter each post in the post groups by tag
-    const handleTagClick = (tag: string) => {
-        const caseInsensitiveTag = tag.toLowerCase();
-        if (filterTag == '' || filterTag != caseInsensitiveTag) {
-            setFilterTag(caseInsensitiveTag);
-            const filtered = blogs.filter(blog =>
-                blog.tags.some(t => t.toLowerCase() == caseInsensitiveTag),
-            );
-            setFlattenedPosts(flattenPosts(filtered));
-        } else {
-            setFilterTag('');
-            setFlattenedPosts(flattenPosts(blogs));
-        }
-    };
-
-    // Effects
-    useEffect(() => {
-        setFlattenedPosts(flattenPosts(blogs));
+        return Object.entries(frequencyMap).sort(([, a], [, b]) => b - a);
     }, [blogs]);
 
-    // Track when a year label has already been shown
-    const yearDisplayed: Record<string, boolean> = {};
+    const filteredPosts = useMemo(() => {
+        const normalizedQuery = query.trim().toLowerCase();
+
+        return blogs.filter(blog => {
+            const matchesTag =
+                filterTag === '' || blog.tags.some(tag => tag.toLowerCase() === filterTag);
+            const searchable = `${blog.title} ${blog.summary} ${blog.tags.join(' ')}`.toLowerCase();
+            const matchesQuery = normalizedQuery === '' || searchable.includes(normalizedQuery);
+            return matchesTag && matchesQuery;
+        });
+    }, [blogs, filterTag, query]);
+
+    const groupedByYear = useMemo(() => {
+        return filteredPosts.reduce<Record<string, BlogMetadata[]>>((acc, blog) => {
+            if (!acc[blog.year]) {
+                acc[blog.year] = [];
+            }
+            acc[blog.year].push(blog);
+            return acc;
+        }, {});
+    }, [filteredPosts]);
+
+    const orderedYears = useMemo(
+        () => Object.keys(groupedByYear).sort((a, b) => Number(b) - Number(a)),
+        [groupedByYear],
+    );
 
     return (
         <Container>
             <NavBar currentPage="blog" />
             <GridBackground>
-                <div className="overflow-x-hidden">
-                    {/* Frequency tags */}
-                    <section className="mb-12">
-                        <h3 className="text-3xl">Frequent</h3>
-                        <section className="my-4 flex flex-wrap gap-2 items-center overflow-x-auto max-w-full">
-                            {Object.entries(tags)
-                                .sort(([, a], [, b]) => b - a) // sort by frequency count
-                                .map(([tag, count], idx) => (
-                                    <FrequencyTag
-                                        key={idx}
-                                        title={`${tag} (${count})`}
-                                        isSelected={filterTag.toLowerCase() === tag.toLowerCase()}
-                                        onClick={() => handleTagClick(tag)}
-                                    />
-                                ))}
-                        </section>
-                    </section>
+                <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35 }}
+                    className="space-y-8"
+                >
+                    <header className="space-y-4">
+                        <p className="ink-muted text-xs font-semibold uppercase tracking-[0.2em]">
+                            Writing Desk
+                        </p>
+                        <h1 className="font-[family-name:var(--font-serif)] text-4xl sm:text-5xl">
+                            Blog Notes & Deep Dives
+                        </h1>
+                        <p className="ink-muted max-w-3xl leading-7">
+                            Technical essays, backend notes, and system design breakdowns. Filter by
+                            topic or search by keyword.
+                        </p>
+                    </header>
 
-                    {/* Blog cards grid */}
-                    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-3 gap-x-12">
-                        {flattenedPosts?.map(({ year, post }, idx) => {
-                            let showYear = false;
-                            if (!yearDisplayed[year]) {
-                                showYear = true;
-                                yearDisplayed[year] = true;
-                            }
-
-                            return (
-                                <div key={idx} className="col-span-1 space-y-1">
-                                    {showYear && (
-                                        <h3 className="text-lg font-bold text-ice">{year}</h3>
-                                    )}
-                                    <BlogCard meta={post} />
+                    <section className="grid gap-4 lg:grid-cols-[1.2fr_1fr]">
+                        <div className="paper-surface p-4 sm:p-5">
+                            <div className="flex items-center justify-between gap-4">
+                                <div>
+                                    <p className="ink-muted text-xs uppercase tracking-[0.16em]">
+                                        Published Entries
+                                    </p>
+                                    <p className="mt-2 font-[family-name:var(--font-serif)] text-4xl leading-none">
+                                        {filteredPosts.length}
+                                    </p>
                                 </div>
-                            );
-                        })}
+                                <div className="ink-muted hidden items-center gap-1 text-xs uppercase tracking-[0.16em] sm:flex">
+                                    <FunnelSimple size={13} />
+                                    {filterTag || emptyTag}
+                                </div>
+                            </div>
+                        </div>
+
+                        <label className="paper-surface flex items-center gap-2 px-4 py-3">
+                            <MagnifyingGlass size={16} className="text-[var(--paper-muted)]" />
+                            <input
+                                type="search"
+                                value={query}
+                                onChange={e => setQuery(e.target.value)}
+                                placeholder="Search title, topic, or summary"
+                                className="w-full bg-transparent text-sm outline-none placeholder:text-[var(--paper-muted)]"
+                            />
+                        </label>
                     </section>
-                </div>
+
+                    <section className="paper-surface p-4 sm:p-5">
+                        <h2 className="text-xs font-semibold uppercase tracking-[0.17em] text-[var(--paper-muted)]">
+                            Filter by Topic
+                        </h2>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                            <FrequencyTag
+                                title={emptyTag}
+                                isSelected={filterTag === ''}
+                                onClick={() => setFilterTag('')}
+                            />
+                            {tags.map(([tag, count]) => (
+                                <FrequencyTag
+                                    key={tag}
+                                    title={`${tag} (${count})`}
+                                    isSelected={filterTag.toLowerCase() === tag.toLowerCase()}
+                                    onClick={() => setFilterTag(tag.toLowerCase())}
+                                />
+                            ))}
+                        </div>
+                    </section>
+
+                    {filteredPosts.length === 0 ? (
+                        <section className="paper-surface p-8 text-center">
+                            <h3 className="font-[family-name:var(--font-serif)] text-3xl">
+                                No posts matched
+                            </h3>
+                            <p className="ink-muted mt-2 text-sm">
+                                Try removing filters or searching with a broader term.
+                            </p>
+                        </section>
+                    ) : (
+                        <section className="space-y-8">
+                            {orderedYears.map(year => (
+                                <section key={year} className="space-y-4">
+                                    <header className="flex items-center gap-3">
+                                        <h3 className="font-[family-name:var(--font-serif)] text-3xl sm:text-4xl">
+                                            {year}
+                                        </h3>
+                                        <span className="h-px flex-1 bg-[var(--paper-line)]" />
+                                    </header>
+                                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                                        {groupedByYear[year].map(post => (
+                                            <BlogCard key={post.slug} meta={post} />
+                                        ))}
+                                    </div>
+                                </section>
+                            ))}
+                        </section>
+                    )}
+                </motion.div>
             </GridBackground>
         </Container>
     );

@@ -22,6 +22,9 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
         return notFound();
     }
     const blog = getBlogMetadata(slug);
+    if (!blog || blog.status === 'draft') {
+        return notFound();
+    }
     return (
         <Container>
             <NavBar currentPage="blog" />

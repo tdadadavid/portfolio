@@ -10,10 +10,16 @@ interface ResizableImageProps {
 
 const ResizableImg = ({ src, alt, width, height, desc }: ResizableImageProps) => {
     return (
-        <section className="my-8 flex flex-col">
-            <Image src={src} alt={alt} width={width} height={height} />
-            {desc && <span className="w-full text-center my-2 text-sm text-gray-400">{desc}</span>}
-        </section>
+        <figure className="mdx-image-frame group">
+            <Image
+                src={src}
+                alt={alt}
+                width={width}
+                height={height}
+                className="h-auto w-full rounded-[14px] border border-[#2a3347] bg-[#0b1120] shadow-[0_14px_35px_-24px_rgb(0,0,0,0.95)] transition duration-300 group-hover:scale-[1.01]"
+            />
+            {desc && <figcaption className="mt-2 px-1 text-xs text-[#93a4bf]">{desc}</figcaption>}
+        </figure>
     );
 };
 

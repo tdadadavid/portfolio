@@ -1,3 +1,5 @@
+import { color } from "motion/react";
+
 const info = {
     me: 'òbàdàfídì',
     url: 'https://www.obadafidi.com',
@@ -53,7 +55,14 @@ const info = {
                 '(Hackathon) The backend for SlideScribeAI, an AI-powered tool for transcribing and processing slides.',
             color: '#3b82f6',
             tags: ['hackathon', 'backend', 'typescript'],
-        },
+      },
+      {
+        name: 'DNS',
+        url: 'https://github.com/tdadadavid/go-dns',
+        description: 'Domain Name Server written in Go. I explored it due to AWS outage that was caused by deleting DNS records',
+        color: '#3b82f6',
+        tags: ['dns', 'backend', 'AWS failure', 'go']
+      },
     ],
 };
 

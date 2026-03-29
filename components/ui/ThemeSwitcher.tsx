@@ -20,8 +20,9 @@ export const ThemeSwitcher = () => {
     if (!mounted) return null;
 
     return (
-        <div
-            className="cursor-pointer dark:text-gray-300 dark:hover:text-gray-100 text-gray-500 hover:text-gray-800"
+        <button
+            type="button"
+            className="paper-surface grid h-10 w-10 cursor-pointer place-items-center text-[var(--paper-muted)] transition duration-200 hover:-translate-y-0.5 hover:text-[var(--paper-ink)]"
             onClick={toggleTheme}
         >
             <AnimatePresence mode="wait" initial={false}>
@@ -35,6 +36,6 @@ export const ThemeSwitcher = () => {
                     {theme === 'dark' ? <Moon size={24} /> : <Sun size={24} />}
                 </motion.div>
             </AnimatePresence>
-        </div>
+        </button>
     );
 };

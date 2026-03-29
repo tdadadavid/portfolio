@@ -1,18 +1,30 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Fira_Code, IBM_Plex_Mono, Manrope, Newsreader } from 'next/font/google';
 import './globals.css';
 import info from '@/misc/info';
 import { ThemeProvider } from 'next-themes';
 import ogImageUrl from '@/misc/og';
 
-const geistSans = Geist({
-    variable: '--font-geist-sans',
+const sans = Manrope({
+    variable: '--font-sans',
     subsets: ['latin'],
 });
 
-const geistMono = Geist_Mono({
-    variable: '--font-geist-mono',
+const serif = Newsreader({
+    variable: '--font-serif',
     subsets: ['latin'],
+});
+
+const mono = IBM_Plex_Mono({
+    variable: '--font-mono',
+    subsets: ['latin'],
+    weight: ['400', '500', '600'],
+});
+
+const code = Fira_Code({
+    variable: '--font-code',
+    subsets: ['latin'],
+    weight: ['400', '500', '600'],
 });
 
 export const metadata: Metadata = {
@@ -51,25 +63,15 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className={geistSans.className}>
-            <head>
-                <script
-                    dangerouslySetInnerHTML={{
-                        __html: `
-                            (function() {
-                                try {
-                                var theme = localStorage.getItem('theme');
-                                if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                                    document.documentElement.classList.add('dark');
-                                }
-                                } catch (_) {}
-                            })();
-                        `,
-                    }}
-                />
-            </head>
-            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <ThemeProvider>{children}</ThemeProvider>
+        <html
+            lang="en"
+            suppressHydrationWarning
+            className={`${sans.variable} ${serif.variable} ${mono.variable} ${code.variable}`}
+        >
+            <body className="antialiased">
+                <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false}>
+                    {children}
+                </ThemeProvider>
             </body>
         </html>
     );

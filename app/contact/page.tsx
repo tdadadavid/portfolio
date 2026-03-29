@@ -17,10 +17,13 @@ const ContactPage = () => {
             <NavBar currentPage="contact" />
             <GridBackground>
                 <div className="max-w-2xl">
-                    <h2 className="mt-6 font-extrabold text-3xl sm:text-5xl dark:text-gray-100 text-gray-900 leading-16">
-                        Let&apos;s Build Something Cool!
+                    <p className="ink-muted text-xs font-semibold uppercase tracking-[0.2em]">
+                        Contact
+                    </p>
+                    <h2 className="mt-3 font-[family-name:var(--font-serif)] text-4xl sm:text-6xl leading-tight">
+                        Let&apos;s build something meaningful.
                     </h2>
-                    <p className="my-4 text-lg dark:text-gray-300 text-gray-600 leading-7">
+                    <p className="ink-muted my-4 text-lg leading-7">
                         I&apos;m a backend developer passionate about building scalable and
                         efficient systems. If you have an exciting challenge or a project that needs
                         a solid backend foundation, let&apos;s connect.

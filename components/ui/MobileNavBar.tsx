@@ -32,11 +32,11 @@ export const MobileNavBar = (props: MobileNavBarProps) => {
 
     return (
         <>
-            <div className="flex sm:hidden z-50 items-center gap-3">
+            <div className="z-50 flex items-center gap-3 sm:hidden">
                 <ThemeSwitcher />
                 <Hamburger
-                    size={24}
-                    color={isOpen ? '#fff' : '#6a7282'}
+                    size={20}
+                    color={isOpen ? '#f8fafc' : '#5f6775'}
                     toggled={isOpen}
                     toggle={setIsOpen}
                 />
@@ -46,25 +46,25 @@ export const MobileNavBar = (props: MobileNavBarProps) => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 bg-nord flex justify-center items-center z-40"
+                    className="fixed inset-0 z-40 flex items-center justify-center bg-[#0f1624]/82 px-6 backdrop-blur-sm"
                     onClick={() => setIsOpen(false)}
                 >
                     <motion.ul
-                        initial={{ x: '100%' }}
-                        animate={{ x: 0 }}
-                        exit={{ x: '100%' }}
+                        initial={{ y: 16, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: 16, opacity: 0 }}
                         transition={{ type: 'tween', duration: 0.3 }}
-                        className="flex flex-col gap-6 text-white text-2xl"
+                        className="w-full max-w-xs rounded-2xl border border-slate-600 bg-slate-900/90 p-6 text-slate-100 shadow-2xl"
                         onClick={e => e.stopPropagation()}
                     >
-                        {navItems.map((item, idx) => (
-                            <li key={idx}>
+                        {navItems.map(item => (
+                            <li key={item.href}>
                                 <Link
                                     href={item.href}
                                     className={cn(
-                                        'hover:underline',
+                                        'block rounded-xl border border-transparent px-3 py-3 text-base font-semibold uppercase tracking-[0.18em] transition',
                                         props.active == item.title.toLowerCase() &&
-                                            'underline text-ice-500 hover:text-blue-500',
+                                            'border-slate-600 bg-slate-800 text-white',
                                     )}
                                     onClick={() => setIsOpen(false)}
                                 >
