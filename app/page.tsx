@@ -1,13 +1,27 @@
 'use client';
 
 import info from '@/misc/info';
-
 import { NavBar } from '@/components/ui/NavBar';
 import { Container } from '@/components/layout/Container';
 import { GridBackground } from '@/components/other/GridBackground';
-import { InlineLink } from '@/components/ui/InlineLink';
 import { PopOutButton } from '@/components/ui/Buttons';
-import { Cursor, PaperPlaneTilt } from '@phosphor-icons/react/dist/ssr';
+import { ArrowUpRight, Cursor, PaperPlaneTilt, Stack } from '@phosphor-icons/react/dist/ssr';
+import { motion } from 'framer-motion';
+
+const stagger = {
+    hidden: { opacity: 0 },
+    show: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.08,
+        },
+    },
+};
+
+const fadeInUp = {
+    hidden: { opacity: 0, y: 18 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: 'easeOut' as const } },
+};
 
 const Home = () => {
     const onConnectButtonClick = () => {
@@ -22,77 +36,74 @@ const Home = () => {
         <Container>
             <NavBar currentPage={'home'} />
             <GridBackground>
-                <div className={'flex gap-4'}>
-                    <div>
-                        <h2
-                            className={
-                                'font-bold text-4xl sm:text-6xl dark:text-gray-200 text-gray-800'
-                            }
-                        >
+                <motion.section
+                    variants={stagger}
+                    initial="hidden"
+                    animate="show"
+                    className="space-y-10"
+                >
+                    <motion.header variants={fadeInUp} className="space-y-5">
+                        <p className="ink-muted text-xs font-semibold uppercase tracking-[0.2em] sm:text-sm">
+                            Portfolio / 2026 Edition
+                        </p>
+                        <h1 className="font-[family-name:var(--font-serif)] text-5xl leading-[0.95] sm:text-7xl">
                             David Dada
-                        </h2>
-                        <h2
-                            className={
-                                'mt-4 text-xl sm:text-3xl underline dark:text-gray-200 text-gray-800'
-                            }
-                        >
-                            Software Engineer
-                        </h2>
-                    </div>
-                </div>
-                <h4 className={'mt-8 dark:text-gray-300 text-gray-500 leading-8'}>
-                    I am a backend engineer based in Lagos, Nigeria, with over 5 years of experience
-                    building scalable, high-performance systems. My technical expertise centres on
-                    distributed systems, network protocols, Database architecture and infrastructure
-                    optimisation-areas where I&apos;ve consistently delivered robust solutions for
-                    complex engineering challenges. Beyond my technical pursuits, I nurture a deep
-                    appreciation for arts and poems.
-                </h4>
-                <h4 className={'mt-6 dark:text-gray-300 text-gray-500 leading-8'}>
-                    I&apos;ve worked on projects like{' '}
-                    <InlineLink href={`${info.github}/minired`} title={'minired'} external={true} />
-                    , implementing core Redis functionality from scratch in Go,{''}
-                    <InlineLink
-                        href={`${info.github}/search-engine`}
-                        title={'a search engine'}
-                        external={true}
-                    />{' '}
-                    written in C#, and contributed to big Open Source projects like{' '}
-                    <InlineLink
-                        title={'DiceDB'}
-                        href={'https://github.com/DiceDB/dice'}
-                        external={true}
-                    />
-                    . I&apos;m also a member of the Google Student Developer Club, Github Campus
-                    Expert Unilag, and a technical trainer at NitHub, where I contribute & give back
-                    to the community.
-                </h4>
-                <section className={'flex sm:gap-4 items-center flex-col sm:flex-row pb-4 mt-4'}>
-                    <PopOutButton
-                        title={"Let's connect"}
-                        icon={
-                            <PaperPlaneTilt
-                                size={18}
-                                className={'dark:text-gray-200 text-gray-900'}
-                                weight={'fill'}
-                            />
-                        }
-                        action={onConnectButtonClick}
-                    />
-                    <PopOutButton
-                        title={'View Works'}
-                        icon={
-                            <Cursor
-                                size={18}
-                                className={
-                                    'transform -scale-x-100 dark:text-gray-200 text-gray-900'
-                                }
-                                weight={'fill'}
-                            />
-                        }
-                        action={onViewWorksButtonClick}
-                    />
-                </section>
+                        </h1>
+                        <div className="flex items-center gap-3 text-sm sm:text-base">
+                            <span className="rounded-full border border-[var(--paper-line)] px-3 py-1 font-semibold uppercase tracking-[0.15em]">
+                                Software Engineer
+                            </span>
+                            <span className="ink-muted flex items-center gap-1.5">
+                                Backend + Infrastructure <ArrowUpRight size={14} />
+                            </span>
+                        </div>
+                    </motion.header>
+
+                    <motion.section
+                        variants={fadeInUp}
+                        className="max-w-3xl space-y-5 text-base leading-8"
+                    >
+                        <p className="ink-muted">
+                            I am a backend engineer who thinks deeply about how systems are designed
+                            and built. I spend much of my time constructing and dismantling
+                            services to understand how to make them reliable, scalable, and
+                            maintainable.
+                        </p>
+                        <p className="ink-muted">
+                            I am especially drawn to system design concepts such as write-ahead
+                            logs, sharded architectures, and distributed coordination. I treat APIs
+                            as long-term contracts, so I design them to be predictable, consistent,
+                            and easy to evolve as products grow.
+                        </p>
+                        <p className="ink-muted">
+                            I also explore database internals, including indexing strategies, query
+                            patterns, and storage paths from memory to disk. In parallel, I study
+                            compiler and execution pipelines to understand how high-level logic
+                            becomes efficient runtime behavior. Most of my work sits at the
+                            intersection of backend infrastructure, data systems, and developer
+                            tooling.
+                        </p>
+                    </motion.section>
+
+                    <motion.section
+                        variants={fadeInUp}
+                        className={'flex items-center gap-4 pb-2 flex-col sm:flex-row'}
+                    >
+                        <PopOutButton
+                            title={"Let's connect"}
+                            icon={<PaperPlaneTilt size={18} weight={'fill'} />}
+                            action={onConnectButtonClick}
+                        />
+                        <PopOutButton
+                            title={'View Works'}
+                            icon={<Cursor size={18} className={'transform -scale-x-100'} weight={'fill'} />}
+                            action={onViewWorksButtonClick}
+                        />
+                        <div className="ink-muted mt-3 flex items-center gap-2 text-xs uppercase tracking-[0.16em] sm:mt-4">
+                            <Stack size={14} /> Building resilient systems
+                        </div>
+                    </motion.section>
+                </motion.section>
             </GridBackground>
         </Container>
     );

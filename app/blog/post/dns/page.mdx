@@ -16,7 +16,7 @@ export const metadata = {
 
 {/* ================================================================== */}
 
-## Resource Records
+# Resource Records
 
 ### 1. Address
 This category of records contains the information about the IP address of a domain name. The IP address is used to locate the server that hosts the website or service. It is divide into 2
@@ -25,16 +25,20 @@ This category of records contains the information about the IP address of a doma
 2. AAAA (IPv6 Address); this is used to store the IPv6 address of a domain name.
 
 ```bash
-    # get the ipv4 address of google.com
-    dig google.com -t A
+dig google.com -t A. # get the ipv4 address of google.com
 ```
-<img src="../../../../public/image/dig_google_A.png" alt="dig output for google.com"/>
+
+<br/>
+<img src="/image/dig_google_A.png" alt="dig output for google.com A record"/>
+<br/>
 
 ```bash
-    # get the ipv6 address of google.com
-    dig google.com -t AAAA
+dig google.com -t AAAA. # get the ipv6 address of google.com
 ```
-<img src="../../../../public/image/dig_google_AAAA.png" alt="dig output for google.com"/>
+
+<br/>
+<img src="/image/dig_google_AAAA.png" alt="dig output for google.com AAAA record"/>
+<br/>
 
 
 ---
@@ -110,23 +114,31 @@ sequenceDiagram
 ## Results
 
 ### 1. Lookup real domains
+
 The server responds with the domain name and IP for address for amazon.com
 
-<img src="../../../../public/image/lookup_amazon.png" alt="dig output for google.com"/>
+<br/>
+<img src="/image/lookup_amazon.png" alt="lookup output for amazon.com"/>
 
 <br/>
 Same thing happens for google.com
+<br/>
 
-<img src="../../../../public/image/lookup_google.png" alt="dig output for google.com"/>
-
+<img src="/image/lookup_google.png" alt="lookup output for google.com"/>
 <br/>
 
 ### 2. Lookup fake domains
-<img src="../../../../public/image/lookup_fake_domain.png" alt="dig output for google.com"/>
+<br/>
+
+<img src="/image/lookup_fake_domain.png" alt="lookup output for invalid domain"/>
+<br/>
 
 ---
 
+## Conclusion
+DNS resolution is a layered process where record types serve distinct responsibilities, from translating names to IP addresses (`A`, `AAAA`) to routing mail (`MX`) and creating aliases (`CNAME`). Building this project made those responsibilities concrete and highlighted how small protocol details shape reliability and user experience.
+
 ### Future Improvements
-* [] Write DSN parser
-* [] Implement TLS/SSL support
-* [] Add support for other DNS record types (TXT, CNAME, etc.)
+* Write DSN parser
+* Implement TLS/SSL support
+* Add support for other DNS record types (TXT, CNAME, etc.)

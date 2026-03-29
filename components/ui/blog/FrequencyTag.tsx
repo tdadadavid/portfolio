@@ -10,17 +10,17 @@ interface FrequencyTagProps {
 export const FrequencyTag = (props: FrequencyTagProps) => {
     return (
         <button
+            type="button"
             onClick={() => props.onClick(props.title)}
             className={cn(
-                'whitespace-nowrap flex-nowrap text-xs py-1 px-2 bg-gray-200 border-b border-gray-400 cursor-pointer hover:bg-ice/40 dark:bg-gray-800 dark:hover:bg-ice/50',
+                'paper-surface whitespace-nowrap px-3 py-1.5 text-xs font-semibold tracking-wide text-[var(--paper-muted)] transition hover:-translate-y-0.5 hover:text-[var(--paper-ink)]',
                 props.tiny && [
-                    'scale-90 !cursor-default !pointer-events-none',
-                    'hover:!bg-transparent dark:!hover:bg-transparent',
+                    'cursor-default text-[10px] uppercase tracking-[0.16em] !pointer-events-none',
                 ],
-                props.isSelected && '!bg-ice dark:!bg-ice font-bold decoration-blue-800',
+                props.isSelected && '!bg-[var(--paper-accent)] !text-[var(--paper)]',
             )}
         >
-            {props.title.toLowerCase()}
+            {props.title}
         </button>
     );
 };

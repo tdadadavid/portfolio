@@ -24,6 +24,7 @@ const projectIcons: Record<ProjectName, React.ReactNode> = {
     'Search Engine': <MagnifyingGlass weight={'fill'} />,
     'Google Analytics': <ChartLine weight={'fill'} />,
     'Slide Scribe': <Presentation weight={'fill'} />,
+    
 };
 
 const WorksPage = () => {
@@ -59,25 +60,28 @@ const WorksPage = () => {
             <Container>
                 <NavBar currentPage={'works'} />
                 <GridBackground>
-                    <h2 className="mt-4 font-bold text-3xl sm:text-5xl text-gray-800 dark:text-gray-200">
+                    <p className="ink-muted text-xs font-semibold uppercase tracking-[0.2em]">
+                        Selected Work
+                    </p>
+                    <h2 className="mt-2 font-[family-name:var(--font-serif)] text-4xl sm:text-6xl">
                         My Works
                     </h2>
-                    <h3 className="my-4 text-gray-500 dark:text-gray-300 leading-7">
+                    <h3 className="ink-muted my-4 max-w-2xl leading-7">
                         A curated collection of my works, highlighting my past achievements and
                         present projects.
                     </h3>
                     {selectedTag && (
-                        <div className="my-8 text-sm font-mono text-center text-gray-600 dark:text-gray-300">
+                        <div className="paper-surface my-8 inline-flex items-center gap-2 px-4 py-2 text-sm font-mono text-[var(--paper-muted)]">
                             Filtering by tag: <strong>{selectedTag}</strong>{' '}
                             <button
                                 onClick={() => setSelectedTag(null)}
-                                className="ml-2 underline text-ice"
+                                className="ml-1 underline text-[var(--paper-ink)]"
                             >
                                 Clear
                             </button>
                         </div>
                     )}
-                    <section className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <section className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         {filteredProjects.map((project, index) => (
                             <ProjectCard
                                 key={index}

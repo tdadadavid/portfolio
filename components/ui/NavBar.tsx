@@ -15,10 +15,12 @@ const HomeRow = () => {
     return (
         <div className="flex items-center gap-3">
             <Avatar />
-            <div className="flex flex-col">
-                <h4 className={'font-bold text-gray-800 dark:text-gray-300/80'}>{info.me}</h4>
-                <h6 className="dark:text-gray-300 text-gray-500 hidden text-xs">
-                    Software Engineer (Backend)
+            <div className="flex flex-col leading-tight">
+                <h4 className="font-[family-name:var(--font-serif)] text-lg font-semibold tracking-wide">
+                    {info.me}
+                </h4>
+                <h6 className="ink-muted hidden text-[11px] uppercase tracking-[0.2em] sm:block">
+                    Backend Engineer
                 </h6>
             </div>
         </div>
@@ -27,9 +29,9 @@ const HomeRow = () => {
 
 const ExternalLinks = () => {
     return (
-        <div className={'hidden sm:flex items-center gap-3'}>
-            <IconLink icon={<LinkedinLogo size={24} />} href={info.socials.linkedin} />
-            <IconLink icon={<GithubLogo size={24} />} href={info.github} />
+        <div className="hidden items-center gap-2 sm:flex">
+            <IconLink icon={<LinkedinLogo size={18} />} href={info.socials.linkedin} />
+            <IconLink icon={<GithubLogo size={18} />} href={info.github} />
             <ThemeSwitcher />
         </div>
     );
@@ -37,16 +39,11 @@ const ExternalLinks = () => {
 
 export const NavBar = (props: NavBarProps) => {
     return (
-        <header className="flex items-center justify-between w-full bg-white dark:bg-nord border-b-gray-300 sm:py-4">
+        <header className="paper-surface sticky top-3 z-30 mb-4 flex items-center justify-between gap-4 px-4 py-3 sm:top-5 sm:px-5">
             <HomeRow />
-            <ul className="sm:flex gap-4 items-center hidden">
+            <ul className="hidden items-center gap-2 sm:flex">
                 {info.navLinks.map((link, idx) => (
-                    <li
-                        key={idx}
-                        className={
-                            'dark:text-gray-300 dark:hover:text-gray-100 text-gray-500 hover:text-gray-800'
-                        }
-                    >
+                    <li key={idx}>
                         <NavLink href={link.href} title={link.title} selected={props.currentPage} />
                     </li>
                 ))}
