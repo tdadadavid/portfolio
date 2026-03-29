@@ -2,7 +2,11 @@
 
 import { HTMLAttributes, ReactNode, isValidElement, useRef, useState } from 'react';
 
-interface PreProps extends HTMLAttributes<HTMLPreElement> {
+type PreElementProps = HTMLAttributes<HTMLPreElement> & {
+    'data-language'?: string;
+};
+
+interface PreProps extends PreElementProps {
     children: ReactNode;
 }
 
@@ -20,10 +24,8 @@ const readLanguageFromClass = (value?: string) => {
     return normalizeLanguage(match?.[1]);
 };
 
-const readLanguage = (props: HTMLAttributes<HTMLPreElement>, children: ReactNode) => {
-    const fromProps = normalizeLanguage(
-        typeof props['data-language'] === 'string' ? props['data-language'] : undefined,
-    );
+const readLanguage = (props: PreElementProps, children: ReactNode) => {
+    const fromProps = normalizeLanguage(props['data-language']);
     if (fromProps) return fromProps;
 
     const fromPreClass = readLanguageFromClass(props.className);
