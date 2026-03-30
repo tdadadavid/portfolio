@@ -1,3 +1,4 @@
+import { url } from "inspector";
 import { color } from "motion/react";
 
 const info = {
@@ -41,7 +42,7 @@ const info = {
             tags: ['c#', 'backend', 'algorithms'],
         },
         {
-            name: 'Google Analytics',
+            name: 'Web Analytics',
             url: 'https://github.com/tdadadavid/google-analytics',
             description:
                 'A web analytics tool that tracks page visits, user locations, and device usage.',
@@ -63,6 +64,27 @@ const info = {
         color: '#3b82f6',
         tags: ['dns', 'backend', 'AWS failure', 'go']
       },
+      {
+        name: 'Terrace',
+        url: 'https://app.terrace.fi/i',
+        description: 'CEX & DEX pool aggregator',
+        color: '#0a0a0a',
+        tags: ['crypto', 'dex', 'solana', 'docker/kubernetes', 'timescaledb', 'neo4j', 'go']
+      },
+      {
+        name: 'Curaboard',
+        url: 'https://www.curaboard.com/',
+        description: 'A single home for all your shopping finds',
+        color: '#0a0a0a',
+        tags: ['nodejs', 'postgres', 'DNS', 'AWS', 'TLS/SSL']
+      },
+      {
+        name: 'Groove',
+        url: 'https://groove.ng/',
+        description: 'Music and Video streaming platform',
+        color: '#0a0a0a',
+        tags: ['nodejs', 'postgres', 'mongo', 'S3', 'AWS(IAM)', 'EKS', 'GCP', 'paystack', 'stripe']
+      }
     ],
 };
 
