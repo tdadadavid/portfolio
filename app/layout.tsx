@@ -4,6 +4,7 @@ import './globals.css';
 import info from '@/misc/info';
 import { ThemeProvider } from 'next-themes';
 import ogImageUrl from '@/misc/og';
+import { Analytics } from '@vercel/analytics/next';
 
 const sans = Manrope({
     variable: '--font-sans',
@@ -72,6 +73,7 @@ export default function RootLayout({
                 <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false}>
                     {children}
                 </ThemeProvider>
+                <Analytics />
             </body>
         </html>
     );
