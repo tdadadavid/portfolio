@@ -16,6 +16,7 @@
     "@next/mdx": "^15.3.2",
     "@phosphor-icons/react": "^2.1.7",
     "@types/mermaid": "^9.1.0",
+    "@vercel/analytics": "^2.0.1",
     "@vercel/og": "^0.6.8",
     "clsx": "^2.1.1",
     "gray-matter": "^4.0.3",
