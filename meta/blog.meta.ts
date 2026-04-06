@@ -22,4 +22,22 @@ export const blogMetadata: Record<string, BlogMetadata> = {
         tags: ['dns', 'go'],
         status: 'done',
     },
+    'wal': {
+      title: 'Write-Ahead-Log - WAL',
+      summary: 'WAL',
+      publishedOn: '',
+      year: '2026',
+      slug: 'wal',
+      tags: ['wal', 'go', 'db'],
+      status: 'draft'
+    },
+    'SNA': {
+      'title': "Shared-nothing-architecture",
+      summary: 'SNA',
+      publishedOn: '',
+      year: '2026',
+      slug: 'sna',
+      tags: ['db', 'distributed-systems', 'disk', 'memory'],
+      status: 'draft'
+    },
 };
