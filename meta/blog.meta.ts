@@ -23,7 +23,7 @@ export const blogMetadata: Record<string, BlogMetadata> = {
         status: 'done',
     },
     'wal': {
-      title: 'Write-Ahead-Log - WAL',
+      title: 'Write-Ahead-Log 🪵',
       summary: 'WAL',
       publishedOn: '',
       year: '2026',
