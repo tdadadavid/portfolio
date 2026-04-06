@@ -25,7 +25,7 @@ export const blogMetadata: Record<string, BlogMetadata> = {
     'wal': {
       title: 'Write-Ahead-Log 🪵',
       summary: 'WAL',
-      publishedOn: '',
+      publishedOn: '2026-04-06T21:03:05.177Z',
       year: '2026',
       slug: 'wal',
       tags: ['wal', 'go', 'db'],
@@ -34,7 +34,7 @@ export const blogMetadata: Record<string, BlogMetadata> = {
     'SNA': {
       'title': "Shared-nothing-architecture",
       summary: 'SNA',
-      publishedOn: '',
+      publishedOn: '2026-04-06T21:03:05.177Z',
       year: '2026',
       slug: 'sna',
       tags: ['db', 'distributed-systems', 'disk', 'memory'],
