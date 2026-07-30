@@ -1,65 +1,99 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Question } from '@phosphor-icons/react/dist/ssr';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+import { CommandLine, Prompt } from '@/components/ui/shell/CommandLine';
+import { ROUTES } from '@/components/ui/shell/registry';
+
+const closestRoute = (attempted: string) => {
+    const needle = attempted.replace(/^\/+/, '').toLowerCase();
+    if (!needle) return ROUTES[0];
+
+    const scored = ROUTES.map(route => {
+        let score = 0;
+        for (const char of new Set(needle)) {
+            if (route.name.includes(char)) score += 1;
+        }
+        if (route.name.startsWith(needle.slice(0, 2))) score += 3;
+        return { route, score };
+    }).sort((a, b) => b.score - a.score);
+
+    return scored[0].route;
+};
 
 const NotFoundPage = () => {
+    const pathname = usePathname();
+    const suggestion = closestRoute(pathname ?? '');
+
     return (
-        <main className="grid place-items-center min-w-full min-h-screen p-8 bg-white dark:bg-nord">
-            <motion.section
-                className="text-center flex flex-col items-center max-w-md"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-            >
-                <motion.div
-                    initial={{ scale: 0, rotate: -180 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{
-                        type: 'spring',
-                        stiffness: 260,
-                        damping: 20,
-                        delay: 0.1,
-                    }}
-                    className="text-gray-500 dark:text-gray-300 mb-6"
-                >
-                    <Question size={120} weight="duotone" />
-                </motion.div>
+        <div className="term-page">
+            <header className="term-titlebar">
+                <div className="hidden shrink-0 items-center gap-2 sm:flex">
+                    <span className="term-dot" />
+                    <span className="term-dot" />
+                    <span className="term-dot" />
+                </div>
+                <span className="ink-faint text-[11px]">david@obadafidi — zsh</span>
+            </header>
 
-                <motion.h3
-                    className="text-2xl font-semibold mb-4 text-gray-700 dark:text-gray-200"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.5 }}
-                >
-                    404 | There&apos;s Nothing to See Here
-                </motion.h3>
+            <main className="term-content">
+                <CommandLine cwd="~">
+                <div className="flex flex-wrap items-baseline gap-x-2">
+                    <Prompt cwd="~" />
+                    <span className="term-cmd">cd {pathname}</span>
+                </div>
 
-                <motion.p
-                    className="text-lg text-gray-600 dark:text-gray-300 mb-8"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5, duration: 0.5 }}
-                >
-                    Seems you got lost. Don&apos;t worry,
-                    <motion.span
-                        whileHover={{
-                            scale: 1.05,
-                            color: '#3B82F6',
-                            transition: { duration: 0.2 },
-                        }}
+                <p className="term-err mt-1">
+                    cd: no such file or directory: {pathname}
+                </p>
+
+                <p className="ink-faint mt-1">
+                    did you mean{' '}
+                    <Link
+                        href={suggestion.href}
+                        className="underline"
+                        style={{ color: 'var(--term-blue)' }}
                     >
-                        <Link
-                            href="/"
-                            className="ml-1 text-blue-500 dark:text-blue-400 font-medium hover:underline"
-                        >
-                            take me home.
-                        </Link>
-                    </motion.span>
-                </motion.p>
-            </motion.section>
-        </main>
+                        {suggestion.name}
+                    </Link>
+                    ?
+                </p>
+
+                <div className="mt-8">
+                    <div className="flex flex-wrap items-baseline gap-x-2">
+                        <Prompt cwd="~" />
+                        <span className="term-cmd">ls</span>
+                    </div>
+                    <div className="mt-1 space-y-0.5">
+                        {ROUTES.map(route => (
+                            <Link key={route.href} href={route.href} className="term-row group">
+                                <span className="ink-faint w-[11ch] shrink-0">drwxr-xr-x</span>
+                                <span
+                                    className="group-hover:underline"
+                                    style={{ color: 'var(--term-blue)' }}
+                                >
+                                    {route.name}/
+                                </span>
+                                <span className="ink-muted ml-auto text-[11px]">
+                                    {route.note}
+                                </span>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+                </CommandLine>
+            </main>
+
+            <footer className="term-statusbar">
+                <span>404</span>
+                <span className="ml-auto">
+                    <Link href="/" style={{ color: 'var(--term-blue)' }}>
+                        back to ~
+                    </Link>
+                </span>
+            </footer>
+        </div>
     );
 };
 

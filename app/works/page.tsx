@@ -1,103 +1,148 @@
 'use client';
 
-import { useState } from 'react';
-import { Container } from '@/components/layout/Container';
-import { NavBar } from '@/components/ui/NavBar';
-import { GridBackground } from '@/components/other/GridBackground';
+import { useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
+
 import info from '@/misc/info';
-import ProjectCard from '@/components/ui/ProjectCard';
-import {
-    ChartLine,
-    Database,
-    Lifebuoy,
-    MagnifyingGlass,
-    Presentation,
-} from '@phosphor-icons/react/dist/ssr';
-import Head from 'next/head';
+import { TerminalWindow } from '@/components/layout/TerminalWindow';
+import { CommandLine, Prompt } from '@/components/ui/shell/CommandLine';
 
-type ProjectName = 'Minired' | 'DNS' | 'Orchestra' | 'Search Engine' | 'Google Analytics' | 'Slide Scribe';
+type Work = (typeof info.works)[number];
 
-const projectIcons: Record<ProjectName, React.ReactNode> = {
-    Minired: <Database weight={'fill'} />,
-    DNS: <Database weight={'fill'} />,
-    Orchestra: <Lifebuoy weight={'fill'} />,
-    'Search Engine': <MagnifyingGlass weight={'fill'} />,
-    'Google Analytics': <ChartLine weight={'fill'} />,
-    'Slide Scribe': <Presentation weight={'fill'} />,
-    
-};
+const GROUPS = [
+    { kind: 'product' as const, label: 'in production', perm: 'drwxr-xr-x' },
+    { kind: 'build' as const, label: 'built to learn', perm: '-rw-r--r--' },
+];
+
+const Row = ({ work, perm }: { work: Work; perm: string }) => (
+    <a
+        href={work.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="term-row group"
+    >
+        <span className="ink-faint w-[11ch] shrink-0">{perm}</span>
+        <span
+            className="w-[16ch] shrink-0 group-hover:underline"
+            style={{ color: 'var(--term-blue)' }}
+        >
+            {work.file}
+            {work.kind === 'product' ? '/' : ''}
+        </span>
+        <span className="ink-muted min-w-0 flex-1 text-[12px]">{work.description}</span>
+    </a>
+);
 
 const WorksPage = () => {
-    const [selectedTag, setSelectedTag] = useState<string | null>(null);
+    const [tag, setTag] = useState<string | null>(null);
 
-    const handleTagClick = (tag: string) => {
-        setSelectedTag(prev => (prev === tag ? null : tag));
-    };
+    const tags = useMemo(() => {
+        const counts: Record<string, number> = {};
+        info.works.forEach(work => {
+            work.tags.forEach(item => {
+                counts[item] = (counts[item] ?? 0) + 1;
+            });
+        });
+        return Object.entries(counts).sort(
+            (a, b) => b[1] - a[1] || a[0].localeCompare(b[0]),
+        );
+    }, []);
 
-    const filteredProjects = selectedTag
-        ? info.works.filter(project => project.tags.includes(selectedTag))
-        : info.works;
-
-    const pageTitle = 'Works - David Dada';
-    const pageDescription =
-        'A curated collection of my works, highlighting my past achievements and present projects.';
+    const filtered = useMemo(
+        () => (tag ? info.works.filter(work => work.tags.includes(tag)) : info.works),
+        [tag],
+    );
 
     return (
-        <>
-            <Head>
-                <title>{pageTitle}</title>
-                <meta name="description" content={pageDescription} />
-                <meta property="og:title" content={pageTitle} />
-                <meta property="og:description" content={pageDescription} />
-                <meta property="og:url" content={info.url} />
-                <meta property="og:image" content="/api/og" />
-                <meta property="og:type" content="website" />
-                <meta name="twitter:title" content={pageTitle} />
-                <meta name="twitter:description" content={pageDescription} />
-                <meta name="twitter:image" content="/api/og" />
-                <link rel="icon" href={info.shortcutIcon} />
-            </Head>
-            <Container>
-                <NavBar currentPage={'works'} />
-                <GridBackground>
-                    <p className="ink-muted text-xs font-semibold uppercase tracking-[0.2em]">
-                        Selected Work
-                    </p>
-                    <h2 className="mt-2 font-[family-name:var(--font-serif)] text-4xl sm:text-6xl">
-                        My Works
-                    </h2>
-                    <h3 className="ink-muted my-4 max-w-2xl leading-7">
-                        A curated collection of my works, highlighting my past achievements and
-                        present projects.
-                    </h3>
-                    {selectedTag && (
-                        <div className="paper-surface my-8 inline-flex items-center gap-2 px-4 py-2 text-sm font-mono text-[var(--paper-muted)]">
-                            Filtering by tag: <strong>{selectedTag}</strong>{' '}
+        <TerminalWindow
+            currentPage="works"
+            path="~/works"
+            status={
+                <span>
+                    {filtered.length} of {info.works.length} shown
+                </span>
+            }
+        >
+            <CommandLine cwd="~/works">
+            <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+            >
+                <div className="flex flex-wrap items-baseline gap-x-2">
+                    <Prompt cwd="~/works" />
+                    <span className="term-cmd">
+                        ls -la{tag ? ` --tag=${tag}` : ''}
+                    </span>
+                </div>
+
+                <div className="ink-faint mt-1">
+                    total {filtered.length}
+                    {tag && (
+                        <>
+                            {' · '}
                             <button
-                                onClick={() => setSelectedTag(null)}
-                                className="ml-1 underline text-[var(--paper-ink)]"
+                                type="button"
+                                onClick={() => setTag(null)}
+                                className="cursor-pointer underline"
+                                style={{ color: 'var(--term-blue)' }}
                             >
-                                Clear
+                                clear filter
                             </button>
-                        </div>
+                        </>
                     )}
-                    <section className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {filteredProjects.map((project, index) => (
-                            <ProjectCard
-                                key={index}
-                                name={project.name}
-                                description={project.description}
-                                url={project.url}
-                                icon={projectIcons[project.name as ProjectName]}
-                                tags={project.tags}
-                                accentColor={project.color}
-                                onTagClick={handleTagClick}
-                            />
+                </div>
+
+                <div className="mt-5 space-y-6">
+                    {GROUPS.map(group => {
+                        const rows = filtered.filter(work => work.kind === group.kind);
+                        if (rows.length === 0) return null;
+
+                        return (
+                            <section key={group.kind}>
+                                <p className="ink-faint mb-1 text-[11px]"># {group.label}</p>
+                                <div className="space-y-0.5">
+                                    {rows.map(work => (
+                                        <Row key={work.file} work={work} perm={group.perm} />
+                                    ))}
+                                </div>
+                            </section>
+                        );
+                    })}
+
+                    {filtered.length === 0 && (
+                        <p className="term-err">ls: no matches for --tag={tag}</p>
+                    )}
+                </div>
+
+                <div className="mt-9">
+                    <div className="flex flex-wrap items-baseline gap-x-2">
+                        <Prompt cwd="~/works" />
+                        <span className="term-cmd">ls --tags</span>
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+                        {tags.map(([name, count]) => (
+                            <button
+                                key={name}
+                                type="button"
+                                onClick={() => setTag(prev => (prev === name ? null : name))}
+                                className="cursor-pointer text-[12px] transition-colors"
+                                style={{
+                                    color:
+                                        tag === name
+                                            ? 'var(--term-green)'
+                                            : 'var(--paper-muted)',
+                                }}
+                            >
+                                {name}
+                                <span className="ink-faint"> ({count})</span>
+                            </button>
                         ))}
-                    </section>
-                </GridBackground>
-            </Container>
-        </>
+                    </div>
+                </div>
+            </motion.div>
+            </CommandLine>
+        </TerminalWindow>
     );
 };
 

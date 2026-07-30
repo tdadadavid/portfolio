@@ -7,15 +7,9 @@ interface H2Props extends HTMLAttributes<HTMLHeadElement> {
 
 const H2 = ({ children, className = '', ...props }: H2Props) => {
     return (
-        <h1
-            {...props}
-            className={cn(
-                'dark:text-gray-200 text-gray-800 text-xl font-semibold my-3 mt-6',
-                className,
-            )}
-        >
+        <h2 {...props} className={cn(className)}>
             {children}
-        </h1>
+        </h2>
     );
 };
 

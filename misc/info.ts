@@ -1,6 +1,3 @@
-import { url } from "inspector";
-import { color } from "motion/react";
-
 const info = {
     me: 'òbàdàfídì',
     url: 'https://www.obadafidi.com',
@@ -14,77 +11,83 @@ const info = {
     navLinks: [
         { title: 'home', href: '/' },
         { title: 'works', href: '/works' },
-        { title: 'contact', href: '/contact' },
         { title: 'blog', href: '/blog' },
+        { title: 'resume', href: '/resume' },
+        { title: 'contact', href: '/contact' },
     ],
     works: [
         {
+            name: 'Terrace',
+            file: 'terrace',
+            kind: 'product' as const,
+            url: 'https://app.terrace.fi/i',
+            description: 'CEX and DEX pool aggregator',
+            tags: ['go', 'solana', 'kubernetes', 'timescaledb', 'neo4j', 'crypto'],
+        },
+        {
+            name: 'Curaboard',
+            file: 'curaboard',
+            kind: 'product' as const,
+            url: 'https://www.curaboard.com/',
+            description: 'A single home for all your shopping finds',
+            tags: ['nodejs', 'postgres', 'aws', 'dns', 'tls'],
+        },
+        {
+            name: 'Groove',
+            file: 'groove',
+            kind: 'product' as const,
+            url: 'https://groove.ng/',
+            description: 'Music and video streaming platform',
+            tags: ['nodejs', 'postgres', 'mongo', 's3', 'eks', 'gcp', 'stripe'],
+        },
+        {
             name: 'Minired',
+            file: 'minired',
+            kind: 'build' as const,
             url: 'https://github.com/tdadadavid/minired',
-            description: 'Implemented Redis core functionality in Golang from scratch.',
-            color: '#3b82f6',
-            tags: ['golang', 'backend', 'database'],
+            description: 'Redis core functionality implemented in Go from scratch',
+            tags: ['go', 'database', 'backend'],
         },
         {
             name: 'Orchestra',
+            file: 'orchestra',
+            kind: 'build' as const,
             url: 'https://github.com/tdadadavid/orchestra',
-            description:
-                'Lightweight task orchestration tool built in Go, designed to manage and coordinate workers.',
-            color: '#3b82f6',
-            tags: ['golang', 'backend'],
+            description: 'Lightweight task orchestration, coordinating workers in Go',
+            tags: ['go', 'backend'],
+        },
+        {
+            name: 'DNS',
+            file: 'go-dns',
+            kind: 'build' as const,
+            url: 'https://github.com/tdadadavid/go-dns',
+            description: 'Domain name server in Go, written after the AWS DNS outage',
+            tags: ['go', 'dns', 'backend'],
         },
         {
             name: 'Search Engine',
+            file: 'search-engine',
+            kind: 'build' as const,
             url: 'https://github.com/tdadadavid/search-engine',
-            description:
-                'An efficient search engine written in C# and built for performance and reliability.',
-            color: '#3b82f6',
-            tags: ['c#', 'backend', 'algorithms'],
+            description: 'Search engine in C#, built for performance and reliability',
+            tags: ['c#', 'algorithms', 'backend'],
         },
         {
             name: 'Web Analytics',
+            file: 'web-analytics',
+            kind: 'build' as const,
             url: 'https://github.com/tdadadavid/google-analytics',
-            description:
-                'A web analytics tool that tracks page visits, user locations, and device usage.',
-            color: '#3b82f6',
-            tags: ['javascript', 'analytics', 'cli', 'frontend'],
+            description: 'Tracks page visits, user locations and device usage',
+            tags: ['javascript', 'analytics', 'cli'],
         },
         {
             name: 'Slide Scribe',
+            file: 'slide-scribe',
+            kind: 'build' as const,
             url: 'https://github.com/tdadadavid/SlideScribeAI-Backend',
-            description:
-                '(Hackathon) The backend for SlideScribeAI, an AI-powered tool for transcribing and processing slides.',
-            color: '#3b82f6',
-            tags: ['hackathon', 'backend', 'typescript'],
-      },
-      {
-        name: 'DNS',
-        url: 'https://github.com/tdadadavid/go-dns',
-        description: 'Domain Name Server written in Go. I explored it due to AWS outage that was caused by deleting DNS records',
-        color: '#3b82f6',
-        tags: ['dns', 'backend', 'AWS failure', 'go']
-      },
-      {
-        name: 'Terrace',
-        url: 'https://app.terrace.fi/i',
-        description: 'CEX & DEX pool aggregator',
-        color: '#0a0a0a',
-        tags: ['crypto', 'dex', 'solana', 'docker/kubernetes', 'timescaledb', 'neo4j', 'go']
-      },
-      {
-        name: 'Curaboard',
-        url: 'https://www.curaboard.com/',
-        description: 'A single home for all your shopping finds',
-        color: '#0a0a0a',
-        tags: ['nodejs', 'postgres', 'DNS', 'AWS', 'TLS/SSL']
-      },
-      {
-        name: 'Groove',
-        url: 'https://groove.ng/',
-        description: 'Music and Video streaming platform',
-        color: '#0a0a0a',
-        tags: ['nodejs', 'postgres', 'mongo', 'S3', 'AWS(IAM)', 'EKS', 'GCP', 'paystack', 'stripe']
-      }
+            description: 'Hackathon backend for transcribing and processing slides',
+            tags: ['typescript', 'backend', 'hackathon'],
+        },
     ],
 };
 

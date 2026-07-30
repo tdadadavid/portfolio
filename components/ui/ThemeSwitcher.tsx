@@ -22,7 +22,8 @@ export const ThemeSwitcher = () => {
     return (
         <button
             type="button"
-            className="paper-surface grid h-10 w-10 cursor-pointer place-items-center text-[var(--paper-muted)] transition duration-200 hover:-translate-y-0.5 hover:text-[var(--paper-ink)]"
+            aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+            className="grid h-7 w-7 cursor-pointer place-items-center rounded-[4px] text-[var(--paper-muted)] transition-colors duration-200 hover:bg-[var(--paper-accent-soft)] hover:text-[var(--paper-bright)]"
             onClick={toggleTheme}
         >
             <AnimatePresence mode="wait" initial={false}>
@@ -33,7 +34,7 @@ export const ThemeSwitcher = () => {
                     exit={{ rotate: 180, opacity: 0 }}
                     transition={{ duration: 0.2 }}
                 >
-                    {theme === 'dark' ? <Moon size={24} /> : <Sun size={24} />}
+                    {theme === 'dark' ? <Moon size={15} /> : <Sun size={15} />}
                 </motion.div>
             </AnimatePresence>
         </button>

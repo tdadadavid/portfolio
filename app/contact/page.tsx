@@ -1,62 +1,85 @@
 'use client';
 
-import { Container } from '@/components/layout/Container';
-import { NavBar } from '@/components/ui/NavBar';
-import { GridBackground } from '@/components/other/GridBackground';
-import { PopOutButton } from '@/components/ui/Buttons';
+import { motion } from 'framer-motion';
+
 import info from '@/misc/info';
-import { LinkedinLogo, ReadCvLogo, EnvelopeOpen, GithubLogo } from '@phosphor-icons/react';
+import { TerminalWindow } from '@/components/layout/TerminalWindow';
+import { CommandLine, Prompt } from '@/components/ui/shell/CommandLine';
+
+const CHANNELS = [
+    { flag: '--email', label: info.email, href: `mailto:${info.email}` },
+    { flag: '--linkedin', label: 'in/obadafidi', href: info.socials.linkedin },
+    { flag: '--github', label: 'tdadadavid', href: info.github },
+    { flag: '--x', label: '@dtrue_king', href: info.socials.twitter },
+    { flag: '--resume', label: 'man david', href: '/resume', internal: true },
+    { flag: '--pdf', label: 'resume.pdf', href: '/resume.pdf' },
+];
 
 const ContactPage = () => {
-    const handleNavigation = (to: string) => {
-        window.open(to, '_blank');
-    };
-
     return (
-        <Container>
-            <NavBar currentPage="contact" />
-            <GridBackground>
-                <div className="max-w-2xl">
-                    <p className="ink-muted text-xs font-semibold uppercase tracking-[0.2em]">
-                        Contact
-                    </p>
-                    <h2 className="mt-3 font-[family-name:var(--font-serif)] text-4xl sm:text-6xl leading-tight">
-                        Let&apos;s build something meaningful.
-                    </h2>
-                    <p className="ink-muted my-4 text-lg leading-7">
-                        I&apos;m a backend developer passionate about building scalable and
-                        efficient systems. If you have an exciting challenge or a project that needs
-                        a solid backend foundation, let&apos;s connect.
-                    </p>
-                    <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
-                        <PopOutButton
-                            title="Email"
-                            icon={<EnvelopeOpen size={24} weight="fill" />}
-                            action={() => handleNavigation(`mailto:${info.email}`)}
-                            left={true}
-                        />
-                        <PopOutButton
-                            title="LinkedIn"
-                            icon={<LinkedinLogo size={24} weight="fill" />}
-                            action={() => handleNavigation(info.socials.linkedin)}
-                            left={true}
-                        />
-                        <PopOutButton
-                            title="GitHub"
-                            icon={<GithubLogo size={24} weight="fill" />}
-                            action={() => handleNavigation(info.github)}
-                            left={true}
-                        />
-                        <PopOutButton
-                            title="My Resume"
-                            icon={<ReadCvLogo size={24} weight="fill" />}
-                            action={() => handleNavigation('/resume.pdf')}
-                            left={true}
-                        />
-                    </section>
+        <TerminalWindow
+            currentPage="contact"
+            path="~/contact"
+            status={<span>reply time ~24h</span>}
+        >
+            <CommandLine cwd="~/contact">
+            <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+            >
+                <div className="flex flex-wrap items-baseline gap-x-2">
+                    <Prompt cwd="~/contact" />
+                    <span className="term-cmd">mail david</span>
                 </div>
-            </GridBackground>
-        </Container>
+
+                <div className="ink-muted measure mt-3">
+                    <p>
+                        I build backend systems — distributed services, storage engines and
+                        the tooling around them. If you have a hard problem in that shape, or
+                        just want to talk about databases, write to me.
+                    </p>
+                </div>
+
+                <div className="mt-8">
+                    <div className="flex flex-wrap items-baseline gap-x-2">
+                        <Prompt cwd="~/contact" />
+                        <span className="term-cmd">contact --list</span>
+                    </div>
+
+                    <div className="mt-2 space-y-0.5">
+                        {CHANNELS.map(channel => (
+                            <a
+                                key={channel.flag}
+                                href={channel.href}
+                                target={
+                                    channel.internal || channel.href.startsWith('mailto:')
+                                        ? undefined
+                                        : '_blank'
+                                }
+                                rel="noopener noreferrer"
+                                className="term-row group"
+                            >
+                                <span className="ink-faint w-[12ch] shrink-0">
+                                    {channel.flag}
+                                </span>
+                                <span
+                                    className="group-hover:underline"
+                                    style={{ color: 'var(--term-blue)' }}
+                                >
+                                    {channel.label}
+                                </span>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+
+                <p className="ink-faint mt-8 text-[11px]">
+                    open --email · open --resume · or type below
+                </p>
+            </motion.div>
+            </CommandLine>
+        </TerminalWindow>
     );
 };
 

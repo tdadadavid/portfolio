@@ -70,7 +70,7 @@ export default function RootLayout({
             className={`${sans.variable} ${serif.variable} ${mono.variable} ${code.variable}`}
         >
             <body className="antialiased">
-                <ThemeProvider attribute="data-theme" defaultTheme="light" enableSystem={false}>
+                <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false}>
                     {children}
                 </ThemeProvider>
                 <Analytics />

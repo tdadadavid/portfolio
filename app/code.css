@@ -1,45 +1,26 @@
-.prose figure[data-rehype-pretty-code-figure=''] {
-    margin: 1.5rem 0 1.35rem;
+.pager-prose figure[data-rehype-pretty-code-figure=''] {
+    margin: 1.6rem 0;
 }
 
-.prose .mdx-image-frame {
+.pager-prose .mdx-image-frame {
     position: relative;
-    margin: 1.45rem 0 1.5rem;
-}
-
-.prose figure[data-rehype-pretty-code-figure=''] + .mdx-image-frame {
-    margin-top: 1.25rem;
-}
-
-.prose .mdx-image-frame + figure[data-rehype-pretty-code-figure=''] {
-    margin-top: 1.2rem;
-}
-
-.prose .mdx-image-frame::after {
-    content: '';
-    position: absolute;
-    inset: -8px;
-    z-index: -1;
-    border-radius: 1rem;
-    background: radial-gradient(circle at 20% 10%, rgb(56 189 248 / 0.2), transparent 58%);
-    opacity: 0.8;
-    pointer-events: none;
+    margin: 1.5rem 0;
 }
 
 :root {
-    --code-bg: #f6f8fa;
-    --code-border: #d0d7de;
-    --code-text: #1f2328;
-    --code-muted: #656d76;
-    --code-header-bg: #f6f8fa;
-}
-
-[data-theme='dark'] {
     --code-bg: #0d1117;
-    --code-border: #30363d;
+    --code-border: #2b333f;
     --code-text: #e6edf3;
     --code-muted: #8b949e;
-    --code-header-bg: #161b22;
+    --code-header-bg: #10141b;
+}
+
+[data-theme='light'] {
+    --code-bg: #f7f7f5;
+    --code-border: #cfcfcb;
+    --code-text: #1f2328;
+    --code-muted: #656d76;
+    --code-header-bg: #f1f1ee;
 }
 
 figure[data-rehype-pretty-code-figure=''] pre {
@@ -81,7 +62,7 @@ figure[data-rehype-pretty-code-figure=''] pre code {
 
 .mdx-code-block {
     border: 1px solid var(--code-border);
-    border-radius: 0.75rem;
+    border-radius: 4px;
     background: var(--code-bg);
     overflow: hidden;
 }
@@ -97,7 +78,7 @@ figure[data-rehype-pretty-code-figure=''] pre code {
 }
 
 .mdx-code-language {
-    border-radius: 0.35rem;
+    border-radius: 3px;
     border: 1px solid var(--code-border);
     background: var(--code-bg);
     color: var(--code-muted);
@@ -113,7 +94,7 @@ figure[data-rehype-pretty-code-figure=''] pre code {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    border-radius: 0.35rem;
+    border-radius: 3px;
     border: 1px solid var(--code-border);
     background: var(--code-bg);
     color: var(--code-muted);

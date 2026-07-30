@@ -1,9 +1,11 @@
 import { clsx } from 'clsx';
 
+import type { NavLinkType } from '@/types/types.navigation';
+
 interface NavLinkProps {
     title: string;
     href: string;
-    selected: 'home' | 'works' | 'contact' | 'blog';
+    selected: NavLinkType;
 }
 
 export const NavLink = (props: NavLinkProps) => {
@@ -13,12 +15,13 @@ export const NavLink = (props: NavLinkProps) => {
         <a
             href={props.href}
             className={clsx(
-                'rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] transition-colors duration-200 sm:text-[11px]',
+                'rounded-[4px] px-2.5 py-1.5 text-[12px] tracking-[0.02em] transition-colors duration-200',
                 isActive
-                    ? 'bg-[var(--paper-accent)] text-[var(--paper)]'
-                    : 'text-[var(--paper-muted)] hover:text-[var(--paper-ink)]',
+                    ? 'bg-[var(--paper-accent-soft)] text-[var(--paper-bright)]'
+                    : 'text-[var(--paper-muted)] hover:text-[var(--paper-bright)]',
             )}
         >
+            <span className="ink-faint">/</span>
             {props.title}
         </a>
     );

@@ -9,7 +9,7 @@ const A = ({ children, className = '', ...props }: AProps) => {
     return (
         <a
             {...props}
-            className={cn('text-ice underline underline-offset-4 cursor-pointer', className)}
+            className={cn('cursor-pointer', className)}
         >
             {children}
         </a>
