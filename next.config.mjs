@@ -1,10 +1,18 @@
 import createMDX from '@next/mdx';
 import remarkGfm from 'remark-gfm';
 import rehypePrettyCode from 'rehype-pretty-code';
-import type { NextConfig } from 'next';
+
+/*
+ * This file is .mjs on purpose.
+ *
+ * next.config.ts is transpiled to CommonJS before it runs, and Shiki (which
+ * rehype-pretty-code depends on) is pure ESM. On Node 20 a CJS module cannot
+ * require() an ESM one, which fails with ERR_REQUIRE_ESM at build time. An
+ * ESM config loads both natively.
+ */
 
 /** @type {import('next').NextConfig} */
-const nextConfig: NextConfig = {
+const nextConfig = {
     pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
     webpack(config) {
         config.module.rules.push({
@@ -24,6 +32,7 @@ const nextConfig: NextConfig = {
  * right one from [data-theme]. That is what makes highlighting follow the
  * theme toggle without shipping a highlighter to the browser.
  */
+/** @type {import('rehype-pretty-code').Options} */
 const prettyCodeOptions = {
     theme: {
         light: 'github-light',
