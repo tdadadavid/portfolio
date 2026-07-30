@@ -23,13 +23,14 @@ export const blogMetadata: Record<string, BlogMetadata> = {
         status: 'done',
     },
     'wal': {
-      title: 'Write-Ahead-Log 🪵',
-      summary: 'WAL',
-      publishedOn: '2026-04-06T21:03:05.177Z',
+      title: 'Write-Ahead Logs',
+      summary:
+        'How databases keep the promise that an acknowledged write survives a power cut — record layout, fsync, group commit, segment rotation and replay, built up in Go.',
+      publishedOn: '2026-07-30T09:00:00.000Z',
       year: '2026',
       slug: 'wal',
-      tags: ['wal', 'go', 'db'],
-      status: 'draft'
+      tags: ['wal', 'go', 'db', 'storage', 'distributed-systems'],
+      status: 'done'
     },
     'SNA': {
       'title': "Shared-nothing-architecture",
