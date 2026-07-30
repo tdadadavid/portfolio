@@ -536,40 +536,21 @@ a.term-row:focus-visible {
     }
 }
 
-code {
-    @apply !leading-loose rounded-sm;
+/* Inline code only. Blocks are styled in code.css and must not inherit this. */
+:not(pre) > code {
     background-color: var(--paper-accent-soft);
-    padding: 1px 4px;
+    border-radius: 3px;
+    padding: 1px 5px;
     font-family: var(--font-code), 'Fira Code', monospace;
+    font-size: 0.9em;
 }
 
-figure[data-rehype-pretty-code-figure=''] {
-    margin: 24px 0;
-}
 
-pre {
-    @apply !px-0 rounded-md;
-    background-color: #0d1117 !important;
-    border: 1px solid #30363d;
-    position: relative;
-}
-
-pre > code {
-    counter-reset: line;
-    background: #0d1117 !important;
-    color: #e6edf3 !important;
-    @apply py-2;
-}
-
-pre [data-line] {
-    @apply px-4 border-l-2 border-l-transparent;
-}
-
-pre,
-code,
-figure {
-    @apply overflow-x-auto;
-}
+/*
+ * Code block presentation lives entirely in code.css. Nothing here may set
+ * a colour on `pre > code` — Shiki writes per-token colours inline and any
+ * global override (especially an !important one) flattens the highlighting.
+ */
 
 blockquote.mdx {
     position: relative;

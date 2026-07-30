@@ -10,7 +10,6 @@ import ResizableImg from '@/components/mdx/elements/ResizeableImg';
 import A from '@/components/mdx/elements/A';
 import HR from '@/components/mdx/elements/HR';
 import Pre from '@/components/mdx/elements/Pre';
-import { ComponentPropsWithoutRef } from 'react';
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
     return {
@@ -24,13 +23,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         a: A,
         hr: HR,
         pre: Pre,
-        code: ({ children, className, ...props }: ComponentPropsWithoutRef<'code'>) => {
-            return (
-                <code className={className} {...props}>
-                    {children}
-                </code>
-            );
-        },
+        // No `code` override: Shiki writes per-token colours and data attributes
+        // onto the element, and anything that reshapes it breaks highlighting.
         ...components,
     };
 }

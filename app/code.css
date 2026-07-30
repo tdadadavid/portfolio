@@ -1,66 +1,53 @@
-.pager-prose figure[data-rehype-pretty-code-figure=''] {
-    margin: 1.6rem 0;
-}
+/* ------------------------------------------------------------------
+   Code blocks.
 
-.pager-prose .mdx-image-frame {
-    position: relative;
-    margin: 1.5rem 0;
-}
+   Highlighting is done at build time by rehype-pretty-code (Shiki) with
+   two themes. Every token carries both colours as custom properties:
+
+       style="--shiki-light:#953800; --shiki-dark:#ffa657"
+
+   The rules below choose one based on [data-theme] on <html>, so the
+   colours change with the toggle and no highlighter ships to the browser.
+   ------------------------------------------------------------------ */
 
 :root {
     --code-bg: #0d1117;
     --code-border: #2b333f;
-    --code-text: #e6edf3;
-    --code-muted: #8b949e;
     --code-header-bg: #10141b;
+    --code-muted: #7b8798;
+    --code-line-highlight: rgb(110 118 129 / 0.16);
 }
 
 [data-theme='light'] {
     --code-bg: #f7f7f5;
     --code-border: #cfcfcb;
-    --code-text: #1f2328;
-    --code-muted: #656d76;
     --code-header-bg: #f1f1ee;
+    --code-muted: #626c7a;
+    --code-line-highlight: rgb(120 120 110 / 0.14);
 }
 
-figure[data-rehype-pretty-code-figure=''] pre {
-    position: relative;
-    overflow-x: auto;
-    border-radius: 0;
-    border: 0;
-    background: var(--code-bg) !important;
-    padding: 1rem;
-    line-height: 1.6;
-    scrollbar-width: thin;
-    scrollbar-color: var(--code-muted) var(--code-bg);
-    tab-size: 2;
+/* --- theme selection ------------------------------------------------ */
+
+[data-theme='dark'] code[data-theme*=' '],
+[data-theme='dark'] code[data-theme*=' '] span {
+    color: var(--shiki-dark);
+    font-style: var(--shiki-dark-font-style);
+    font-weight: var(--shiki-dark-font-weight);
+    text-decoration: var(--shiki-dark-text-decoration);
 }
 
-figure[data-rehype-pretty-code-figure=''] pre::-webkit-scrollbar {
-    height: 9px;
+[data-theme='light'] code[data-theme*=' '],
+[data-theme='light'] code[data-theme*=' '] span {
+    color: var(--shiki-light);
+    font-style: var(--shiki-light-font-style);
+    font-weight: var(--shiki-light-font-weight);
+    text-decoration: var(--shiki-light-text-decoration);
 }
 
-figure[data-rehype-pretty-code-figure=''] pre::-webkit-scrollbar-track {
-    background: var(--code-bg);
-}
-
-figure[data-rehype-pretty-code-figure=''] pre::-webkit-scrollbar-thumb {
-    background-color: var(--code-muted);
-    border-radius: 99px;
-}
-
-figure[data-rehype-pretty-code-figure=''] pre code {
-    display: grid;
-    min-width: max-content;
-    background: transparent !important;
-    padding: 0;
-    color: var(--code-text);
-    font-family: var(--font-code), 'Fira Code', monospace;
-    font-size: 13.5px;
-    line-height: 1.6;
-}
+/* --- the block ------------------------------------------------------ */
 
 .mdx-code-block {
+    margin: 1.6rem 0;
     border: 1px solid var(--code-border);
     border-radius: 4px;
     background: var(--code-bg);
@@ -70,47 +57,43 @@ figure[data-rehype-pretty-code-figure=''] pre code {
 .mdx-code-toolbar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 0.75rem;
+    padding: 6px 10px;
     border-bottom: 1px solid var(--code-border);
     background: var(--code-header-bg);
-    padding: 0.5rem 0.65rem;
 }
 
 .mdx-code-language {
-    border-radius: 3px;
-    border: 1px solid var(--code-border);
-    background: var(--code-bg);
     color: var(--code-muted);
-    padding: 0.14rem 0.46rem;
     font-family: var(--font-code), 'Fira Code', monospace;
-    font-size: 10.5px;
-    font-weight: 500;
-    text-transform: uppercase;
+    font-size: 11px;
     letter-spacing: 0.08em;
+    text-transform: lowercase;
+}
+
+.mdx-code-title {
+    color: var(--code-muted);
+    font-family: var(--font-code), 'Fira Code', monospace;
+    font-size: 11px;
 }
 
 .mdx-code-copy {
+    margin-left: auto;
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    border-radius: 3px;
-    border: 1px solid var(--code-border);
-    background: var(--code-bg);
+    border: 0;
+    background: transparent;
     color: var(--code-muted);
-    padding: 0.16rem 0.45rem;
+    padding: 2px 4px;
     font-family: var(--font-code), 'Fira Code', monospace;
-    font-size: 10.5px;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-size: 11px;
     cursor: pointer;
-    transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+    transition: color 120ms ease;
 }
 
 .mdx-code-copy:hover {
-    color: var(--code-text);
-    border-color: color-mix(in oklab, var(--code-text) 25%, var(--code-border));
+    color: var(--paper-bright);
 }
 
 .mdx-code-copy svg {
@@ -118,31 +101,111 @@ figure[data-rehype-pretty-code-figure=''] pre code {
     height: 12px;
 }
 
-figure[data-rehype-pretty-code-figure=''] [data-line] {
-    padding: 0 0.55rem;
-    border-left: 2px solid transparent;
+/* --- pre / code ----------------------------------------------------- */
+
+.mdx-code-block pre {
+    margin: 0;
+    padding: 12px 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent !important;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--code-border) transparent;
+    tab-size: 4;
 }
 
-figure[data-rehype-pretty-code-figure=''] [data-highlighted-line] {
-    border-left-color: #6e7681;
-    background: rgb(110 118 129 / 0.14);
+.mdx-code-block pre::-webkit-scrollbar {
+    height: 8px;
 }
 
-figure[data-rehype-pretty-code-figure=''] [data-highlighted-chars] {
-    border-radius: 0.25rem;
-    background: rgb(110 118 129 / 0.28);
+.mdx-code-block pre::-webkit-scrollbar-thumb {
+    background-color: var(--code-border);
+    border-radius: 99px;
 }
 
-figure[data-rehype-pretty-code-figure=''] code[data-line-numbers] {
+.mdx-code-block pre > code {
+    display: grid;
+    min-width: max-content;
+    padding: 0;
+    background: transparent !important;
+    font-family: var(--font-code), 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.65;
     counter-reset: line;
 }
 
-figure[data-rehype-pretty-code-figure=''] code[data-line-numbers] > [data-line]::before {
+/* Inline code keeps the prose treatment, not the block treatment. */
+.pager-prose :not(pre) > code {
+    background: var(--paper-accent-soft);
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-family: var(--font-code), 'Fira Code', monospace;
+    font-size: 0.9em;
+}
+
+/* --- lines ---------------------------------------------------------- */
+
+.mdx-code-block [data-line] {
+    padding: 0 14px;
+    border-left: 2px solid transparent;
+}
+
+.mdx-code-block [data-highlighted-line] {
+    background: var(--code-line-highlight);
+    border-left-color: var(--term-blue);
+}
+
+.mdx-code-block [data-highlighted-chars] {
+    background: var(--code-line-highlight);
+    border-radius: 3px;
+    padding: 1px 3px;
+}
+
+.mdx-code-block code[data-line-numbers] > [data-line]::before {
     counter-increment: line;
     content: counter(line);
     display: inline-block;
-    width: 2.1rem;
-    margin-right: 0.75rem;
+    width: 2rem;
+    margin-right: 1rem;
     color: var(--code-muted);
+    opacity: 0.55;
     text-align: right;
+    user-select: none;
+}
+
+/* rehype-pretty-code renders its own figure wrapper; we supply the chrome. */
+figure[data-rehype-pretty-code-figure] {
+    margin: 0;
+}
+
+/*
+ * ```go title="wal/record.go" renders a figcaption before the <pre>, so it
+ * sits above our chrome. Style it as an attached filename tab.
+ */
+[data-rehype-pretty-code-title] {
+    display: inline-block;
+    margin-bottom: -1px;
+    padding: 4px 10px;
+    border: 1px solid var(--code-border);
+    border-bottom: 0;
+    border-radius: 4px 4px 0 0;
+    background: var(--code-header-bg);
+    color: var(--code-muted);
+    font-family: var(--font-code), 'Fira Code', monospace;
+    font-size: 11px;
+}
+
+[data-rehype-pretty-code-title] + .mdx-code-block {
+    margin-top: 0;
+    border-top-left-radius: 0;
+}
+
+.pager-prose figure[data-rehype-pretty-code-figure] {
+    margin: 1.6rem 0;
+}
+
+.pager-prose .mdx-image-frame {
+    position: relative;
+    margin: 1.5rem 0;
 }

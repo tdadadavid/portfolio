@@ -7,27 +7,39 @@ interface ImageProps extends HTMLAttributes<HTMLImageElement> {
     alt: string;
     width?: string | number;
     height?: string | number;
+    /** Overrides the caption. Defaults to the alt text. */
+    caption?: string;
 }
 
-const Img = ({ src, alt, width, height, className }: ImageProps) => {
+const Img = ({ src, alt, width, height, className, caption }: ImageProps) => {
     const resolvedWidth = typeof width === 'number' ? width : Number(width) || 1280;
     const resolvedHeight = typeof height === 'number' ? height : Number(height) || 720;
+    const label = caption ?? alt;
 
     return (
-        <figure className="mdx-image-frame group">
+        <figure className="mdx-image-frame">
             <Image
                 src={src}
                 alt={alt}
                 width={resolvedWidth}
                 height={resolvedHeight}
                 className={cn(
-                    'w-full h-auto rounded-[14px] border border-[#2a3347] bg-[#0b1120] shadow-[0_14px_35px_-24px_rgb(0,0,0,0.95)] transition duration-300 group-hover:scale-[1.01]',
+                    'h-auto w-full rounded-[4px] border',
                     className,
                 )}
+                style={{ borderColor: 'var(--paper-line-strong)' }}
             />
-            <figcaption className="mt-2 px-1 text-[10px] uppercase tracking-[0.16em] text-[#93a4bf]">
-                Terminal Snapshot
-            </figcaption>
+            {label && (
+                <figcaption
+                    className="mt-2 text-[12px]"
+                    style={{
+                        color: 'var(--paper-faint)',
+                        fontFamily: 'var(--font-mono)',
+                    }}
+                >
+                    {label}
+                </figcaption>
+            )}
         </figure>
     );
 };

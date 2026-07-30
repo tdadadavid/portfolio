@@ -34,7 +34,7 @@ I built one for [KvShard](https://github.com/tdadadavid) and got most of it wron
 
 Say you have an in-memory map and you persist it to disk every few seconds.
 
-```go
+```go title="store.go — the lie"
 type Store struct {
     mu   sync.RWMutex
     data map[string]string
@@ -76,7 +76,7 @@ Three details in that header matter more than they look.
 
 Here is the encoder:
 
-```go
+```go title="wal/record.go" showLineNumbers
 package wal
 
 import (
@@ -124,7 +124,7 @@ Use Castagnoli, not the default IEEE polynomial. Modern CPUs implement it in har
 
 The payload itself is deliberately opaque to the log. The WAL's job is framing and durability; what the bytes mean is the storage engine's problem.
 
-```go
+```go title="wal/mutation.go"
 type OpKind uint8
 
 const (
@@ -154,7 +154,7 @@ func (m Mutation) Marshal() []byte {
 
 Here is a first attempt at the writer:
 
-```go
+```go title="wal/writer.go"
 type Writer struct {
     mu   sync.Mutex
     file *os.File
@@ -192,7 +192,7 @@ Now your process can die and the data survives, because the kernel owns those pa
 
 The only call that makes a durability promise is `fsync`:
 
-```go
+```go title="wal/writer.go — with fsync" showLineNumbers
 func (w *Writer) Append(m Mutation, sync bool) (uint64, error) {
     w.mu.Lock()
     defer w.mu.Unlock()
@@ -230,7 +230,7 @@ Two warnings that cost me real time.
 
 If each writer must wait a full fsync, and fsync latency is fixed, the only lever left is **how many writers share one fsync**.
 
-```go
+```go title="wal/batch.go" showLineNumbers
 type commit struct {
     rec  Record
     done chan error
@@ -312,7 +312,7 @@ sequenceDiagram
 
 A single log file grows forever, and you cannot delete the front of a file. So you cut the log into numbered segments and delete whole ones.
 
-```go
+```go title="wal/segment.go"
 type Log struct {
     dir      string
     active   *Writer
@@ -376,7 +376,7 @@ Recovery is a fold over the log. Start from empty state, apply every valid recor
 
 <CrashReplay />
 
-```go
+```go title="wal/replay.go" showLineNumbers
 func (l *Log) Replay(apply func(Mutation) error) (uint64, error) {
     segments, err := filepath.Glob(filepath.Join(l.dir, "*.wal"))
     if err != nil {
@@ -449,7 +449,7 @@ Notice too that recovery is naturally **idempotent**: replaying `SET user:1 = "a
 
 Replay from record one is fine for a toy and unacceptable for a database that has been up for a month. A checkpoint records that everything up to some LSN is already durable in the main data structure, so recovery can start from there.
 
-```go
+```go title="wal/checkpoint.go"
 type Checkpoint struct {
     LSN      uint64 `json:"lsn"`
     Segment  uint64 `json:"segment"`
@@ -513,7 +513,7 @@ Numbers that told me something useful, in rough order of how often they surprise
 
 The one I would insist on: **test recovery by actually killing the process.** Not `defer cleanup()`, not a unit test that calls `Replay` on a well-formed file. `SIGKILL` mid-write, then replay, then assert. Every WAL bug I have written was invisible to tests that shut down politely.
 
-```go
+```go title="wal/recovery_test.go"
 func TestRecoveryAfterKill(t *testing.T) {
     dir := t.TempDir()
 
