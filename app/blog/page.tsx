@@ -50,16 +50,17 @@ const Row = ({ post }: { post: BlogMetadata }) => {
         </>
     );
 
-    if (!readable) {
-        return (
-            <div className="term-row" title={`${status.label} — not published yet`}>
-                {content}
-            </div>
-        );
-    }
-
+    /*
+     * Unpublished entries still link out — the destination is the "not
+     * finished yet" notice, not the post. Better than a dead row that looks
+     * broken, and it is where the explanation lives.
+     */
     return (
-        <Link href={`/blog/${post.slug}`} className="term-row group">
+        <Link
+            href={`/blog/${post.slug}`}
+            className="term-row group"
+            title={readable ? undefined : `${status.label} — not published yet`}
+        >
             {content}
         </Link>
     );

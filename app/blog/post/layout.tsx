@@ -6,7 +6,8 @@ import { notFound, usePathname } from 'next/navigation';
 import { TerminalWindow } from '@/components/layout/TerminalWindow';
 import { CommandLine } from '@/components/ui/shell/CommandLine';
 import { PagerProgress } from '@/components/ui/blog/PagerProgress';
-import { getBlogMetadata, isReadable } from '@/lib/blogs';
+import { UnpublishedNotice } from '@/components/ui/blog/UnpublishedNotice';
+import { getBlogMetadata, getReadableBlogs, isReadable } from '@/lib/blogs';
 import type { BlogStatus } from '@/types/blog.type';
 import '../../code.css';
 
@@ -23,10 +24,27 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
     if (!slug) return notFound();
 
     const blog = getBlogMetadata(slug);
-    if (!blog || !isReadable(blog)) return notFound();
+
+    // A slug with no metadata genuinely does not exist.
+    if (!blog) return notFound();
+
+    const file = `${slug}.md`;
+
+    /*
+     * Unpublished posts are not missing, they are unfinished — so say so
+     * rather than pretending the URL is wrong. The content is never sent.
+     */
+    if (!isReadable(blog)) {
+        return (
+            <UnpublishedNotice
+                blog={{ ...blog, slug: `post/${slug}` }}
+                file={file}
+                others={getReadableBlogs()}
+            />
+        );
+    }
 
     const status = STATUS_LABEL[blog.status];
-    const file = `${slug}.md`;
 
     return (
         <TerminalWindow

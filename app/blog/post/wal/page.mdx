@@ -1,6 +1,6 @@
 {/* ========================= SEO/METADATA =========================== */}
 
-import { getBlogMetadata } from "@/lib/blogs.ts";
+import { buildPostMetadata } from "@/lib/blogs.ts";
 import info from "@/misc/info";
 import Mermaid from '@/components/ui/blog/Mermaid';
 import { WalFlow } from '@/components/ui/blog/wal/WalFlow';
@@ -10,13 +10,7 @@ import { DurabilityLadder } from '@/components/ui/blog/wal/DurabilityLadder';
 
 export const key = 'wal';
 
-export const metadata = {
-    title: `${getBlogMetadata(key).title} | ${info.me}`,
-    description: getBlogMetadata(key).summary,
-    icons: {
-        icon: '/icon.svg'
-    }
-}
+export const metadata = buildPostMetadata(key, { me: info.me, icon: '/icon.svg' });
 
 {/* ================================================================== */}
 
