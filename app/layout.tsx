@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Fira_Code, IBM_Plex_Mono, Manrope, Newsreader } from 'next/font/google';
+import { Fira_Code, IBM_Plex_Mono, Manrope } from 'next/font/google';
 import './globals.css';
 import info from '@/misc/info';
 import { ThemeProvider } from 'next-themes';
@@ -8,11 +8,6 @@ import { Analytics } from '@vercel/analytics/next';
 
 const sans = Manrope({
     variable: '--font-sans',
-    subsets: ['latin'],
-});
-
-const serif = Newsreader({
-    variable: '--font-serif',
     subsets: ['latin'],
 });
 
@@ -67,7 +62,7 @@ export default function RootLayout({
         <html
             lang="en"
             suppressHydrationWarning
-            className={`${sans.variable} ${serif.variable} ${mono.variable} ${code.variable}`}
+            className={`${sans.variable} ${mono.variable} ${code.variable}`}
         >
             <body className="antialiased">
                 <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false}>

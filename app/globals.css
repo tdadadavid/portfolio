@@ -57,7 +57,6 @@
 
 @theme inline {
     --font-sans: var(--font-sans);
-    --font-serif: var(--font-serif);
     --font-mono: var(--font-mono);
 }
 
@@ -551,22 +550,6 @@ a.term-row:focus-visible {
  * a colour on `pre > code` — Shiki writes per-token colours inline and any
  * global override (especially an !important one) flattens the highlighting.
  */
-
-blockquote.mdx {
-    position: relative;
-    padding-left: 56px;
-}
-
-blockquote.mdx::before {
-    position: absolute;
-    content: '“';
-    display: block;
-    top: -8px;
-    left: 8px;
-    font-family: var(--font-serif);
-    font-size: 62px;
-    color: var(--term-blue);
-}
 
 .break-inside-avoid {
     break-inside: avoid;
