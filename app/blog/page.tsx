@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 import { TerminalWindow } from '@/components/layout/TerminalWindow';
 import { CommandLine, Prompt } from '@/components/ui/shell/CommandLine';
-import { getAllBlogs } from '@/lib/blogs';
+import { getAllBlogs, isReadable } from '@/lib/blogs';
 import type { BlogMetadata, BlogStatus } from '@/types/blog.type';
 
 const STATUS_MARK: Record<BlogStatus, { mark: string; color: string; label: string }> = {
@@ -23,7 +23,7 @@ const formatDate = (value: string) => {
 
 const Row = ({ post }: { post: BlogMetadata }) => {
     const status = STATUS_MARK[post.status];
-    const isReadable = post.status !== 'draft';
+    const readable = isReadable(post);
 
     const content = (
         <>
@@ -39,7 +39,7 @@ const Row = ({ post }: { post: BlogMetadata }) => {
             <span
                 className="min-w-0 flex-1"
                 style={{
-                    color: isReadable ? 'var(--term-blue)' : 'var(--paper-faint)',
+                    color: readable ? 'var(--term-blue)' : 'var(--paper-faint)',
                 }}
             >
                 {post.title}
@@ -50,9 +50,9 @@ const Row = ({ post }: { post: BlogMetadata }) => {
         </>
     );
 
-    if (!isReadable) {
+    if (!readable) {
         return (
-            <div className="term-row" title="draft — not published yet">
+            <div className="term-row" title={`${status.label} — not published yet`}>
                 {content}
             </div>
         );
@@ -180,7 +180,7 @@ const BlogsPage = () => {
                     <p className="ink-faint mt-4 text-[11px]">
                         <span style={{ color: 'var(--term-green)' }}>✓</span> published{' '}
                         <span style={{ color: 'var(--term-amber)' }}>~</span> in progress{' '}
-                        <span>·</span> draft, not yet readable
+                        <span>·</span> draft — only published posts are readable
                     </p>
                 </div>
             </motion.div>

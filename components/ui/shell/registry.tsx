@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 import info from '@/misc/info';
-import { getAllBlogs } from '@/lib/blogs';
+import { getReadableBlogs } from '@/lib/blogs';
 
 export type Cwd = '~' | '~/works' | '~/writing' | (string & {});
 
@@ -55,7 +55,7 @@ const Blue = ({ children }: { children: ReactNode }) => (
     <span style={{ color: 'var(--term-blue)' }}>{children}</span>
 );
 
-const readablePosts = () => getAllBlogs().filter(post => post.status !== 'draft');
+const readablePosts = () => getReadableBlogs();
 
 const postFile = (slug: string) => `${slug.replace(/^post\//, '')}.md`;
 

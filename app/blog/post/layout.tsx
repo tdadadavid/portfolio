@@ -6,7 +6,7 @@ import { notFound, usePathname } from 'next/navigation';
 import { TerminalWindow } from '@/components/layout/TerminalWindow';
 import { CommandLine } from '@/components/ui/shell/CommandLine';
 import { PagerProgress } from '@/components/ui/blog/PagerProgress';
-import { getBlogMetadata } from '@/lib/blogs';
+import { getBlogMetadata, isReadable } from '@/lib/blogs';
 import type { BlogStatus } from '@/types/blog.type';
 import '../../code.css';
 
@@ -23,7 +23,7 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
     if (!slug) return notFound();
 
     const blog = getBlogMetadata(slug);
-    if (!blog || blog.status === 'draft') return notFound();
+    if (!blog || !isReadable(blog)) return notFound();
 
     const status = STATUS_LABEL[blog.status];
     const file = `${slug}.md`;
