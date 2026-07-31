@@ -3,6 +3,8 @@
 import { getBlogMetadata } from "@/lib/blogs.ts";
 import info from "@/misc/info";
 import Mermaid from '@/components/ui/blog/Mermaid';
+import { HeaderLayout } from '@/components/ui/blog/dns/HeaderLayout';
+import { ResolutionWalk } from '@/components/ui/blog/dns/ResolutionWalk';
 
 export const key = 'dns';
 
@@ -16,129 +18,757 @@ export const metadata = {
 
 {/* ================================================================== */}
 
-# Resource Records
+# Domain Name System
 
-### 1. Address
-This category of records contains the information about the IP address of a domain name. The IP address is used to locate the server that hosts the website or service. It is divide into 2
+In October 2025, a chunk of AWS went down because DNS records were deleted. Not a datacentre fire, not a bad deploy — a name stopped resolving and the services that depended on it had no way to find each other. That outage is why I stopped treating DNS as infrastructure someone else operates and wrote [a resolver in Go](https://github.com/tdadadavid/go-dns) to find out what it actually does.
 
-1. A (IPv4 Address); this is used to store the IPv4 address of a domain name.
-2. AAAA (IPv6 Address); this is used to store the IPv6 address of a domain name.
-
-```bash
-dig google.com -t A. # get the ipv4 address of google.com
-```
-
-<br/>
-<img src="/image/dig_google_A.png" alt="dig output for google.com A record"/>
-<br/>
-
-```bash
-dig google.com -t AAAA. # get the ipv6 address of google.com
-```
-
-<br/>
-<img src="/image/dig_google_AAAA.png" alt="dig output for google.com AAAA record"/>
-<br/>
-
+What follows is the protocol as I understand it now: the wire format, the walk from root to answer, the parts that are older than they look, and where the sharp edges are.
 
 ---
 
-### 2. CNAME (Canonical Name)
-This is used create alias for a domain name. For example if you have domain with `example.com`, and you also have `docs.example.com`, `drive.example.com`, these records still point to the same IP Address (`example.com`) but with different hostnames.
+## What is actually on the wire
+
+A DNS message is a header followed by four sections. The same layout serves both queries and responses — a response is literally the query echoed back with the answer sections filled in and one bit flipped.
+
+```plaintext title="RFC 1035 §4.1"
++---------------------+
+|        Header       |  12 bytes, fixed
++---------------------+
+|       Question      |  what you asked
++---------------------+
+|        Answer       |  resource records answering it
++---------------------+
+|      Authority      |  NS records for the zone
++---------------------+
+|      Additional     |  glue: A records for those NS names
++---------------------+
+```
+
+The header is twelve bytes of six 16-bit fields:
+
+```go title="dns/header.go" showLineNumbers
+package dns
+
+import "encoding/binary"
+
+type Header struct {
+    ID      uint16 // matched against the reply to pair request and response
+    Flags   uint16 // QR, Opcode, AA, TC, RD, RA, Z, RCODE
+    QDCount uint16 // questions
+    ANCount uint16 // answers
+    NSCount uint16 // authority records
+    ARCount uint16 // additional records
+}
+
+const headerLen = 12
+
+// DNS is big-endian on the wire, everywhere, without exception.
+func (h Header) Marshal() []byte {
+    buf := make([]byte, headerLen)
+    binary.BigEndian.PutUint16(buf[0:2], h.ID)
+    binary.BigEndian.PutUint16(buf[2:4], h.Flags)
+    binary.BigEndian.PutUint16(buf[4:6], h.QDCount)
+    binary.BigEndian.PutUint16(buf[6:8], h.ANCount)
+    binary.BigEndian.PutUint16(buf[8:10], h.NSCount)
+    binary.BigEndian.PutUint16(buf[10:12], h.ARCount)
+    return buf
+}
+
+func ParseHeader(buf []byte) (Header, error) {
+    if len(buf) < headerLen {
+        return Header{}, ErrShortMessage
+    }
+    return Header{
+        ID:      binary.BigEndian.Uint16(buf[0:2]),
+        Flags:   binary.BigEndian.Uint16(buf[2:4]),
+        QDCount: binary.BigEndian.Uint16(buf[4:6]),
+        ANCount: binary.BigEndian.Uint16(buf[6:8]),
+        NSCount: binary.BigEndian.Uint16(buf[8:10]),
+        ARCount: binary.BigEndian.Uint16(buf[10:12]),
+    }, nil
+}
+```
+
+That `Flags` word is where most of the protocol's control logic lives, packed into sixteen bits.
+
+<HeaderLayout />
+
+Packing and unpacking it is bit-twiddling, and worth writing out once so you never think about it again:
+
+```go title="dns/flags.go"
+type Flags struct {
+    Response           bool
+    Opcode             uint8 // 4 bits
+    Authoritative      bool
+    Truncated          bool
+    RecursionDesired   bool
+    RecursionAvailable bool
+    ResponseCode       uint8 // 4 bits
+}
+
+func (f Flags) Pack() uint16 {
+    var v uint16
+    if f.Response {
+        v |= 1 << 15
+    }
+    v |= uint16(f.Opcode&0xF) << 11
+    if f.Authoritative {
+        v |= 1 << 10
+    }
+    if f.Truncated {
+        v |= 1 << 9
+    }
+    if f.RecursionDesired {
+        v |= 1 << 8
+    }
+    if f.RecursionAvailable {
+        v |= 1 << 7
+    }
+    // bits 6-4 are Z, left at zero
+    v |= uint16(f.ResponseCode & 0xF)
+    return v
+}
+
+func UnpackFlags(v uint16) Flags {
+    return Flags{
+        Response:           v&(1<<15) != 0,
+        Opcode:             uint8(v>>11) & 0xF,
+        Authoritative:      v&(1<<10) != 0,
+        Truncated:          v&(1<<9) != 0,
+        RecursionDesired:   v&(1<<8) != 0,
+        RecursionAvailable: v&(1<<7) != 0,
+        ResponseCode:       uint8(v & 0xF),
+    }
+}
+```
+
+---
+
+## Names are not strings
+
+This is the first thing that surprised me. `www.example.com` never appears on the wire as text. It is encoded as a sequence of length-prefixed labels, terminated by a zero byte:
+
+```plaintext title="wire encoding of www.example.com"
+03 77 77 77   05 65 78 61 6d 70 6c 65   03 63 6f 6d   00
+ 3  w  w  w    5  e  x  a  m  p  l  e    3  c  o  m   end
+```
+
+```go title="dns/name.go" showLineNumbers
+// EncodeName writes a domain name as length-prefixed labels.
+func EncodeName(name string) ([]byte, error) {
+    if name == "." || name == "" {
+        return []byte{0}, nil
+    }
+
+    name = strings.TrimSuffix(name, ".")
+    var buf []byte
+
+    for _, label := range strings.Split(name, ".") {
+        // RFC 1035 §2.3.4: labels are 63 octets or fewer.
+        if len(label) == 0 || len(label) > 63 {
+            return nil, fmt.Errorf("invalid label %q", label)
+        }
+        buf = append(buf, byte(len(label)))
+        buf = append(buf, label...)
+    }
+
+    buf = append(buf, 0) // root label
+
+    // And the whole name is capped at 255 octets.
+    if len(buf) > 255 {
+        return nil, fmt.Errorf("name %q too long", name)
+    }
+    return buf, nil
+}
+```
+
+The 63-byte label limit is why that length byte only needs six bits. The top two bits were left spare — and then used for something clever that becomes a security problem if you implement it naively.
+
+### Name compression, and the infinite loop
+
+A response repeats domain names constantly. Ask for `www.example.com` and the answer, authority and additional sections all mention `example.com` again. To save space in a 512-byte budget, RFC 1035 lets a name be replaced by a **pointer**: two bytes whose top bits are `11`, with the remaining 14 bits giving an offset from the start of the message.
+
+```plaintext
+0xC0 0x0C  →  11000000 00001100
+              ^^                  pointer marker
+                111111 00001100   offset 12 — the start of the question section
+```
+
+The naive parser follows pointers recursively. A hostile server sends a pointer to itself and your resolver spins forever. Every real implementation has to bound this:
+
+```go title="dns/name.go — decoding" showLineNumbers
+// DecodeName reads a name at offset, following compression pointers.
+// Returns the name and the offset just past the name *in the original
+// message*, which is not where decoding finished if a pointer was taken.
+func DecodeName(msg []byte, offset int) (string, int, error) {
+    var (
+        labels   []string
+        jumped   bool
+        next     int
+        // A pointer must always point strictly backwards, so the number of
+        // jumps is bounded by the message length. This cap is belt and braces.
+        maxJumps = 32
+        jumps    int
+    )
+
+    for {
+        if offset >= len(msg) {
+            return "", 0, ErrShortMessage
+        }
+
+        length := int(msg[offset])
+
+        // Top two bits set means this is a pointer, not a length.
+        if length&0xC0 == 0xC0 {
+            if offset+1 >= len(msg) {
+                return "", 0, ErrShortMessage
+            }
+            if jumps++; jumps > maxJumps {
+                return "", 0, ErrPointerLoop
+            }
+
+            target := int(binary.BigEndian.Uint16(msg[offset:offset+2]) & 0x3FFF)
+
+            // Refuse forward and self-referential pointers outright. This is
+            // the check that turns a hang into an error.
+            if target >= offset {
+                return "", 0, ErrPointerLoop
+            }
+
+            if !jumped {
+                next = offset + 2
+                jumped = true
+            }
+            offset = target
+            continue
+        }
+
+        if length&0xC0 != 0 {
+            return "", 0, ErrReservedLabelType
+        }
+
+        offset++
+        if length == 0 {
+            break // root label, name is complete
+        }
+        if offset+length > len(msg) {
+            return "", 0, ErrShortMessage
+        }
+
+        labels = append(labels, string(msg[offset:offset+length]))
+        offset += length
+    }
+
+    if !jumped {
+        next = offset
+    }
+    return strings.Join(labels, "."), next, nil
+}
+```
+
+Two details worth keeping. **Pointers must point backwards** — enforcing that alone makes loops impossible, because each jump strictly decreases the offset. And the function returns two offsets, because after following a pointer you must resume reading from where the pointer *was*, not from where it led.
+
+---
+
+## The question section
+
+Once names are handled, the question is trivial:
+
+```go title="dns/question.go"
+type Question struct {
+    Name  string
+    Type  RecordType // A, AAAA, MX, ...
+    Class uint16     // essentially always 1 (IN, "internet")
+}
+
+func (q Question) Marshal() ([]byte, error) {
+    name, err := EncodeName(q.Name)
+    if err != nil {
+        return nil, err
+    }
+    buf := make([]byte, 0, len(name)+4)
+    buf = append(buf, name...)
+    buf = binary.BigEndian.AppendUint16(buf, uint16(q.Type))
+    return binary.BigEndian.AppendUint16(buf, q.Class), nil
+}
+```
+
+The `Class` field is a fossil. It exists so DNS could serve non-internet networks — CHAOS and Hesiod were real options in 1987. You will only ever send `1`, except for the one party trick: `dig @ns1.example.com CH TXT version.bind` asks a nameserver what software it runs.
+
+---
+
+## Resource records
+
+Every answer, authority and additional entry is a resource record with the same shape: name, type, class, TTL, then a length-prefixed blob whose meaning depends on the type.
+
+```go title="dns/record.go" showLineNumbers
+type RecordType uint16
+
+const (
+    TypeA     RecordType = 1
+    TypeNS    RecordType = 2
+    TypeCNAME RecordType = 5
+    TypeSOA   RecordType = 6
+    TypePTR   RecordType = 12
+    TypeMX    RecordType = 15
+    TypeTXT   RecordType = 16
+    TypeAAAA  RecordType = 28
+    TypeSRV   RecordType = 33
+    TypeOPT   RecordType = 41 // EDNS0, not a real record
+)
+
+type Record struct {
+    Name  string
+    Type  RecordType
+    Class uint16
+    TTL   uint32
+    Data  []byte // RDATA, interpreted per Type
+}
+
+func ParseRecord(msg []byte, offset int) (Record, int, error) {
+    name, next, err := DecodeName(msg, offset)
+    if err != nil {
+        return Record{}, 0, err
+    }
+    if next+10 > len(msg) {
+        return Record{}, 0, ErrShortMessage
+    }
+
+    r := Record{
+        Name:  name,
+        Type:  RecordType(binary.BigEndian.Uint16(msg[next : next+2])),
+        Class: binary.BigEndian.Uint16(msg[next+2 : next+4]),
+        TTL:   binary.BigEndian.Uint32(msg[next+4 : next+8]),
+    }
+
+    rdLength := int(binary.BigEndian.Uint16(msg[next+8 : next+10]))
+    start := next + 10
+    if start+rdLength > len(msg) {
+        return Record{}, 0, ErrShortMessage
+    }
+
+    r.Data = msg[start : start+rdLength]
+    return r, start + rdLength, nil
+}
+```
+
+Note the TTL is a `uint32` of **seconds**, and it is advisory in the sense that nothing enforces it — but it is the only mechanism DNS has for propagating a change. Set a 24-hour TTL and a mistake stays live for a day.
+
+### The types worth knowing
 
 <table border="1">
   <thead>
-    <tr>
-      <th>Host</th>
-      <th>Type</th>
-      <th>Value</th>
-    </tr>
+    <tr><th>Type</th><th>RDATA</th><th>What it is for</th></tr>
   </thead>
   <tbody>
-    <tr>
-    <td>example.com</td>
-    <td>A</td>
-    <td>142.234.53.1</td>
-    </tr>
-    <tr>
-      <td>docs.example.com</td>
-      <td>CNAME</td>
-      <td>example.com</td>
-    </tr>
-    <tr>
-      <td>drive.example.com</td>
-      <td>CNAME</td>
-      <td>example.com</td>
-    </tr>
-    <tr>
-      <td>mail.example.com</td>
-      <td>CNAME</td>
-      <td>example.com</td>
-    </tr>
+    <tr><td>A</td><td>4 bytes</td><td>IPv4 address</td></tr>
+    <tr><td>AAAA</td><td>16 bytes</td><td>IPv6 address</td></tr>
+    <tr><td>CNAME</td><td>name</td><td>Alias to another name</td></tr>
+    <tr><td>NS</td><td>name</td><td>Delegation — who is authoritative for this zone</td></tr>
+    <tr><td>SOA</td><td>2 names + 5 uint32</td><td>Zone metadata: serial, refresh, retry, expire, minimum</td></tr>
+    <tr><td>MX</td><td>uint16 + name</td><td>Mail exchange, with a preference number</td></tr>
+    <tr><td>TXT</td><td>length-prefixed strings</td><td>Arbitrary text. SPF, DKIM and domain verification live here</td></tr>
+    <tr><td>PTR</td><td>name</td><td>Reverse lookup, IP back to name</td></tr>
+    <tr><td>SRV</td><td>3 uint16 + name</td><td>Service location with priority, weight and port</td></tr>
   </tbody>
 </table>
 
----
+#### 1. Address records
 
-### 3. MX (Mail Exchange)
-This record is how servers know which mail server to use for a domain name. It is used to specify the mail server that is responsible for accepting email messages for a domain name. For example I (obadafidi@example.com) sends a mail to my friend (tolulope@yahoo.com) the DNS resolution flow will be like this
+A and AAAA are the ones people mean when they say "DNS". The RDATA is the raw address, nothing more:
 
-1. The DNS resolver will first look up the MX record for the domain name `example.com`.
-2. The MX record will specify the mail server that is responsible for accepting email messages for the domain name `example.com`.
-3. The DNS resolver will then look up the IP address of the mail server using the A record (IPv4)
-4. The mail server will then accept the email message and deliver it to the recipient email server (`yahoo.com`)
-5. Then the mail server on `yahoo.com` will authenticate the email message to ensure it is from a trusted source.
-6. The mail server on `yahoo.com` will then deliver the email message to the recipient's email once verification is complete.
+```go title="dns/rdata.go"
+func (r Record) IP() (net.IP, error) {
+    switch r.Type {
+    case TypeA:
+        if len(r.Data) != 4 {
+            return nil, fmt.Errorf("A record with %d bytes", len(r.Data))
+        }
+        return net.IP(r.Data).To4(), nil
+    case TypeAAAA:
+        if len(r.Data) != 16 {
+            return nil, fmt.Errorf("AAAA record with %d bytes", len(r.Data))
+        }
+        return net.IP(r.Data), nil
+    default:
+        return nil, fmt.Errorf("%v is not an address record", r.Type)
+    }
+}
+```
+
+```bash
+dig google.com -t A     # ipv4
+```
+
+<br/>
+<img src="/image/dig_google_A.png" alt="dig output for the google.com A record"/>
+<br/>
+
+```bash
+dig google.com -t AAAA  # ipv6
+```
+
+<br/>
+<img src="/image/dig_google_AAAA.png" alt="dig output for the google.com AAAA record"/>
+<br/>
+
+#### 2. CNAME
+
+An alias. If you own `example.com` and also serve `docs.example.com` and `drive.example.com`, a CNAME points them at the canonical name rather than repeating the address.
+
+<table border="1">
+  <thead>
+    <tr><th>Host</th><th>Type</th><th>Value</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>example.com</td><td>A</td><td>142.234.53.1</td></tr>
+    <tr><td>docs.example.com</td><td>CNAME</td><td>example.com</td></tr>
+    <tr><td>drive.example.com</td><td>CNAME</td><td>example.com</td></tr>
+    <tr><td>mail.example.com</td><td>CNAME</td><td>example.com</td></tr>
+  </tbody>
+</table>
+
+Two rules that bite people. **A CNAME cannot coexist with other records at the same name**, which is why you cannot put one at the zone apex (`example.com` itself needs SOA and NS records). And **CNAMEs cost an extra round trip** unless the server helpfully includes the target's A record in the same response.
+
+Chasing them is the resolver's job, and the chain needs a bound like everything else here:
+
+```go title="dns/resolve.go"
+func (r *Resolver) followCNAMEs(msg *Message, want RecordType) ([]Record, error) {
+    name := msg.Questions[0].Name
+
+    for depth := 0; depth < 8; depth++ {
+        var cname string
+
+        for _, rec := range msg.Answers {
+            if rec.Type == want && rec.Name == name {
+                return msg.Answers, nil // got what we asked for
+            }
+            if rec.Type == TypeCNAME && rec.Name == name {
+                target, _, err := DecodeName(msg.Raw, rec.dataOffset)
+                if err != nil {
+                    return nil, err
+                }
+                cname = target
+            }
+        }
+
+        if cname == "" {
+            return msg.Answers, nil
+        }
+
+        next, err := r.Resolve(cname, want)
+        if err != nil {
+            return nil, err
+        }
+        name, msg = cname, next
+    }
+
+    return nil, ErrCNAMELoop
+}
+```
+
+#### 3. MX
+
+MX records say which servers accept mail for a domain, ordered by a preference number where lower wins.
+
+```go title="dns/rdata.go"
+type MX struct {
+    Preference uint16
+    Host       string
+}
+
+func (r Record) MX(msg []byte, dataOffset int) (MX, error) {
+    if r.Type != TypeMX || len(r.Data) < 3 {
+        return MX{}, fmt.Errorf("not an MX record")
+    }
+    // The host may be compressed, so decode against the whole message.
+    host, _, err := DecodeName(msg, dataOffset+2)
+    if err != nil {
+        return MX{}, err
+    }
+    return MX{
+        Preference: binary.BigEndian.Uint16(r.Data[0:2]),
+        Host:       host,
+    }, nil
+}
+```
+
+That `dataOffset+2` is the trap. RDATA containing a name can use compression pointers into the rest of the message, so you cannot parse it from the `Data` slice alone — you need the full message and an absolute offset. I lost an evening to this.
+
+Here is what actually happens when mail moves between two domains:
 
 <Mermaid chart={`
 sequenceDiagram
-    participant Obadafidi as Obadafidi@example.com
+    participant Obadafidi as obadafidi@example.com
     participant GMail as GMail Mail Server
     participant DNS as DNS Server
     participant Yahoo as Yahoo Mail Server
     participant Tolulope as tolulope@yahoo.com
 
-    Note over Obadafidi,GMail: MX Record Resolution & Mail Delivery Process
+    Note over Obadafidi,GMail: MX resolution and mail delivery
 
-    Obadafidi->>GMail: (1) Sends email to tolulope@yahoo.com
-    GMail->>DNS: (2) Requests MX record for yahoo.com
-    DNS-->>GMail: (3) Returns MX record (Yahoo Mail Server details)
-    GMail->>DNS: (3b) Resolves A record to get IP address of Yahoo Mail Server
-    GMail->>Yahoo: (4) Sends mail data to Yahoo Mail Server
-    Yahoo->>DNS: (5) Verifies that sending mail server (GMail) is authenticated
-    DNS-->>Yahoo: Returns authentication confirmation (SPF/DKIM/DMARC)
-    Yahoo->>Tolulope: (6) Delivers email to tolulope@yahoo.com
+    Obadafidi->>GMail: (1) sends email to tolulope@yahoo.com
+    GMail->>DNS: (2) MX? yahoo.com
+    DNS-->>GMail: (3) MX 1 mta.yahoodns.net
+    GMail->>DNS: (3b) A? mta.yahoodns.net
+    GMail->>Yahoo: (4) SMTP delivery
+    Yahoo->>DNS: (5) TXT? for SPF/DKIM/DMARC checks
+    DNS-->>Yahoo: authentication policy
+    Yahoo->>Tolulope: (6) delivers to the mailbox
 `} />
+
+Step 5 is the one people forget: the receiving server does its own DNS lookups to decide whether the sender was allowed to send. SPF, DKIM and DMARC are all TXT records. Email authentication is DNS wearing a hat.
+
+---
+
+## Resolution: walking the tree
+
+None of the above says how a resolver finds `ns1.example.com` in the first place. The answer is that it starts at the root and follows referrals down.
+
+<ResolutionWalk />
+
+The thirteen root server addresses are the only thing a resolver knows a priori — they are compiled in, or read from a hints file:
+
+```go title="dns/roots.go"
+var rootServers = []string{
+    "198.41.0.4:53",     // a.root-servers.net
+    "199.9.14.201:53",   // b.root-servers.net
+    "192.33.4.12:53",    // c.root-servers.net
+    "199.7.91.13:53",    // d.root-servers.net
+    // ... through m
+}
+```
+
+There are thirteen because thirteen `NS` records plus their glue was the most that fit in a 512-byte UDP response. A protocol limit from 1987 is why the number is not fourteen. Anycast means each of those addresses is actually hundreds of physical servers worldwide.
+
+The walk itself:
+
+```go title="dns/resolve.go" showLineNumbers
+func (r *Resolver) Resolve(name string, qtype RecordType) (*Message, error) {
+    if hit, ok := r.cache.Get(name, qtype); ok {
+        return hit, nil
+    }
+
+    nameservers := rootServers
+
+    for depth := 0; depth < 16; depth++ {
+        resp, err := r.query(nameservers[rand.Intn(len(nameservers))], name, qtype)
+        if err != nil {
+            return nil, err
+        }
+
+        flags := UnpackFlags(resp.Header.Flags)
+
+        switch flags.ResponseCode {
+        case RCodeNoError:
+        case RCodeNXDomain:
+            return nil, ErrNameNotFound // the name genuinely does not exist
+        default:
+            return nil, fmt.Errorf("server returned rcode %d", flags.ResponseCode)
+        }
+
+        // An authoritative answer ends the walk.
+        if len(resp.Answers) > 0 {
+            r.cache.Put(name, qtype, resp)
+            return resp, nil
+        }
+
+        // Otherwise we were handed a referral. Prefer glue records in the
+        // additional section — resolving the NS names ourselves would mean
+        // recursing, and for names inside the zone we are trying to reach,
+        // that recursion has nowhere to bottom out.
+        next := glueAddresses(resp)
+        if len(next) == 0 {
+            resolved, err := r.resolveNSNames(resp.Authority)
+            if err != nil {
+                return nil, err
+            }
+            next = resolved
+        }
+        if len(next) == 0 {
+            return nil, ErrNoNameservers
+        }
+
+        nameservers = next
+    }
+
+    return nil, ErrTooManyReferrals
+}
+```
+
+The comment about glue is worth dwelling on. If `example.com`'s nameserver is `ns1.example.com`, then to look up `example.com` you need `ns1.example.com`, and to look up `ns1.example.com` you need... `example.com`. The parent zone breaks the cycle by including the address directly in the additional section. That is what glue records are for, and it is why registrars ask for nameserver IPs and not just names.
+
+---
+
+## The 512-byte problem
+
+DNS was specified over UDP with a 512-byte payload limit. That was generous in 1987 and is not now — DNSSEC signatures alone can blow past it.
+
+There are two escape hatches, and a resolver needs both:
+
+```go title="dns/transport.go" showLineNumbers
+func (r *Resolver) query(server, name string, qtype RecordType) (*Message, error) {
+    req := r.buildQuery(name, qtype)
+
+    // EDNS0: an OPT pseudo-record in the additional section advertising a
+    // larger buffer. 1232 bytes avoids IPv6 fragmentation, which is the
+    // number the DNS Flag Day 2020 consensus landed on.
+    req.Additional = append(req.Additional, OPTRecord(1232))
+
+    resp, err := r.exchangeUDP(server, req)
+    if err != nil {
+        return nil, err
+    }
+
+    // TC set means the answer did not fit. Retry over TCP, where the message
+    // is preceded by a two-byte length and can be up to 64KB.
+    if UnpackFlags(resp.Header.Flags).Truncated {
+        return r.exchangeTCP(server, req)
+    }
+
+    return resp, nil
+}
+
+func (r *Resolver) exchangeTCP(server string, req *Message) (*Message, error) {
+    conn, err := net.DialTimeout("tcp", server, r.timeout)
+    if err != nil {
+        return nil, err
+    }
+    defer conn.Close()
+
+    payload, err := req.Marshal()
+    if err != nil {
+        return nil, err
+    }
+
+    framed := make([]byte, 2+len(payload))
+    binary.BigEndian.PutUint16(framed[0:2], uint16(len(payload)))
+    copy(framed[2:], payload)
+
+    if _, err := conn.Write(framed); err != nil {
+        return nil, err
+    }
+
+    var length uint16
+    if err := binary.Read(conn, binary.BigEndian, &length); err != nil {
+        return nil, err
+    }
+
+    buf := make([]byte, length)
+    if _, err := io.ReadFull(conn, buf); err != nil {
+        return nil, err
+    }
+    return ParseMessage(buf)
+}
+```
+
+Anyone who told you "DNS is UDP" was giving you the first half of a sentence.
+
+---
+
+## Caching, and why TTLs are a liability
+
+Without caching, every page load would walk from the root. With it, the vast majority of queries never leave the resolver.
+
+```go title="dns/cache.go" showLineNumbers
+type entry struct {
+    msg       *Message
+    expiresAt time.Time
+}
+
+type Cache struct {
+    mu      sync.RWMutex
+    entries map[string]entry
+}
+
+func key(name string, qtype RecordType) string {
+    // Names are case-insensitive on the wire, so normalise or you will
+    // cache Example.com and example.com separately.
+    return strings.ToLower(name) + "|" + strconv.Itoa(int(qtype))
+}
+
+func (c *Cache) Get(name string, qtype RecordType) (*Message, bool) {
+    c.mu.RLock()
+    e, ok := c.entries[key(name, qtype)]
+    c.mu.RUnlock()
+
+    if !ok || time.Now().After(e.expiresAt) {
+        return nil, false
+    }
+    return e.msg, true
+}
+
+func (c *Cache) Put(name string, qtype RecordType, msg *Message) {
+    ttl := minTTL(msg.Answers)
+    if ttl == 0 {
+        return // never cache a zero TTL
+    }
+    // Cap it. A hostile or misconfigured server can return a TTL of
+    // 4294967295 seconds, which is 136 years.
+    if ttl > 86400 {
+        ttl = 86400
+    }
+
+    c.mu.Lock()
+    c.entries[key(name, qtype)] = entry{
+        msg:       msg,
+        expiresAt: time.Now().Add(time.Duration(ttl) * time.Second),
+    }
+    c.mu.Unlock()
+}
+```
+
+The operational consequence is the thing to internalise: **TTL is how long your mistakes last**. Before any migration, drop TTLs to 60 seconds a day ahead, do the change, then put them back. Doing this is the difference between a five-minute cutover and the 24-hour one I did for a domain migration once, watching stale records expire at their own pace.
+
+And it cuts the other way. Deleting a record does not remove it from the world — it removes it from the authoritative source, and every resolver holding a copy keeps serving it until its TTL runs out. Which is roughly the shape of the AWS incident that sent me down this path.
+
 ---
 
 ## Results
 
-### 1. Lookup real domains
+### 1. Real domains
 
-The server responds with the domain name and IP for address for amazon.com
-
-<br/>
-<img src="/image/lookup_amazon.png" alt="lookup output for amazon.com"/>
+The server resolves and returns the address for amazon.com:
 
 <br/>
-Same thing happens for google.com
+<img src="/image/lookup_amazon.png" alt="resolver output for amazon.com"/>
 <br/>
 
-<img src="/image/lookup_google.png" alt="lookup output for google.com"/>
+And the same for google.com:
+
+<br/>
+<img src="/image/lookup_google.png" alt="resolver output for google.com"/>
 <br/>
 
-### 2. Lookup fake domains
-<br/>
+### 2. Domains that do not exist
 
-<img src="/image/lookup_fake_domain.png" alt="lookup output for invalid domain"/>
+An NXDOMAIN response, distinguished from a failure — the name does not exist, as opposed to the server being unable to tell you:
+
+<br/>
+<img src="/image/lookup_fake_domain.png" alt="resolver output for an invalid domain"/>
 <br/>
 
 ---
 
-## Conclusion
-DNS resolution is a layered process where record types serve distinct responsibilities, from translating names to IP addresses (`A`, `AAAA`) to routing mail (`MX`) and creating aliases (`CNAME`). Building this project made those responsibilities concrete and highlighted how small protocol details shape reliability and user experience.
+## What building it taught me
 
-### Future Improvements
-* Write DSN parser
-* Implement TLS/SSL support
-* Add support for other DNS record types (TXT, CNAME, etc.)
+The protocol is small. The header is twelve bytes, there are maybe ten record types worth implementing, and the resolution algorithm fits on a page. What is not small is the accumulated weight of decisions made when 512 bytes was a lot of memory: compression pointers that need loop guards, a class field that only ever holds one value, thirteen root servers because fourteen would not fit.
+
+The security properties follow from the same history. There is no authentication in what I wrote above — any packet with a matching ID and port is accepted, which is the entire basis of cache poisoning. DNSSEC bolts signatures on afterwards, and DNS-over-HTTPS gives up on fixing the protocol and wraps it in one that already has TLS.
+
+Mostly, though, I stopped thinking of DNS as a lookup table. It is a distributed, cached, eventually-consistent database with no transactions and a propagation delay you configure yourself. Treated as a lookup table it will surprise you, usually at the worst moment.
+
+### Future improvements
+
+* DNSSEC validation — chase the chain of trust from the root's DS records
+* Serve-stale (RFC 8767): return expired entries when the authoritative server is unreachable, rather than failing
+* A proper zone file parser, so it can be authoritative and not just a resolver
+* Query pipelining over the TCP path
+* 0x20 encoding — randomise the case of the query name and require it echoed back, which adds entropy against spoofing at zero protocol cost
+
+### Further reading
+
+* [RFC 1035](https://www.rfc-editor.org/rfc/rfc1035) — the original spec, and unusually readable for an RFC
+* [RFC 6891](https://www.rfc-editor.org/rfc/rfc6891) — EDNS0, which is how anything modern fits on the wire
+* [Julia Evans: How DNS works](https://jvns.ca/blog/2022/11/01/how-updating-dns-works/) — the clearest explanation of propagation I have found
+* [DNS Flag Day 2020](https://dnsflagday.net/2020/) — why 1232 and not 4096

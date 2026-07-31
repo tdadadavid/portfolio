@@ -15,11 +15,12 @@ export const blogMetadata: Record<string, BlogMetadata> = {
     },
     'dns': {
         title: 'Domain Name System (DNS)',
-        summary: 'DNS',
+        summary:
+            'What is actually on the wire: the header, label encoding and compression pointers, walking from root to authoritative, the 512-byte limit, and why TTLs are how long your mistakes last. Built as a resolver in Go.',
         publishedOn: '2025-10-27T19:16:03',
         year: '2025',
         slug: 'dns-server-in-go',
-        tags: ['dns', 'go'],
+        tags: ['dns', 'go', 'networking', 'protocols'],
         status: 'done',
     },
     'wal': {
@@ -30,7 +31,7 @@ export const blogMetadata: Record<string, BlogMetadata> = {
       year: '2026',
       slug: 'wal',
       tags: ['wal', 'go', 'db', 'storage', 'distributed-systems'],
-      status: 'done'
+      status: 'draft'
     },
     'SNA': {
       'title': "Shared-nothing-architecture",

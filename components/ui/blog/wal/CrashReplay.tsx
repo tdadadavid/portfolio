@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, Figure } from './Figure';
+import { Button, Figure } from '../Figure';
 
 interface Op {
     lsn: number;

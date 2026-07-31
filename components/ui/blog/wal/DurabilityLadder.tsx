@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, Figure } from './Figure';
+import { Button, Figure } from '../Figure';
 
 type Mode = 'none' | 'write' | 'fsync' | 'group';
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Button, Figure } from './Figure';
+import { Button, Figure } from '../Figure';
 
 const STAGES = [
     { id: 'client', label: 'client', note: 'PUT user:1 = "ada"' },

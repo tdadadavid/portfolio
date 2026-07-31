@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Figure } from './Figure';
+import { Figure } from '../Figure';
 
 const FIELDS = [
     {
