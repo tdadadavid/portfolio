@@ -21,7 +21,7 @@ export const blogMetadata: Record<string, BlogMetadata> = {
         year: '2025',
         slug: 'dns-server-in-go',
         tags: ['dns', 'go', 'networking', 'protocols'],
-        status: 'done',
+        status: 'in-progress',
     },
     'wal': {
       title: 'Write-Ahead Logs',
@@ -31,7 +31,7 @@ export const blogMetadata: Record<string, BlogMetadata> = {
       year: '2026',
       slug: 'wal',
       tags: ['wal', 'go', 'db', 'storage', 'distributed-systems'],
-      status: 'draft'
+      status: 'in-progress'
     },
     'SNA': {
       'title': "Shared-nothing-architecture",
