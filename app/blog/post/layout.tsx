@@ -6,8 +6,10 @@ import { notFound, usePathname } from 'next/navigation';
 import { TerminalWindow } from '@/components/layout/TerminalWindow';
 import { CommandLine } from '@/components/ui/shell/CommandLine';
 import { PagerProgress } from '@/components/ui/blog/PagerProgress';
+import { ShareBar } from '@/components/ui/blog/ShareBar';
 import { UnpublishedNotice } from '@/components/ui/blog/UnpublishedNotice';
 import { getBlogMetadata, getReadableBlogs, isReadable } from '@/lib/blogs';
+import info from '@/misc/info';
 import type { BlogStatus } from '@/types/blog.type';
 import '../../code.css';
 
@@ -70,6 +72,12 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
                         {blog.tags.join(' · ')}
                     </span>
                 </header>
+
+                <ShareBar
+                    title={blog.title}
+                    summary={blog.summary}
+                    url={`${info.url}/blog/post/${slug}`}
+                />
 
                 <div className="pager-body pager-prose">{children}</div>
 

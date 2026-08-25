@@ -8,6 +8,10 @@ export interface BlogMetadata {
     slug: string;
     tags: string[];
     status: BlogStatus;
+    coverImage?: {
+        src: string;
+        alt: string;
+    };
 }
 
 export interface Blog {

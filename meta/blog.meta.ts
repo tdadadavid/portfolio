@@ -4,6 +4,20 @@ import { BlogMetadata } from '@/types/blog.type';
 // automatically.
 // The object key must still be set to the directory name.
 export const blogMetadata: Record<string, BlogMetadata> = {
+    'busy-waiting': {
+        title: 'Busy-Waiting: When Doing Nothing Uses Everything',
+        summary:
+            'Why a thread can do no useful work and still consume an entire CPU core — and how condition variables replace repeated polling with an efficient sleep-and-wake protocol.',
+        publishedOn: '2026-08-25T12:00:00.000Z',
+        year: '2026',
+        slug: 'busy-waiting',
+        tags: ['concurrency', 'operating-systems', 'go', 'synchronization'],
+        status: 'done',
+        coverImage: {
+            src: '/image/busy-waiting-cover.webp',
+            alt: 'Network cables connected to rows of servers in a data centre',
+        },
+    },
     'raft': {
         title: 'Raft',
         summary: 'Raft',

@@ -1,6 +1,6 @@
 const info = {
     me: 'òbàdàfídì',
-    url: 'https://www.obadafidi.com',
+    url: 'https://www.obadafidi.tech',
     shortcutIcon: 'icon.svg',
     github: 'https://github.com/tdadadavid',
     email: 'davidtofunmidada@gmail.com',

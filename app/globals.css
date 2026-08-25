@@ -139,6 +139,148 @@ a {
     border-bottom: 1px solid var(--paper-line-strong);
 }
 
+.share-bar {
+    display: flex;
+    align-items: center;
+    max-width: calc(var(--measure) + 6ch);
+    margin: -8px 0 24px;
+    font-family: var(--font-mono);
+}
+
+.share-bar__trigger,
+.share-modal__close {
+    cursor: pointer;
+    border: 1px solid var(--paper-line-strong);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--term-blue);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    transition:
+        color 160ms ease,
+        border-color 160ms ease,
+        background 160ms ease;
+}
+
+.share-bar__trigger {
+    padding: 6px 10px;
+}
+
+.share-bar__trigger:hover,
+.share-modal__close:hover {
+    border-color: var(--term-blue);
+    color: var(--paper-bright);
+    background: color-mix(in oklab, var(--term-blue) 8%, transparent);
+}
+
+.share-modal__backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: rgb(0 0 0 / 0.68);
+    backdrop-filter: blur(3px);
+    animation: share-fade-in 180ms ease-out both;
+}
+
+.share-modal {
+    width: min(440px, 100%);
+    max-height: calc(100dvh - 40px);
+    overflow-y: auto;
+    border: 1px solid var(--paper-line-strong);
+    border-radius: 6px;
+    padding: 18px;
+    background: var(--paper-raised);
+    box-shadow: var(--shadow-strong);
+    animation: share-modal-in 200ms ease-out both;
+}
+
+.share-modal__head,
+.share-modal__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.share-modal__title {
+    color: var(--paper-bright);
+    font-size: 13px;
+}
+
+.share-modal__description {
+    margin-top: 4px;
+    color: var(--paper-faint);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.share-modal__close {
+    flex: 0 0 auto;
+    width: 30px;
+    height: 30px;
+    color: var(--paper-muted);
+    font-size: 18px;
+    line-height: 1;
+}
+
+.share-modal__options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.share-modal__option {
+    border-color: var(--paper-line-strong);
+    background: var(--paper-soft);
+    color: var(--paper-muted);
+    font-family: var(--font-mono);
+}
+
+.share-modal__option:hover {
+    border-color: var(--term-blue);
+    color: var(--paper-bright);
+    background: color-mix(in oklab, var(--term-blue) 8%, var(--paper-soft));
+}
+
+.share-modal__status {
+    min-height: 1.5em;
+    margin-top: 12px;
+    color: var(--paper-faint);
+    font-family: var(--font-mono);
+    font-size: 10px;
+}
+
+@keyframes share-fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes share-modal-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+    }
+}
+
+@media (max-width: 440px) {
+    .share-modal__options {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .share-modal,
+    .share-modal__backdrop {
+        animation: none;
+    }
+}
+
 .pager-body {
     counter-reset: line;
     max-width: calc(var(--measure) + 6ch);
@@ -150,6 +292,10 @@ a {
 }
 
 @media (min-width: 900px) {
+    .share-bar {
+        margin-left: 6ch;
+    }
+
     .pager-body {
         padding-left: 6ch;
     }
