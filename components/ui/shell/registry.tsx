@@ -369,7 +369,9 @@ export const runCommand = (raw: string, ctx: ShellContext): CommandResult | 'CLE
         }
 
         case 'cd': {
-            if (!arg || arg === '~' || arg === '/') {
+            const directory = arg?.replace(/^~?\//, '').replace(/\/$/, '');
+
+            if (!arg || arg === '~' || arg === '/' || directory === 'home') {
                 ctx.navigate('/');
                 return <div className="ink-muted mt-1">→ /</div>;
             }
@@ -379,7 +381,7 @@ export const runCommand = (raw: string, ctx: ShellContext): CommandResult | 'CLE
                 return <div className="ink-muted mt-1">→ {href}</div>;
             }
 
-            const target = ROUTES.find(route => route.name === arg.replace(/\/$/, ''));
+            const target = ROUTES.find(route => route.name === directory);
             if (target) {
                 ctx.navigate(target.href);
                 return <div className="ink-muted mt-1">→ {target.href}</div>;
