@@ -123,7 +123,7 @@ const Help = () => (
             </div>
         ))}
         <div className="ink-faint pt-1">
-            tab completes · ↑ recalls · ctrl/cmd + \ splits · or just click anything blue
+            tab completes · ↑ recalls · ctrl/cmd + \ adds a pane · maximum four
         </div>
     </div>
 );

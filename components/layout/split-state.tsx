@@ -2,29 +2,49 @@
 
 import { createContext, useContext, type ReactNode } from 'react';
 
-export type ActivePane = 'primary' | 'secondary';
+export type PaneTheme = 'dark' | 'blue' | 'paper' | 'transparent';
+
+export interface PaneState {
+    id: number;
+    path: string;
+    theme: PaneTheme;
+}
+
+export const MAX_PANES = 4;
 
 export const PANE_ROUTES = [
-    { href: '/', label: '~ / home' },
-    { href: '/works', label: '~/works' },
-    { href: '/blog', label: '~/writing' },
-    { href: '/resume', label: '~/resume' },
-    { href: '/contact', label: '~/contact' },
-    { href: '/blog/post/cpu-pipelining', label: '~/writing/cpu-pipelining.md' },
-    { href: '/blog/post/busy-waiting', label: '~/writing/busy-waiting.md' },
+    { href: '/', label: '~ / home', navLabel: '/home' },
+    { href: '/works', label: '~/works', navLabel: '/works' },
+    { href: '/blog', label: '~/writing', navLabel: '/blog' },
+    { href: '/resume', label: '~/resume', navLabel: '/resume' },
+    { href: '/contact', label: '~/contact', navLabel: '/contact' },
+    {
+        href: '/blog/post/cpu-pipelining',
+        label: '~/writing/cpu-pipelining.md',
+        navLabel: '/cpu-pipelining',
+    },
+    {
+        href: '/blog/post/busy-waiting',
+        label: '~/writing/busy-waiting.md',
+        navLabel: '/busy-waiting',
+    },
 ] as const;
+
+export const PANE_NAV_ROUTES = PANE_ROUTES.slice(0, 5);
 
 interface SplitWorkspaceValue {
     splitOpen: boolean;
-    toggleSplit: () => void;
-    closeSplit: () => void;
-    secondaryPath: string;
-    setSecondaryPath: (path: string) => void;
-    activePane: ActivePane;
-    setActivePane: (pane: ActivePane) => void;
-    ratio: number;
-    setRatio: (ratio: number) => void;
-    secondaryContent: ReactNode;
+    panes: PaneState[];
+    activePane: number;
+    setActivePane: (paneId: number) => void;
+    addPane: () => void;
+    closePane: (paneId: number) => void;
+    setPanePath: (paneId: number, path: string) => void;
+    setPaneTheme: (paneId: number, theme: PaneTheme) => void;
+    columnRatio: number;
+    setColumnRatio: (ratio: number) => void;
+    rowRatio: number;
+    setRowRatio: (ratio: number) => void;
 }
 
 export const SplitWorkspaceContext = createContext<SplitWorkspaceValue | null>(null);

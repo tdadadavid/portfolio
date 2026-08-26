@@ -1,16 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useCallback, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useId, useRef, useState, type ReactNode } from 'react';
 
 import { COMMAND_NAMES, entriesFor, runCommand, type Cwd } from '@/components/ui/shell/registry';
 import { usePaneNavigation } from '@/components/layout/split-state';
-
-interface Block {
-    id: number;
-    command: string;
-    output: ReactNode;
-}
+import { usePaneShellSession, type ShellBlock } from './session';
 
 interface CommandLineProps {
     cwd: Cwd;
@@ -29,14 +24,24 @@ export const Prompt = ({ cwd }: { cwd: Cwd }) => (
 export const CommandLine = ({ cwd, children, autoFocus = false }: CommandLineProps) => {
     const router = useRouter();
     const paneNavigate = usePaneNavigation();
-    const [blocks, setBlocks] = useState<Block[]>([]);
-    const [input, setInput] = useState('');
-    const [history, setHistory] = useState<string[]>([]);
-    const [historyIdx, setHistoryIdx] = useState(-1);
-    const nextId = useRef(0);
+    const paneSession = usePaneShellSession();
+    const [localBlocks, setLocalBlocks] = useState<ShellBlock[]>([]);
+    const [localInput, setLocalInput] = useState('');
+    const [localHistory, setLocalHistory] = useState<string[]>([]);
+    const [localHistoryIdx, setLocalHistoryIdx] = useState(-1);
+    const localNextId = useRef(0);
+    const blocks = paneSession?.blocks ?? localBlocks;
+    const setBlocks = paneSession?.setBlocks ?? setLocalBlocks;
+    const input = paneSession?.input ?? localInput;
+    const setInput = paneSession?.setInput ?? setLocalInput;
+    const history = paneSession?.history ?? localHistory;
+    const setHistory = paneSession?.setHistory ?? setLocalHistory;
+    const historyIdx = paneSession?.historyIdx ?? localHistoryIdx;
+    const setHistoryIdx = paneSession?.setHistoryIdx ?? setLocalHistoryIdx;
+    const nextId = paneSession?.nextId ?? localNextId;
     const inputRef = useRef<HTMLInputElement>(null);
     const endRef = useRef<HTMLDivElement>(null);
-    const inputId = `shell-${cwd.replace(/[^a-z0-9]+/gi, '-')}`;
+    const inputId = useId();
 
     const submit = useCallback(
         (command: string) => {
@@ -49,12 +54,12 @@ export const CommandLine = ({ cwd, children, autoFocus = false }: CommandLinePro
             if (output === 'CLEARED') return;
             if (output === null) return;
 
-            setBlocks(prev => [...prev, { id: nextId.current++, command, output }]);
+            setBlocks(prev => [...prev, { id: nextId.current++, command, cwd, output }]);
             window.requestAnimationFrame(() =>
                 endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }),
             );
         },
-        [cwd, paneNavigate, router],
+        [cwd, nextId, paneNavigate, router, setBlocks],
     );
 
     const onSubmit = (event: React.FormEvent) => {
@@ -125,7 +130,7 @@ export const CommandLine = ({ cwd, children, autoFocus = false }: CommandLinePro
             {blocks.map(block => (
                 <div key={block.id} className="mt-3">
                     <div className="flex flex-wrap items-baseline gap-x-2">
-                        <Prompt cwd={cwd} />
+                        <Prompt cwd={block.cwd} />
                         <span className="term-cmd">{block.command}</span>
                     </div>
                     {block.output}
