@@ -13,6 +13,10 @@ export const blogMetadata: Record<string, BlogMetadata> = {
         slug: 'cpu-pipelining',
         tags: ['computer-architecture', 'cpu', 'pipelining', 'performance'],
         status: 'done',
+        coverImage: {
+            src: '/image/cpu-pipelining-cover.webp',
+            alt: 'Industrial robots working along an automated factory conveyor',
+        },
     },
     'busy-waiting': {
         title: 'Busy-Waiting: When Doing Nothing Uses Everything',
