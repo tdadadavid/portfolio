@@ -35,7 +35,9 @@ const Segments = ({ content }: { content: Inline[] }) => (
                     <a
                         key={idx}
                         href={segment.href}
-                        target={external && !segment.href.startsWith('mailto:') ? '_blank' : undefined}
+                        target={
+                            external && !segment.href.startsWith('mailto:') ? '_blank' : undefined
+                        }
                         rel={external ? 'noopener noreferrer' : undefined}
                         data-href={segment.href}
                         className="resume-link underline decoration-dotted underline-offset-[3px] hover:decoration-solid"
@@ -199,9 +201,7 @@ const BlockView = ({ block, sectionName }: { block: Block; sectionName: string }
                                             className="ink-muted pr-6 align-top"
                                             style={{
                                                 color:
-                                                    cellIdx === 0
-                                                        ? 'var(--paper-ink)'
-                                                        : undefined,
+                                                    cellIdx === 0 ? 'var(--paper-ink)' : undefined,
                                             }}
                                         >
                                             <Segments content={cell} />
@@ -225,12 +225,7 @@ const BlockView = ({ block, sectionName }: { block: Block; sectionName: string }
             );
 
         case 'rule':
-            return (
-                <hr
-                    className="indent my-3"
-                    style={{ borderColor: 'var(--paper-line)' }}
-                />
-            );
+            return <hr className="indent my-3" style={{ borderColor: 'var(--paper-line)' }} />;
 
         default:
             return (
@@ -268,7 +263,7 @@ const RunningLine = ({ left, middle, right }: { left: string; middle: string; ri
 
 /* ------------------------------------------------------------------- page */
 
-export const ManPage = ({ resume }: { resume: Resume }) => {
+export const ManPageContent = ({ resume }: { resume: Resume }) => {
     useEffect(() => {
         setResumeSections(resume.sections.map(section => section.name).filter(Boolean));
     }, [resume]);
@@ -283,68 +278,72 @@ export const ManPage = ({ resume }: { resume: Resume }) => {
         : 'unreleased';
 
     return (
-        <TerminalWindow
-            currentPage="resume"
-            path="~/resume"
-            status={
-                <>
-                    <a href="/resume.pdf" style={{ color: 'var(--term-blue)' }}>
-                        pdf
-                    </a>
-                    <span className="hidden sm:inline">{resume.sections.length} sections</span>
-                </>
-            }
-        >
-            <CommandLine cwd="~/resume">
-                <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                >
-                    <div className="flex flex-wrap items-baseline gap-x-2">
-                        <Prompt cwd="~/resume" />
-                        <span className="term-cmd">man david</span>
+        <CommandLine cwd="~/resume">
+            <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+            >
+                <div className="flex flex-wrap items-baseline gap-x-2">
+                    <Prompt cwd="~/resume" />
+                    <span className="term-cmd">man david</span>
+                </div>
+
+                <article className="manpage mt-4">
+                    <div className="border-b pb-2" style={{ borderColor: 'var(--paper-line)' }}>
+                        <RunningLine left={title} middle="User Commands" right={title} />
                     </div>
 
-                    <article className="manpage mt-4">
-                        <div className="border-b pb-2" style={{ borderColor: 'var(--paper-line)' }}>
-                            <RunningLine left={title} middle="User Commands" right={title} />
-                        </div>
+                    <section className="mt-5">
+                        <h2 className="ink-muted text-[12.5px] tracking-[0.08em]">NAME</h2>
+                        <p className="indent mt-1" style={{ color: 'var(--paper-bright)' }}>
+                            {short.toLowerCase()}
+                            {resume.tagline.length > 0 && (
+                                <span className="ink-muted">
+                                    {' — '}
+                                    <Segments content={resume.tagline} />
+                                </span>
+                            )}
+                        </p>
+                    </section>
 
-                        <section className="mt-5">
-                            <h2 className="ink-muted text-[12.5px] tracking-[0.08em]">NAME</h2>
-                            <p className="indent mt-1" style={{ color: 'var(--paper-bright)' }}>
-                                {short.toLowerCase()}
-                                {resume.tagline.length > 0 && (
-                                    <span className="ink-muted">
-                                        {' — '}
-                                        <Segments content={resume.tagline} />
-                                    </span>
-                                )}
-                            </p>
-                        </section>
+                    {resume.sections.map((section, idx) => (
+                        <Section key={`${section.name}-${idx}`} section={section} />
+                    ))}
 
-                        {resume.sections.map((section, idx) => (
-                            <Section key={`${section.name}-${idx}`} section={section} />
-                        ))}
+                    <div
+                        className="mt-8 border-t pt-2"
+                        style={{ borderColor: 'var(--paper-line)' }}
+                    >
+                        <RunningLine
+                            left={info.url.replace('https://www.', '')}
+                            middle={updated}
+                            right={title}
+                        />
+                    </div>
+                </article>
 
-                        <div
-                            className="mt-8 border-t pt-2"
-                            style={{ borderColor: 'var(--paper-line)' }}
-                        >
-                            <RunningLine
-                                left={info.url.replace('https://www.', '')}
-                                middle={updated}
-                                right={title}
-                            />
-                        </div>
-                    </article>
-
-                    <p className="ink-faint mt-6 text-[11px]">
-                        open --resume for the pdf · ⌘P prints a plain copy with URLs expanded
-                    </p>
-                </motion.div>
-            </CommandLine>
-        </TerminalWindow>
+                <p className="ink-faint mt-6 text-[11px]">
+                    open --resume for the pdf · ⌘P prints a plain copy with URLs expanded
+                </p>
+            </motion.div>
+        </CommandLine>
     );
 };
+
+export const ManPage = ({ resume }: { resume: Resume }) => (
+    <TerminalWindow
+        currentPage="resume"
+        path="~/resume"
+        status={
+            <>
+                <a href="/resume.pdf" style={{ color: 'var(--term-blue)' }}>
+                    pdf
+                </a>
+                <span className="hidden sm:inline">{resume.sections.length} sections</span>
+            </>
+        }
+    >
+        <ManPageContent resume={resume} />
+    </TerminalWindow>
+);

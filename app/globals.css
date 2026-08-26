@@ -563,6 +563,213 @@ a {
     border-radius: 5px 5px 0 0;
 }
 
+.term-split-button {
+    display: inline-flex;
+    height: 28px;
+    cursor: pointer;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 0 7px;
+    background: transparent;
+    color: var(--paper-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    transition:
+        border-color 160ms ease,
+        background 160ms ease,
+        color 160ms ease;
+}
+
+.term-split-button:hover,
+.term-split-button[aria-pressed='true'] {
+    border-color: var(--paper-line-strong);
+    background: var(--paper-accent-soft);
+    color: var(--term-blue);
+}
+
+.term-page--split {
+    height: calc(100dvh - 24px);
+    min-height: 520px;
+    overflow: hidden;
+}
+
+.term-split-workspace {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+}
+
+.term-split-grid {
+    display: grid;
+    min-height: 0;
+    flex: 1;
+    grid-template-columns: minmax(0, var(--split-ratio)) 7px minmax(
+            0,
+            calc(100% - var(--split-ratio) - 7px)
+        );
+    background: var(--paper-line-strong);
+}
+
+.term-pane {
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    flex-direction: column;
+    background: var(--paper-raised);
+    box-shadow: inset 0 0 0 1px transparent;
+    transition: box-shadow 160ms ease;
+}
+
+.term-pane--active {
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--term-blue) 56%, transparent);
+}
+
+.term-pane-head {
+    display: flex;
+    min-height: 31px;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--paper-line-strong);
+    padding: 4px 9px;
+    background: var(--paper-soft);
+    color: var(--paper-muted);
+    font-family: var(--font-mono);
+    font-size: 10px;
+}
+
+.term-pane--active .term-pane-focus {
+    background: var(--term-green);
+    box-shadow: 0 0 8px color-mix(in oklab, var(--term-green) 58%, transparent);
+}
+
+.term-pane-focus {
+    width: 6px;
+    height: 6px;
+    flex: 0 0 auto;
+    border-radius: 999px;
+    background: var(--paper-faint);
+    transition:
+        background 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.term-pane-scroll {
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-color: var(--paper-line-strong) transparent;
+}
+
+.term-pane-select {
+    min-width: 0;
+    max-width: calc(100% - 32px);
+    cursor: pointer;
+    appearance: none;
+    overflow: hidden;
+    border: 0;
+    padding: 2px 22px 2px 2px;
+    background-color: transparent;
+    background-image:
+        linear-gradient(45deg, transparent 50%, var(--paper-faint) 50%),
+        linear-gradient(135deg, var(--paper-faint) 50%, transparent 50%);
+    background-position:
+        calc(100% - 9px) 50%,
+        calc(100% - 5px) 50%;
+    background-size:
+        4px 4px,
+        4px 4px;
+    background-repeat: no-repeat;
+    color: var(--term-blue);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-overflow: ellipsis;
+}
+
+.term-pane-select:focus-visible,
+.term-pane-close:focus-visible,
+.term-split-button:focus-visible,
+.term-split-divider:focus-visible {
+    outline: 1px solid var(--term-blue);
+    outline-offset: 1px;
+}
+
+.term-pane-close {
+    display: grid;
+    width: 23px;
+    height: 23px;
+    margin-left: auto;
+    flex: 0 0 auto;
+    cursor: pointer;
+    place-items: center;
+    border: 0;
+    border-radius: 3px;
+    background: transparent;
+    color: var(--paper-faint);
+    font-family: var(--font-mono);
+    font-size: 17px;
+}
+
+.term-pane-close:hover {
+    background: var(--paper-accent-soft);
+    color: var(--term-red);
+}
+
+.term-split-divider {
+    position: relative;
+    z-index: 5;
+    cursor: col-resize;
+    touch-action: none;
+    background: var(--paper-line-strong);
+}
+
+.term-split-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 2px;
+    width: 3px;
+    height: 38px;
+    border-radius: 999px;
+    background: var(--paper-faint);
+    opacity: 0.48;
+    transform: translateY(-50%);
+    transition:
+        background 160ms ease,
+        opacity 160ms ease;
+}
+
+.term-split-divider:hover::after,
+.term-split-divider--dragging::after,
+.term-split-divider:focus-visible::after {
+    background: var(--term-blue);
+    opacity: 1;
+}
+
+.term-split-tabs {
+    display: none;
+}
+
+.term-page--split .pager-body,
+.term-page--split .share-bar {
+    max-width: 100%;
+}
+
+.term-page--split .pager-body {
+    padding-left: 0;
+}
+
+.term-page--split .pager-body > *::before {
+    display: none;
+}
+
+.term-pane .term-row > .hidden {
+    display: none !important;
+}
+
 .term-content {
     flex: 1;
     padding: 18px 14px 28px;
@@ -574,6 +781,62 @@ a {
     .term-content {
         padding: 24px 22px 36px;
         font-size: 13.5px;
+    }
+
+    .term-page--split {
+        height: calc(100dvh - 40px);
+    }
+}
+
+@media (max-width: 760px) {
+    .term-page--split {
+        min-height: 0;
+    }
+
+    .term-split-tabs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        border-bottom: 1px solid var(--paper-line-strong);
+        background: var(--paper-soft);
+    }
+
+    .term-split-tabs button {
+        min-width: 0;
+        cursor: pointer;
+        overflow: hidden;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        padding: 7px 9px 6px;
+        background: transparent;
+        color: var(--paper-faint);
+        font-family: var(--font-mono);
+        font-size: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .term-split-tabs button[aria-selected='true'] {
+        border-bottom-color: var(--term-blue);
+        color: var(--term-blue);
+    }
+
+    .term-split-grid {
+        display: block;
+        overflow: hidden;
+        background: var(--paper-raised);
+    }
+
+    .term-pane {
+        display: none;
+        height: 100%;
+    }
+
+    .term-pane[data-mobile-visible='true'] {
+        display: flex;
+    }
+
+    .term-split-divider {
+        display: none;
     }
 }
 
@@ -689,7 +952,6 @@ a.term-row:focus-visible {
     font-family: var(--font-code), 'Fira Code', monospace;
     font-size: 0.9em;
 }
-
 
 /*
  * Code block presentation lives entirely in code.css. Nothing here may set

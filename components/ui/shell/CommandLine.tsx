@@ -3,12 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useRef, useState, type ReactNode } from 'react';
 
-import {
-    COMMAND_NAMES,
-    entriesFor,
-    runCommand,
-    type Cwd,
-} from '@/components/ui/shell/registry';
+import { COMMAND_NAMES, entriesFor, runCommand, type Cwd } from '@/components/ui/shell/registry';
+import { usePaneNavigation } from '@/components/layout/split-state';
 
 interface Block {
     id: number;
@@ -32,6 +28,7 @@ export const Prompt = ({ cwd }: { cwd: Cwd }) => (
 
 export const CommandLine = ({ cwd, children, autoFocus = false }: CommandLineProps) => {
     const router = useRouter();
+    const paneNavigate = usePaneNavigation();
     const [blocks, setBlocks] = useState<Block[]>([]);
     const [input, setInput] = useState('');
     const [history, setHistory] = useState<string[]>([]);
@@ -45,7 +42,7 @@ export const CommandLine = ({ cwd, children, autoFocus = false }: CommandLinePro
         (command: string) => {
             const output = runCommand(command, {
                 cwd,
-                navigate: href => router.push(href),
+                navigate: href => (paneNavigate ? paneNavigate(href) : router.push(href)),
                 clear: () => setBlocks([]),
             });
 
@@ -57,7 +54,7 @@ export const CommandLine = ({ cwd, children, autoFocus = false }: CommandLinePro
                 endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }),
             );
         },
-        [cwd, router],
+        [cwd, paneNavigate, router],
     );
 
     const onSubmit = (event: React.FormEvent) => {

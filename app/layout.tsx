@@ -5,6 +5,7 @@ import info from '@/misc/info';
 import { ThemeProvider } from 'next-themes';
 import ogImageUrl from '@/misc/og';
 import { Analytics } from '@vercel/analytics/next';
+import { SplitWorkspaceProvider } from '@/components/layout/SplitWorkspaceProvider';
 
 const sans = Manrope({
     variable: '--font-sans',
@@ -66,7 +67,7 @@ export default function RootLayout({
         >
             <body className="antialiased">
                 <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false}>
-                    {children}
+                    <SplitWorkspaceProvider>{children}</SplitWorkspaceProvider>
                 </ThemeProvider>
                 <Analytics />
             </body>
