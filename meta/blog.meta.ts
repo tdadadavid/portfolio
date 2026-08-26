@@ -4,6 +4,16 @@ import { BlogMetadata } from '@/types/blog.type';
 // automatically.
 // The object key must still be set to the directory name.
 export const blogMetadata: Record<string, BlogMetadata> = {
+    'cpu-pipelining': {
+        title: 'CPU Pipelining, Explained with Robots',
+        summary:
+            'A visual explanation of how a CPU overlaps fetch, decode, and execute so that one instruction can finish on almost every clock tick.',
+        publishedOn: '2026-08-26T09:00:00.000Z',
+        year: '2026',
+        slug: 'cpu-pipelining',
+        tags: ['computer-architecture', 'cpu', 'pipelining', 'performance'],
+        status: 'done',
+    },
     'busy-waiting': {
         title: 'Busy-Waiting: When Doing Nothing Uses Everything',
         summary:
