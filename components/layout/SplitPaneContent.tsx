@@ -1,12 +1,12 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useEffect, useState, type MouseEvent, type ReactNode } from 'react';
+import { useEffect, useState, type MouseEvent } from 'react';
 
-import { UnpublishedNotice } from '@/components/ui/blog/UnpublishedNotice';
+import { PostView } from '@/components/ui/blog/PostView';
 import { ManPageContent } from '@/components/ui/resume/ManPage';
 import { CommandLine, Prompt } from '@/components/ui/shell/CommandLine';
-import { getBlogMetadata, getReadableBlogs, isReadable } from '@/lib/blogs';
+import { getBlogMetadata, getBlogSeries, getPostKey } from '@/lib/blogs';
 import type { Resume } from '@/lib/resume';
 import { EmbeddedPaneProvider, PaneNavigationProvider } from './split-state';
 
@@ -14,18 +14,8 @@ const PaneLoading = () => <p className="ink-faint">loading pane…</p>;
 
 const Home = dynamic(() => import('@/app/page'), { loading: PaneLoading });
 const Blog = dynamic(() => import('@/app/blog/page'), { loading: PaneLoading });
-const BusyWaitingPost = dynamic(() => import('@/app/blog/post/busy-waiting/page.mdx'), {
-    loading: PaneLoading,
-});
-const CpuPipeliningPost = dynamic(() => import('@/app/blog/post/cpu-pipelining/page.mdx'), {
-    loading: PaneLoading,
-});
 const Contact = dynamic(() => import('@/app/contact/page'), { loading: PaneLoading });
 const Works = dynamic(() => import('@/app/works/page'), { loading: PaneLoading });
-
-const Post = ({ children }: { children: ReactNode }) => (
-    <article className="pager-body pager-prose">{children}</article>
-);
 
 const MissingPane = ({ path }: { path: string }) => (
     <CommandLine cwd="~">
@@ -78,33 +68,9 @@ const resolveContent = (path: string) => {
     if (path === '/blog') return <Blog />;
     if (path === '/resume') return <ResumePane />;
     if (path === '/contact') return <Contact />;
-    if (path === '/blog/post/cpu-pipelining') {
-        return (
-            <Post>
-                <CpuPipeliningPost />
-            </Post>
-        );
-    }
-    if (path === '/blog/post/busy-waiting') {
-        return (
-            <Post>
-                <BusyWaitingPost />
-            </Post>
-        );
-    }
-
-    const match = path.match(/^\/blog\/post\/([^/]+)$/);
-    const blog = match ? getBlogMetadata(match[1]) : undefined;
-    if (blog && !isReadable(blog)) {
-        const slug = match![1];
-        return (
-            <UnpublishedNotice
-                blog={{ ...blog, slug: `post/${slug}` }}
-                file={`${slug}.md`}
-                others={getReadableBlogs()}
-            />
-        );
-    }
+    const postKey = getPostKey(path);
+    if (postKey && getBlogSeries(postKey)) return <Blog />;
+    if (postKey && getBlogMetadata(postKey)) return <PostView key={postKey} postKey={postKey} />;
 
     return <MissingPane path={path} />;
 };

@@ -1,15 +1,22 @@
-{/* ========================= SEO/METADATA =========================== */}
+export const post = {
+    "title": "Busy-Waiting: When Doing Nothing Uses Everything",
+    "summary": "Why a thread can do no useful work and still consume an entire CPU core — and how condition variables replace repeated polling with an efficient sleep-and-wake protocol.",
+    "publishedOn": "2026-08-25T12:00:00.000Z",
+    "tags": [
+        "concurrency",
+        "operating-systems",
+        "go",
+        "synchronization"
+    ],
+    "status": "done",
+    "coverImage": {
+        "src": "/image/busy-waiting-cover.webp",
+        "alt": "Network cables connected to rows of servers in a data centre"
+    }
+};
 
-import { buildPostMetadata } from '@/lib/blogs';
-import info from '@/misc/info';
 import { PollingLab } from '@/components/ui/blog/busy-waiting/PollingLab';
 import { WakeSet } from '@/components/ui/blog/busy-waiting/WakeSet';
-
-export const key = 'busy-waiting';
-
-export const metadata = buildPostMetadata(key, { me: info.me, icon: '/icon.svg' });
-
-{/* ================================================================== */}
 
 # Busy-Waiting: When Doing Nothing Uses Everything
 

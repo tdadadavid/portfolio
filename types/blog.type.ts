@@ -8,10 +8,20 @@ export interface BlogMetadata {
     slug: string;
     tags: string[];
     status: BlogStatus;
+    series?: string;
+    part?: number;
+    partCount?: number;
+    publishedParts?: number;
     coverImage?: {
         src: string;
         alt: string;
     };
+}
+
+export interface BlogSeries extends BlogMetadata {
+    parts: string[];
+    partCount: number;
+    publishedParts: number;
 }
 
 export interface Blog {

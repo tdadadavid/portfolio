@@ -42,6 +42,7 @@ const Row = ({ post }: { post: BlogMetadata }) => {
                     color: readable ? 'var(--term-blue)' : 'var(--paper-faint)',
                 }}
             >
+                {post.part ? <span className="ink-faint">Part {post.part} · </span> : null}
                 {post.title}
             </span>
             <span className="ink-faint hidden text-[11px] sm:inline">

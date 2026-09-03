@@ -1,6 +1,11 @@
 import createMDX from '@next/mdx';
 import remarkGfm from 'remark-gfm';
 import rehypePrettyCode from 'rehype-pretty-code';
+import { fileURLToPath } from 'node:url';
+import { BlogContentPlugin, generateBlogContent } from './scripts/blog-content.mjs';
+
+const projectRoot = fileURLToPath(new URL('.', import.meta.url));
+await generateBlogContent(projectRoot);
 
 /*
  * This file is .mjs on purpose.
@@ -15,6 +20,7 @@ import rehypePrettyCode from 'rehype-pretty-code';
 const nextConfig = {
     pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
     webpack(config) {
+        config.plugins.push(new BlogContentPlugin(projectRoot));
         config.module.rules.push({
             test: /\.svg$/,
             issuer: /\.[jt]sx?$/,

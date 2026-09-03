@@ -61,10 +61,12 @@ const readablePosts = () => getReadableBlogs();
 const postFile = (slug: string) => `${slug.replace(/^post\//, '')}.md`;
 
 /** Resolve a post by filename or slug, published or not. */
-const findPost = (arg: string) =>
-    getAllBlogs().find(
-        item => postFile(item.slug) === arg || item.slug.endsWith(arg.replace(/\.md$/, '')),
-    );
+const findPost = (arg: string) => {
+    const key = arg.replace(/\/$/, '').replace(/\.md$/, '').replace(/^post\//, '');
+    const posts = getAllBlogs();
+    return posts.find(item => item.slug === `post/${key}`)
+        ?? posts.find(item => item.slug.endsWith(`/${key}`));
+};
 
 /** Section names shown by `ls` inside ~/resume. Kept in sync by the page. */
 let resumeSections: string[] = [];
@@ -476,6 +478,12 @@ export const runCommand = (raw: string, ctx: ShellContext): CommandResult | 'CLE
 
         case 'open': {
             if (!arg) return <Err>open: missing operand</Err>;
+
+            const post = findPost(arg);
+            if (post) {
+                ctx.navigate(`/blog/${post.slug}`);
+                return <div className="ink-muted mt-1">→ /blog/{post.slug}</div>;
+            }
 
             const social = SOCIALS[arg];
             if (social) {

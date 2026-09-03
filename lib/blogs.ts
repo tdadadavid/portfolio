@@ -1,30 +1,42 @@
-import { blogMetadata } from '@/meta/blog.meta';
+import { blogMetadata, blogSeries } from '@/meta/blog.meta';
 import type { BlogMetadata } from '@/types/blog.type';
 
-/**
- * The single rule for whether a post is publicly readable.
- *
- * Only 'done' is. Both 'draft' and 'in-progress' 404 on their own URL and
- * render greyed out in the listing. Keep every caller going through this —
- * duplicating the check is how a half-finished post ends up live.
- */
+/** A post body is only public after its author marks it done. */
 export const isReadable = (blog: Pick<BlogMetadata, 'status'>) => blog.status === 'done';
 
-export const getAllBlogs = () => {
-    return Object.entries(blogMetadata)
-        .map(([slug, meta]) => ({
-            ...meta,
-            slug: 'post/' + slug,
-        }))
-        .sort((a, b) => new Date(b.publishedOn).getTime() - new Date(a.publishedOn).getTime());
+const asListing = (entries: Record<string, BlogMetadata>) =>
+    Object.entries(entries)
+        .map(([key, meta]) => ({ ...meta, slug: 'post/' + key }))
+        .sort((a, b) =>
+            Date.parse(b.publishedOn) - Date.parse(a.publishedOn)
+            || (a.series === b.series ? (b.part ?? 0) - (a.part ?? 0) : 0)
+            || a.slug.localeCompare(b.slug),
+        );
+
+/** Every article and series part appears directly in the main blog list. */
+export const getAllBlogs = () => asListing(blogMetadata);
+
+/** Individual articles, including every series part. */
+export const getAllPosts = getAllBlogs;
+export const getReadablePosts = () => getAllPosts().filter(isReadable);
+export const getReadableBlogs = getReadablePosts;
+
+export const getBlogMetadata = (key: string): BlogMetadata | undefined =>
+    Object.hasOwn(blogMetadata, key) ? blogMetadata[key] : undefined;
+
+export const getBlogSeries = (key: string) =>
+    Object.hasOwn(blogSeries, key) ? blogSeries[key] : undefined;
+
+export const getSeriesParts = (key: string) =>
+    (getBlogSeries(key)?.parts ?? []).map(partKey => blogMetadata[partKey]);
+
+export const getPostKey = (pathname: string) => {
+    const prefix = '/blog/post/';
+    return pathname.startsWith(prefix) ? pathname.slice(prefix.length).replace(/\/+$/, '') : undefined;
 };
 
-/** Only the posts a visitor can actually open. */
-export const getReadableBlogs = () => getAllBlogs().filter(isReadable);
-
-export const getBlogMetadata = (slug: string) => {
-    return blogMetadata[slug];
-};
+export const blogStatusLabel = (status: BlogMetadata['status']) =>
+    status === 'done' ? 'published' : status === 'in-progress' ? 'in progress' : 'draft';
 
 /**
  * Page metadata for a post.
@@ -34,7 +46,13 @@ export const getBlogMetadata = (slug: string) => {
  * page whose only content is "this is not finished".
  */
 export const buildPostMetadata = (key: string, site: { me: string; icon: string }) => {
-    const blog = blogMetadata[key];
+    // Former series overview URLs redirect to the main blog list.
+    if (getBlogSeries(key)) return {
+        title: site.me,
+        alternates: { canonical: '/blog' },
+        robots: { index: false, follow: true },
+    };
+    const blog = getBlogMetadata(key);
 
     if (!blog) return { title: site.me };
 

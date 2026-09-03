@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, type ReactNode } from 'react';
+import { getAllBlogs } from '@/lib/blogs';
 
 export type PaneTheme = 'dark' | 'blue' | 'paper' | 'transparent';
 
@@ -18,16 +19,11 @@ export const PANE_ROUTES = [
     { href: '/blog', label: '~/writing', navLabel: '/blog' },
     { href: '/resume', label: '~/resume', navLabel: '/resume' },
     { href: '/contact', label: '~/contact', navLabel: '/contact' },
-    {
-        href: '/blog/post/cpu-pipelining',
-        label: '~/writing/cpu-pipelining.md',
-        navLabel: '/cpu-pipelining',
-    },
-    {
-        href: '/blog/post/busy-waiting',
-        label: '~/writing/busy-waiting.md',
-        navLabel: '/busy-waiting',
-    },
+    ...getAllBlogs().map(post => ({
+        href: `/blog/${post.slug}`,
+        label: `~/writing/${post.slug.slice(5)}.md`,
+        navLabel: `/${post.slug.slice(5)}`,
+    })),
 ] as const;
 
 export const PANE_NAV_ROUTES = PANE_ROUTES.slice(0, 5);

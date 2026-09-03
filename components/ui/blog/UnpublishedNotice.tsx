@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
 import { TerminalWindow } from '@/components/layout/TerminalWindow';
 import { CommandLine, Prompt } from '@/components/ui/shell/CommandLine';
@@ -36,10 +36,12 @@ export const UnpublishedNotice = ({
     blog,
     file,
     others,
+    children,
 }: {
     blog: BlogMetadata;
     file: string;
     others: BlogMetadata[];
+    children?: ReactNode;
 }) => {
     const status = blog.status === 'done' ? COPY.draft : COPY[blog.status];
 
@@ -90,6 +92,7 @@ export const UnpublishedNotice = ({
                 </>
             }
         >
+            {children}
             <CommandLine cwd="~/writing">
                 <div>
                     <div className="flex flex-wrap items-baseline gap-x-2">

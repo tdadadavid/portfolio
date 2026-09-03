@@ -1,18 +1,22 @@
-{/* ========================= SEO/METADATA =========================== */}
+export const post = {
+    "title": "Write-Ahead Logs",
+    "summary": "How databases keep the promise that an acknowledged write survives a power cut — record layout, fsync, group commit, segment rotation and replay, built up in Go.",
+    "publishedOn": "2026-07-30T09:00:00.000Z",
+    "tags": [
+        "wal",
+        "go",
+        "db",
+        "storage",
+        "distributed-systems"
+    ],
+    "status": "in-progress"
+};
 
-import { buildPostMetadata } from "@/lib/blogs.ts";
-import info from "@/misc/info";
 import Mermaid from '@/components/ui/blog/Mermaid';
 import { WalFlow } from '@/components/ui/blog/wal/WalFlow';
 import { CrashReplay } from '@/components/ui/blog/wal/CrashReplay';
 import { RecordLayout } from '@/components/ui/blog/wal/RecordLayout';
 import { DurabilityLadder } from '@/components/ui/blog/wal/DurabilityLadder';
-
-export const key = 'wal';
-
-export const metadata = buildPostMetadata(key, { me: info.me, icon: '/icon.svg' });
-
-{/* ================================================================== */}
 
 # Write-Ahead Logs
 

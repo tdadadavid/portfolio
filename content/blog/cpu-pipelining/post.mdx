@@ -1,17 +1,21 @@
-{/* ========================= SEO/METADATA =========================== */}
+export const post = {
+    "title": "CPU Pipelining, Explained with Robots",
+    "summary": "A visual explanation of how a CPU overlaps fetch, decode, and execute so that one instruction can finish on almost every clock tick.",
+    "publishedOn": "2026-08-26T09:00:00.000Z",
+    "tags": [
+        "computer-architecture",
+        "cpu",
+        "pipelining",
+        "performance"
+    ],
+    "status": "done",
+    "coverImage": {
+        "src": "/image/cpu-pipelining-cover.webp",
+        "alt": "Industrial robots working along an automated factory conveyor"
+    }
+};
 
-import { buildPostMetadata } from '@/lib/blogs';
-import info from '@/misc/info';
 import { PipelineRobots } from '@/components/ui/blog/cpu-pipelining/PipelineRobots';
-
-export const key = 'cpu-pipelining';
-
-export const metadata = buildPostMetadata(key, {
-    me: info.me,
-    icon: '/icon.svg',
-});
-
-{/* ================================================================== */}
 
 # CPU Pipelining, Explained with Robots
 

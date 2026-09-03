@@ -1,16 +1,19 @@
-{/* ========================= SEO/METADATA =========================== */}
+export const post = {
+    "title": "Domain Name System (DNS)",
+    "summary": "What is actually on the wire: the header, label encoding and compression pointers, walking from root to authoritative, the 512-byte limit, and why TTLs are how long your mistakes last. Built as a resolver in Go.",
+    "publishedOn": "2025-10-27T19:16:03",
+    "tags": [
+        "dns",
+        "go",
+        "networking",
+        "protocols"
+    ],
+    "status": "in-progress"
+};
 
-import { buildPostMetadata } from "@/lib/blogs.ts";
-import info from "@/misc/info";
 import Mermaid from '@/components/ui/blog/Mermaid';
 import { HeaderLayout } from '@/components/ui/blog/dns/HeaderLayout';
 import { ResolutionWalk } from '@/components/ui/blog/dns/ResolutionWalk';
-
-export const key = 'dns';
-
-export const metadata = buildPostMetadata(key, { me: info.me, icon: '/icon.svg' });
-
-{/* ================================================================== */}
 
 # Domain Name System
 

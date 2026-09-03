@@ -1,5 +1,5 @@
 // Generate site map
-import { getReadableBlogs } from '@/lib/blogs';
+import { getReadablePosts } from '@/lib/blogs';
 import info from '@/misc/info';
 
 export default async function sitemap() {
@@ -8,7 +8,7 @@ export default async function sitemap() {
         lastModified: new Date().toISOString().split('T')[0],
     }));
 
-    const posts = getReadableBlogs().map(post => ({
+    const posts = getReadablePosts().map(post => ({
         url: `${info.url}/blog/${post.slug}`,
         lastModified: new Date(post.publishedOn).toISOString().split('T')[0],
     }));
