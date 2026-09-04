@@ -2,10 +2,10 @@ const info = {
     me: 'òbàdàfídì',
     url: 'https://www.obadafidi.tech',
     shortcutIcon: 'icon.svg',
-    github: 'https://github.com/tdadadavid',
+    github: 'https://github.com/obadafidii',
     email: 'davidtofunmidada@gmail.com',
     socials: {
-        twitter: 'https://x.com/dtrue_king',
+        twitter: 'https://x.com/obadafidiii',
         linkedin: 'https://linkedin.com/in/obadafidi',
     },
     navLinks: [
