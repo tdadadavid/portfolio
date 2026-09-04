@@ -974,6 +974,7 @@ a {
     min-width: 68px;
     margin-left: auto;
     cursor: pointer;
+    color-scheme: dark;
     border: 1px solid var(--paper-line-strong);
     border-radius: 3px;
     padding: 2px 4px;
@@ -981,6 +982,16 @@ a {
     color: var(--paper-muted);
     font-family: var(--font-mono);
     font-size: 9px;
+}
+
+.term-pane-theme-select option {
+    background: #10141b;
+    color: #f2f6fa;
+}
+
+.term-pane-theme-select option:checked {
+    background: #285474;
+    color: #ffffff;
 }
 
 .term-pane-theme-select:focus-visible,
