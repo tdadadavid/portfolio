@@ -22,7 +22,7 @@ export const post = {
 Start writing here. MDX components and imports work as before.
 ```
 
-This creates `/blog/post/my-article`. Use plain literal values in `post`; metadata
+This creates `/blog/my-article`. Use plain literal values in `post`; metadata
 cannot call functions or reference imported variables. `coverImage: { src, alt }`
 is optional. The folder determines the URL, and the date determines the year.
 
@@ -58,8 +58,8 @@ appear in reverse part order (4, 3, 2, 1).
 
 Every part appears as its own row on `/blog`, alongside the other articles, with
 a part number and its individual publication status. Each row links straight to
-its part, such as `/blog/post/log/part-1-introduction`. There is no separate series
-overview; the old `/blog/post/log` URL redirects to `/blog`. Previous/next links,
+its part, such as `/blog/log/part-1-introduction`. There is no separate series
+overview; the old `/blog/log` URL redirects to `/blog`. Previous/next links,
 sharing URLs, the sitemap, and split panes update automatically.
 To add another part, add an MDX file with its metadata; no other code needs editing.
 Keep filenames stable after publishing to preserve links.

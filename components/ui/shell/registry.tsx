@@ -64,7 +64,7 @@ const postFile = (slug: string) => `${slug.replace(/^post\//, '')}.md`;
 const findPost = (arg: string) => {
     const key = arg.replace(/\/$/, '').replace(/\.md$/, '').replace(/^post\//, '');
     const posts = getAllBlogs();
-    return posts.find(item => item.slug === `post/${key}`)
+    return posts.find(item => item.slug === key)
         ?? posts.find(item => item.slug.endsWith(`/${key}`));
 };
 
@@ -185,6 +185,78 @@ export const POST_FILTERS: Record<string, { statuses: BlogStatus[]; label: strin
     '--draft': { statuses: ['draft'], label: 'draft' },
     '--drafts': { statuses: ['draft'], label: 'draft' },
     '--unpublished': { statuses: ['in-progress', 'draft'], label: 'not yet published' },
+};
+
+const isSubsequence = (fragment: string, candidate: string) => {
+    let index = 0;
+    for (const character of candidate) {
+        if (character === fragment[index]) index += 1;
+        if (index === fragment.length) return true;
+    }
+    return false;
+};
+
+/** Context-aware candidates used by the interactive terminal input. */
+export const suggestionsFor = (value: string, cwd: Cwd): string[] => {
+    const input = value.trimStart();
+    if (!input) return [];
+
+    const hasArgument = /\s/.test(input);
+    const parts = input.split(/\s+/);
+    const verb = parts[0] ?? '';
+    const fragment = hasArgument ? (parts.at(-1) ?? '') : verb;
+    if (!fragment) return [];
+
+    let pool: string[];
+    if (!hasArgument) {
+        pool = COMMAND_NAMES;
+    } else {
+        switch (verb) {
+            case 'ls':
+            case 'll':
+                pool = cwd === '~/writing'
+                    ? ['--tags', ...Object.keys(POST_FILTERS)]
+                    : ['--tags'];
+                break;
+            case 'cd':
+                pool = ['..', '~', ...ROUTES.map(route => route.name), ...entriesFor(cwd)];
+                break;
+            case 'cat':
+                pool = ['about.md', 'resume.md', 'resume.pdf', ...entriesFor(cwd)];
+                break;
+            case 'man':
+                pool = ['david', 'resume', ...ROUTES.map(route => route.name)];
+                break;
+            case 'open':
+                pool = [
+                    ...Object.keys(SOCIALS),
+                    ...ROUTES.map(route => route.name),
+                    ...info.works.map(work => work.file),
+                    ...getAllBlogs().map(post => postFile(post.slug)),
+                ];
+                break;
+            default:
+                pool = entriesFor(cwd);
+        }
+    }
+
+    const needle = fragment.toLowerCase();
+    return [...new Set(pool)]
+        .map(candidate => {
+            const haystack = candidate.toLowerCase();
+            const score = haystack.startsWith(needle)
+                ? 0
+                : haystack.includes(needle)
+                  ? 1
+                  : isSubsequence(needle, haystack)
+                    ? 2
+                    : 3;
+            return { candidate, score };
+        })
+        .filter(match => match.score < 3)
+        .sort((a, b) => a.score - b.score || a.candidate.localeCompare(b.candidate))
+        .slice(0, 7)
+        .map(match => match.candidate);
 };
 
 const PostsListing = ({ statuses }: { statuses: BlogStatus[] }) => {

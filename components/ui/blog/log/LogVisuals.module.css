@@ -1,0 +1,263 @@
+.appendScene,
+.segmentScene,
+.numberedScene {
+    overflow: hidden;
+    font-family: var(--font-mono);
+}
+
+.directionLine {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--paper-faint);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.directionRule {
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, var(--paper-line-strong), var(--term-green));
+}
+
+.operationTrack {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(90px, 1fr)) 32px;
+    gap: 6px;
+    min-width: 600px;
+    margin-top: 12px;
+}
+
+.operation {
+    min-width: 0;
+    border: 1px solid var(--paper-line-strong);
+    border-radius: 3px;
+    padding: 11px 8px;
+    color: var(--paper-faint);
+    background: var(--paper-raised);
+    font-size: 10px;
+    opacity: 0;
+    transform: translateX(18px);
+    transition:
+        opacity 260ms ease,
+        transform 260ms ease,
+        border-color 260ms ease;
+}
+
+.operation span {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--term-blue);
+    font-size: 9px;
+}
+
+.operationVisible {
+    border-color: color-mix(in oklab, var(--term-blue) 58%, var(--paper-line-strong));
+    color: var(--paper-ink);
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.writeHead {
+    display: grid;
+    place-items: center;
+    border: 1px dashed var(--term-green);
+    border-radius: 3px;
+    color: var(--term-green);
+    font-size: 17px;
+    animation: head-pulse 900ms ease-in-out infinite alternate;
+}
+
+.segmentFlow {
+    display: flex;
+    align-items: stretch;
+    min-width: 620px;
+}
+
+.segmentGroup {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    align-items: center;
+}
+
+.segment {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+    border: 1px solid var(--paper-line-strong);
+    border-radius: 4px;
+    background: var(--paper-raised);
+    transition:
+        border-color 240ms ease,
+        opacity 240ms ease;
+}
+
+.segmentActive {
+    border-color: var(--term-green);
+}
+
+.segmentSealed {
+    border-color: var(--term-blue);
+}
+
+.segmentHeader {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    border-bottom: 1px solid var(--paper-line);
+    padding: 7px 9px;
+    color: var(--paper-muted);
+    font-size: 9px;
+}
+
+.segmentActive .segmentHeader span:last-child {
+    color: var(--term-green);
+}
+
+.segmentSealed .segmentHeader span:last-child {
+    color: var(--term-blue);
+}
+
+.segmentRecords {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+    padding: 8px;
+}
+
+.segmentArrow {
+    width: 30px;
+    flex: 0 0 30px;
+    color: var(--paper-faint);
+    text-align: center;
+}
+
+.segmentLegend {
+    margin-top: 12px;
+    color: var(--paper-faint);
+    font-size: 10px;
+}
+
+.record {
+    min-width: 0;
+    border: 1px solid var(--paper-line-strong);
+    border-radius: 3px;
+    padding: 8px 6px;
+    background: var(--paper-soft);
+    opacity: 0.16;
+    transform: translateY(5px);
+    transition:
+        opacity 220ms ease,
+        transform 220ms ease,
+        border-color 220ms ease;
+}
+
+.recordVisible {
+    border-color: color-mix(in oklab, var(--term-green) 48%, var(--paper-line-strong));
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.recordIndex,
+.recordPayload {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.recordIndex {
+    color: var(--term-amber);
+    font-size: 11px;
+}
+
+.recordPayload {
+    margin-top: 3px;
+    color: var(--paper-faint);
+    font-size: 8px;
+}
+
+.sketchFrame {
+    position: relative;
+    aspect-ratio: 5 / 3;
+    overflow: hidden;
+    border: 1px solid var(--paper-line-strong);
+    border-radius: 4px;
+    background: #ecebe5;
+}
+
+.sketchImage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    max-width: none;
+    height: auto;
+    transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.caption {
+    margin-top: 8px;
+    color: var(--paper-faint);
+    font-family: var(--font-mono);
+    font-size: 12px;
+}
+
+.numberedTrack {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(52px, 1fr)) 34px;
+    gap: 5px;
+    min-width: 520px;
+    align-items: center;
+}
+
+.tailMarker {
+    color: var(--term-green);
+    font-size: 9px;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+}
+
+.sequenceReadout {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 9px;
+    margin-top: 12px;
+    color: var(--paper-faint);
+    font-size: 9px;
+    text-transform: uppercase;
+}
+
+.sequenceReadout strong {
+    color: var(--term-amber);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+@keyframes head-pulse {
+    to {
+        background: color-mix(in oklab, var(--term-green) 10%, transparent);
+        box-shadow: 0 0 14px color-mix(in oklab, var(--term-green) 25%, transparent);
+    }
+}
+
+@media (max-width: 620px) {
+    .appendScene,
+    .segmentScene,
+    .numberedScene {
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .operation,
+    .record,
+    .writeHead {
+        animation: none;
+        transition: none;
+    }
+}

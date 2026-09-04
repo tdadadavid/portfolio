@@ -6,7 +6,7 @@ export const isReadable = (blog: Pick<BlogMetadata, 'status'>) => blog.status ==
 
 const asListing = (entries: Record<string, BlogMetadata>) =>
     Object.entries(entries)
-        .map(([key, meta]) => ({ ...meta, slug: 'post/' + key }))
+        .map(([key, meta]) => ({ ...meta, slug: key }))
         .sort((a, b) =>
             Date.parse(b.publishedOn) - Date.parse(a.publishedOn)
             || (a.series === b.series ? (b.part ?? 0) - (a.part ?? 0) : 0)
@@ -31,8 +31,10 @@ export const getSeriesParts = (key: string) =>
     (getBlogSeries(key)?.parts ?? []).map(partKey => blogMetadata[partKey]);
 
 export const getPostKey = (pathname: string) => {
-    const prefix = '/blog/post/';
-    return pathname.startsWith(prefix) ? pathname.slice(prefix.length).replace(/\/+$/, '') : undefined;
+    const prefix = '/blog/';
+    if (!pathname.startsWith(prefix)) return undefined;
+    const key = pathname.slice(prefix.length).replace(/\/+$/, '');
+    return key.replace(/^post\//, '') || undefined;
 };
 
 export const blogStatusLabel = (status: BlogMetadata['status']) =>
@@ -63,7 +65,7 @@ export const buildPostMetadata = (key: string, site: { me: string; icon: string 
         type: 'article',
     })}`;
     const socialImage = blog.coverImage?.src ?? generatedImage;
-    const canonicalUrl = `/blog/post/${key}`;
+    const canonicalUrl = `/blog/${key}`;
 
     return {
         title: `${blog.title} | ${site.me}`,

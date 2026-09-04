@@ -64,7 +64,7 @@ export const blogMetadata: Record<string, BlogMetadata> = {
             "version-control",
             "distributed-systems"
         ],
-        "status": "draft",
+        "status": "done",
         "series": "log",
         "part": 1
     },
@@ -109,6 +109,20 @@ export const blogMetadata: Record<string, BlogMetadata> = {
         "status": "draft",
         "series": "log",
         "part": 4
+    },
+    "log/part-5-consensus-algorithms": {
+        "title": "Understanding Log: Consensus",
+        "summary": "Distributed Logs: view-stamped replication",
+        "publishedOn": "2026-09-03T00:00:00.000Z",
+        "year": "2026",
+        "slug": "log/part-5-consensus-algorithms",
+        "tags": [
+            "logs",
+            "distributed-systems"
+        ],
+        "status": "draft",
+        "series": "log",
+        "part": 5
     },
     "raft": {
         "title": "Raft",
@@ -168,14 +182,15 @@ export const blogSeries: Record<string, BlogSeries> = {
             "version-control",
             "distributed-systems"
         ],
-        "status": "draft",
+        "status": "in-progress",
         "parts": [
             "log/part-1-introduction",
             "log/part-2-databases",
             "log/part-3-version-control",
-            "log/part-4-distributed-systems"
+            "log/part-4-distributed-systems",
+            "log/part-5-consensus-algorithms"
         ],
-        "partCount": 4,
-        "publishedParts": 0
+        "partCount": 5,
+        "publishedParts": 1
     }
 };

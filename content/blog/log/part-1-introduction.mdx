@@ -2,7 +2,7 @@ export const post = {
     "title": "Understanding Log: Introduction",
     "summary": "What a log is and why an ordered history of events is useful.",
     "publishedOn": "2026-09-03T00:00:00.000Z",
-    "status": "draft",
+    "status": "done",
     "part": 1,
     "tags": [
         "logs",
@@ -12,40 +12,57 @@ export const post = {
     ]
 };
 
-# Understanding Log - Part 1.
-[[TODO ADD MY NOTEBOOK PICTURE]]
+import {
+    AbstractLogSketch,
+    AppendDirection,
+    NumberedAppend,
+    SegmentRotation,
+} from '@/components/ui/blog/log/LogVisuals';
 
-I was studying the Write-Ahead-Log for a personal project and decided to do a presentation at DULSS. I came up with the slides
-and thought I was done, until I got a feedback from Tushar and Chirap that pushed me to go deeper. This push led me to see
+# Understanding Log - Part 1.
+
+<img
+    src="/image/log-in-several-systems.png"
+    alt="Handwritten map connecting logs to databases, version control, and distributed systems"
+    width="1280"
+    height="835"
+    caption="The note that started this series: one append-only idea appearing across databases, version control, and distributed systems."
+/>
+
+I was studying the Write-Ahead-Log for a personal project and decided to do a presentation at [DULSS](https://discord.gg/hbMFVErE7). I came up with the slides
+and thought I was done, until I got a feedback from Tushar and Chiradip that pushed me to go deeper. This push led me to see
 Log in several systems I didn't know before.
 
-The feedback from chirap
->> Think WAL as state machine, model in that way, and apply state machine in applicable scenarios like storage.
->> ———
->> A deterministic state machine drives its execution through a Write-Ahead Log (WAL), which forces all incoming
->> state transitions to be durably ordered before they alter the application state. Because this linear ledger acts as
->> the authoritative timeline, the state machine can infallibly reconstruct its exact, consistent state during recovery
->> simply by sequentially replaying the logged inputs.
--- Insight from Chirap
+The feedback from Chiradip
+> Think WAL as a state machine, model in that way, and apply state machine in applicable scenarios like storage.
+>
+> A deterministic state machine drives its execution through a Write-Ahead Log (WAL), which forces all incoming
+> state transitions to be durably ordered before they alter the application state. Because this linear ledger acts as
+> the authoritative timeline, the state machine can infallibly reconstruct its exact, consistent state during recovery
+> simply by sequentially replaying the logged inputs. — Chiradip
 
 
 > Many concepts in computer science/software technology replay themselves in different systems using different names
 
-In this series we will be looking at _Log_ in several systems
-1. Log in Databases
-2. Log in Version (think `git log` 😉)
-3. Log in distributed systems (think `kafka and its partitions`)
-4. Log in consensus algorithms (think `raft and vsr`)
+In this series we will be looking at the Log in several systems
+1. in databases
+2. in version control(think `git log` 😉)
+3. in distributed systems (think `kafka and its partitions`)
+4. in consensus algorithms (think `raft and vsr`)
 
 Before we go into each of these, let's understand what a Log is first.
 
-A Log is actually just a state machine tracker. It is a system that tracks the changes to the particular state, it tracks
-"_what_ altered a state" and "_when_ a state was changed" (in an _orderly_ manner). Look at a log as a Table with entries
-_appended_ from Left to Right and sorted by _time_ .It builds on the principle of `State Machine Replication`
 
-## State Machine Replication
-If two deterministic processes starting from the same initial state are fed with the _same input_ in the _same order_
-then these processes will end up in the same state and same output.
+## Overview
+A Log is actually just a state machine tracker. It is a system that tracks the changes to the particular state, it tracks
+"**what** altered a state" and "**when** a state was changed" (in an **orderly** manner). Look at a log as a Table with entries
+**appended** from Left to Right and sorted by **time** .It builds on the principle of [`State Machine Replication`](https://en.wikipedia.org/wiki/State_machine_replication)
+
+> If two deterministic processes starting from the same initial state are fed with the _same input_ in the _same order_
+> then these processes will end up in the same state and same output—State Machine Replication
+
+The two key things in this principle is **`same input`** and **`same order`** take note.
+
 
 
 ## Purposes of a log
@@ -60,20 +77,24 @@ an output to the console or a file or a system. However, irrespective of the for
 know/trace/track what happened (what caused the issue) and when the issue happened. In this series we are looking
 at programmable logs, not just 'logs' from application consoles.
 
-### Log as a state machine
+## Log as a state machine
 If we say a log tracks state-altering actions, it means that we can feed these tracked-actions into a system at the initial state
-and arrive in the finished state. It just reminds me of (finite-state-machines)[] in compilers and `d-tran` function that allows
+and arrive in the finished state. It just reminds me of [finite-state-machines](https://en.wikipedia.org/wiki/Finite-state_machine) in compilers and `d-tran` function that allows
 a state to transition to another on an input.
 
 
 ## Properties of a Log
-1. Insertion: A log can be inserted to from left-to-right only or top-bottom only. You cannot append a particular position in a log
+1. **Insertion**: A log can be inserted to from left-to-right only or top-bottom only. You cannot append a particular position in a log
 only the end.
 
-2. Segmentation: Once we start appending to a log, the size begins to grow, and it because too large for a process, a log can now segment
+<AppendDirection />
+
+2. **Segmentation**: Once we start appending to a log, the size begins to grow, and it because too large for a process, a log can now segment
 itself into smaller chunks of logs that allows faster processing.
 
-3. Durable: This is one key area of a log, it must be durable, the contents of the Log should not be lost in case of a crash. If a log is not
+<SegmentRotation />
+
+3. **Durability**: This is one key area of a log, it must be durable, the contents of the Log should not be lost in case of a crash. If a log is not
 durable, then it cannot act an authoritative source.
 
 
@@ -81,18 +102,20 @@ durable, then it cannot act an authoritative source.
 We discussed the purposes and properties of a log, now let's look at the shape of a log in an abstract form not diving into how a log looks like
 in a database, kafka or raft, just an overview to give you a mental model of what we will be studying through these series.
 
-[[TODO INSERT MY NOTEBOOK PICTURE HERE]]
+<AbstractLogSketch />
 
 A log can be seen as an array of entries that are appended from left-to-right and are sorted by identifiers. We all know arrays; they're _linear_
 data-structures where values are accessed by their index. Good! Imagine an array that arranges all its inputs in an orderly manner, you can't put
 at index 10 (i[10]) when you've not filled index 9 (i[9]), that is simply a log.
 
+<NumberedAppend />
+
 
 ## Conclusion
 From this I hope we can now envision the ride we are about to take. This introduction gives an eagle-view of a log; we are now
-going to deep dive into a log in several systems like `databases` and how logs helps in _crash recovery_, how `version control` systems
-use logs for _history and versioning_, how `consensus algorithms` like _view-stamped replication_ are basically _distributed logs_, how `kafka` partitions
-are also _durable log streams_.
+going to deep dive into a log in several systems like `databases` and how logs helps in **crash recovery**, how `version control` systems
+use logs for **history and versioning**, how `consensus algorithms` like **view-stamped replication** are basically **distributed logs**, how `kafka` partitions
+are also **durable log streams**.
 
 
 ## References

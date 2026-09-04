@@ -21,8 +21,8 @@ export const PANE_ROUTES = [
     { href: '/contact', label: '~/contact', navLabel: '/contact' },
     ...getAllBlogs().map(post => ({
         href: `/blog/${post.slug}`,
-        label: `~/writing/${post.slug.slice(5)}.md`,
-        navLabel: `/${post.slug.slice(5)}`,
+        label: `~/writing/${post.slug}.md`,
+        navLabel: `/${post.slug}`,
     })),
 ] as const;
 

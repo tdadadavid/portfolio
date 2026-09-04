@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useId, useRef, useState, type ReactNode } from 'react';
 
-import { COMMAND_NAMES, entriesFor, runCommand, type Cwd } from '@/components/ui/shell/registry';
+import { runCommand, suggestionsFor, type Cwd } from '@/components/ui/shell/registry';
 import { usePaneNavigation } from '@/components/layout/split-state';
 import { usePaneShellSession, type ShellBlock } from './session';
 
@@ -29,6 +29,8 @@ export const CommandLine = ({ cwd, children, autoFocus = false }: CommandLinePro
     const [localInput, setLocalInput] = useState('');
     const [localHistory, setLocalHistory] = useState<string[]>([]);
     const [localHistoryIdx, setLocalHistoryIdx] = useState(-1);
+    const [selectedSuggestion, setSelectedSuggestion] = useState(0);
+    const [suggestionsDismissed, setSuggestionsDismissed] = useState(false);
     const localNextId = useRef(0);
     const blocks = paneSession?.blocks ?? localBlocks;
     const setBlocks = paneSession?.setBlocks ?? setLocalBlocks;
@@ -42,6 +44,9 @@ export const CommandLine = ({ cwd, children, autoFocus = false }: CommandLinePro
     const inputRef = useRef<HTMLInputElement>(null);
     const endRef = useRef<HTMLDivElement>(null);
     const inputId = useId();
+    const suggestionsId = `${inputId}-suggestions`;
+    const suggestions = suggestionsDismissed ? [] : suggestionsFor(input, cwd);
+    const activeSuggestion = Math.min(selectedSuggestion, suggestions.length - 1);
 
     const submit = useCallback(
         (command: string) => {
@@ -69,37 +74,64 @@ export const CommandLine = ({ cwd, children, autoFocus = false }: CommandLinePro
         setHistory(prev => [command, ...prev]);
         setHistoryIdx(-1);
         setInput('');
+        setSuggestionsDismissed(false);
+        setSelectedSuggestion(0);
         submit(command);
     };
 
+    const acceptSuggestion = (suggestion: string, appendSpace = true) => {
+        const lastSpace = input.lastIndexOf(' ');
+        const prefix = lastSpace >= 0 ? input.slice(0, lastSpace + 1) : '';
+        setInput(`${prefix}${suggestion}${appendSpace ? ' ' : ''}`);
+        setSelectedSuggestion(0);
+        setSuggestionsDismissed(appendSpace);
+        window.requestAnimationFrame(() => inputRef.current?.focus());
+    };
+
     const complete = () => {
-        const parts = input.split(/\s+/);
-        const isFirstWord = parts.length === 1;
-        const fragment = parts[parts.length - 1] ?? '';
-        if (!fragment) return;
-
-        const pool = isFirstWord ? COMMAND_NAMES : entriesFor(cwd);
-        const matches = pool.filter(item => item.startsWith(fragment));
-        if (matches.length === 0) return;
-
+        if (suggestions.length === 0) return;
+        const fragment = input.slice(input.lastIndexOf(' ') + 1);
+        const prefixMatches = suggestions.filter(item => item.startsWith(fragment));
+        const matches = prefixMatches.length > 0 ? prefixMatches : suggestions;
         const shared = matches.reduce((acc, item) => {
             let i = 0;
             while (i < acc.length && i < item.length && acc[i] === item[i]) i++;
             return acc.slice(0, i);
         });
-
-        parts[parts.length - 1] = shared;
-        setInput(parts.join(' ') + (matches.length === 1 ? ' ' : ''));
+        const completion = matches.length === 1 || !shared.startsWith(fragment)
+            ? suggestions[Math.max(activeSuggestion, 0)]
+            : shared;
+        acceptSuggestion(completion, matches.length === 1);
     };
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter' && suggestions.length > 0 && activeSuggestion >= 0) {
+            const suggestion = suggestions[activeSuggestion];
+            const fragment = input.slice(input.lastIndexOf(' ') + 1);
+            if (suggestion !== fragment) {
+                event.preventDefault();
+                acceptSuggestion(suggestion);
+                return;
+            }
+        }
         if (event.key === 'Tab') {
             event.preventDefault();
             complete();
             return;
         }
+        if (event.key === 'Escape' && suggestions.length > 0) {
+            event.preventDefault();
+            setSuggestionsDismissed(true);
+            return;
+        }
         if (event.key === 'ArrowUp') {
             event.preventDefault();
+            if (suggestions.length > 0) {
+                setSelectedSuggestion(index =>
+                    index <= 0 ? suggestions.length - 1 : index - 1,
+                );
+                return;
+            }
             const idx = Math.min(historyIdx + 1, history.length - 1);
             if (idx >= 0) {
                 setHistoryIdx(idx);
@@ -109,6 +141,10 @@ export const CommandLine = ({ cwd, children, autoFocus = false }: CommandLinePro
         }
         if (event.key === 'ArrowDown') {
             event.preventDefault();
+            if (suggestions.length > 0) {
+                setSelectedSuggestion(index => (index + 1) % suggestions.length);
+                return;
+            }
             const idx = historyIdx - 1;
             setHistoryIdx(idx);
             setInput(idx >= 0 ? history[idx] : '');
@@ -137,26 +173,68 @@ export const CommandLine = ({ cwd, children, autoFocus = false }: CommandLinePro
                 </div>
             ))}
 
-            <form onSubmit={onSubmit} className="mt-3 flex items-baseline gap-x-2">
-                <Prompt cwd={cwd} />
-                <label htmlFor={inputId} className="sr-only">
-                    Terminal command
-                </label>
-                <input
-                    id={inputId}
-                    ref={inputRef}
-                    value={input}
-                    onChange={event => setInput(event.target.value)}
-                    onKeyDown={onKeyDown}
-                    autoComplete="off"
-                    autoCorrect="off"
-                    autoCapitalize="off"
-                    spellCheck={false}
-                    autoFocus={autoFocus}
-                    aria-label="Terminal command"
-                    className="term-cmd min-w-0 flex-1 bg-transparent outline-none"
-                />
-            </form>
+            <div className="mt-3">
+                <form onSubmit={onSubmit} className="flex items-baseline gap-x-2">
+                    <Prompt cwd={cwd} />
+                    <label htmlFor={inputId} className="sr-only">
+                        Terminal command
+                    </label>
+                    <input
+                        id={inputId}
+                        ref={inputRef}
+                        value={input}
+                        onChange={event => {
+                            setInput(event.target.value);
+                            setSelectedSuggestion(0);
+                            setSuggestionsDismissed(false);
+                        }}
+                        onKeyDown={onKeyDown}
+                        autoComplete="off"
+                        autoCorrect="off"
+                        autoCapitalize="off"
+                        spellCheck={false}
+                        autoFocus={autoFocus}
+                        role="combobox"
+                        aria-label="Terminal command"
+                        aria-autocomplete="list"
+                        aria-controls={suggestions.length > 0 ? suggestionsId : undefined}
+                        aria-expanded={suggestions.length > 0}
+                        aria-activedescendant={
+                            activeSuggestion >= 0
+                                ? `${suggestionsId}-${activeSuggestion}`
+                                : undefined
+                        }
+                        className="term-cmd min-w-0 flex-1 bg-transparent outline-none"
+                    />
+                </form>
+
+                {suggestions.length > 0 ? (
+                    <div id={suggestionsId} className="term-completions" role="listbox">
+                        <div className="term-completions__hint">
+                            <span>completions</span>
+                            <span>↑↓ select · tab accept · esc close</span>
+                        </div>
+                        {suggestions.map((suggestion, index) => (
+                            <button
+                                id={`${suggestionsId}-${index}`}
+                                key={suggestion}
+                                type="button"
+                                role="option"
+                                aria-selected={index === activeSuggestion}
+                                data-active={index === activeSuggestion}
+                                className="term-completions__option"
+                                onMouseDown={event => event.preventDefault()}
+                                onClick={() => acceptSuggestion(suggestion)}
+                            >
+                                <span aria-hidden="true">
+                                    {index === activeSuggestion ? '▸' : ' '}
+                                </span>
+                                <span>{suggestion}</span>
+                            </button>
+                        ))}
+                    </div>
+                ) : null}
+            </div>
 
             <div ref={endRef} />
         </div>
