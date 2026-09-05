@@ -1,7 +1,7 @@
 .appendScene,
 .segmentScene,
 .numberedScene {
-    overflow: hidden;
+    overflow-x: auto;
     font-family: var(--font-mono);
 }
 
@@ -72,7 +72,8 @@
 .segmentFlow {
     display: flex;
     align-items: stretch;
-    min-width: 620px;
+    gap: 8px;
+    min-height: 150px;
 }
 
 .segmentGroup {
@@ -80,7 +81,13 @@
     min-width: 0;
     flex: 1;
     align-items: center;
+    animation: file-created 300ms ease-out both;
 }
+
+.capacity { height: 5px; margin: 0 8px; background: var(--paper-line); }
+.capacity span { display: block; height: 100%; background: var(--term-green); transition: width 300ms ease; }
+.fileCount { padding: 6px 8px; color: var(--paper-muted); font-size: 10px; }
+@keyframes file-created { from { opacity: 0; transform: translateY(10px); } }
 
 .segment {
     min-width: 0;
@@ -245,6 +252,14 @@
 }
 
 @media (max-width: 620px) {
+    .segmentFlow { flex-direction: column; min-height: 390px; justify-content: flex-start; }
+    .segmentGroup { flex: 0 0 auto; width: 100%; }
+    .segmentArrow { display: none; }
+    .operationTrack { min-width: 0; grid-template-columns: repeat(5, minmax(0, 1fr)) 18px; gap: 3px; }
+    .operation { padding: 8px 3px; font-size: 8px; overflow-wrap: anywhere; }
+    .numberedTrack { min-width: 0; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+    .numberedTrack .record { padding: 7px 2px; text-align: center; }
+    .numberedTrack .recordPayload, .tailMarker { display: none; }
     .appendScene,
     .segmentScene,
     .numberedScene {
@@ -260,4 +275,6 @@
         animation: none;
         transition: none;
     }
+    .segmentGroup { animation: none; }
+    .capacity span { transition: none; }
 }

@@ -322,6 +322,7 @@ a {
 
 .blog-post-layout {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     align-items: start;
     --measure: 88ch;
 }
@@ -900,6 +901,7 @@ a {
 
 .term-content {
     flex: 1;
+    min-width: 0;
     padding: 18px 14px 28px;
     font-size: 12.5px;
     line-height: 1.95;
@@ -1309,6 +1311,26 @@ a.term-row:focus-visible {
 
 .term-cmd {
     color: var(--paper-bright);
+}
+
+.pager-body { min-width: 0; width: 100%; }
+.pager-prose { overflow-wrap: anywhere; }
+.pager-prose pre { max-width: 100%; overflow-x: auto; }
+.pager-prose table { display: block; max-width: 100%; overflow-x: auto; }
+
+@media (max-width: 639px) {
+    .term-page { margin: 0; border-radius: 0; min-height: 100dvh; }
+    .term-content { padding: 16px 12px 20px; }
+    .pager-head { gap: 6px 10px; margin-bottom: 12px; }
+    .pager-prose { font-size: 15px; line-height: 1.7; }
+    .terminal-prompt-form { flex-wrap: wrap; gap: 0 4px; }
+    .terminal-prompt-form .term-sym { overflow-wrap: anywhere; }
+    .terminal-prompt-form input { flex-basis: 100%; min-height: 44px; font-size: 16px; }
+    .term-completions { width: 100%; margin-left: 0; }
+    .term-completions__option { min-height: 44px; align-items: center; overflow-wrap: anywhere; }
+    nav[aria-label='Blog navigation'] { font-size: 11px; gap: 14px; overflow-wrap: anywhere; }
+    .term-row { gap: 2px 8px; }
+    .term-statusbar { gap: 6px; font-size: 10px; }
 }
 
 .term-completions {

@@ -74,8 +74,10 @@ export const AppendDirection = () => {
 };
 
 export const SegmentRotation = () => {
-    const writtenRecords = useAutoCycle(RECORDS.length, 600, 3);
-    const activeSegment = Math.min(Math.floor((writtenRecords - 1) / 3), SEGMENTS.length - 1);
+    const step = useAutoCycle(15, 800, 2) - 1;
+    const activeSegment = Math.floor(step / 5);
+    const recordsInFile = Math.min(step % 5, 3);
+    const writtenRecords = activeSegment * 3 + recordsInFile;
 
     return (
         <Figure caption="fig 3 — when a segment reaches its limit, it is sealed and appends continue in a new segment.">
@@ -85,9 +87,10 @@ export const SegmentRotation = () => {
                 aria-label="Nine log records filling three segment files in order"
             >
                 <div className={styles.segmentFlow}>
-                    {SEGMENTS.map((segment, segmentIndex) => {
+                    {SEGMENTS.slice(0, activeSegment + 1).map((segment, segmentIndex) => {
                         const isSealed = segmentIndex < activeSegment;
                         const isActive = segmentIndex === activeSegment;
+                        const count = isSealed ? 3 : recordsInFile;
 
                         return (
                             <div key={segmentIndex} className={styles.segmentGroup}>
@@ -96,7 +99,7 @@ export const SegmentRotation = () => {
                                 >
                                     <div className={styles.segmentHeader}>
                                         <span>log-{String(segmentIndex + 1).padStart(4, '0')}</span>
-                                        <span>{isSealed ? 'sealed' : isActive ? 'active' : 'waiting'}</span>
+                                        <span>{isSealed ? 'sealed' : count === 3 ? 'FULL' : 'appending'}</span>
                                     </div>
                                     <div className={styles.segmentRecords}>
                                         {segment.map(number => (
@@ -107,8 +110,12 @@ export const SegmentRotation = () => {
                                             />
                                         ))}
                                     </div>
+                                    <div className={styles.capacity}>
+                                        <span style={{ width: `${count / 3 * 100}%` }} />
+                                    </div>
+                                    <div className={styles.fileCount}>{count} / 3 records</div>
                                 </div>
-                                {segmentIndex < SEGMENTS.length - 1 ? (
+                                {segmentIndex < activeSegment ? (
                                     <span className={styles.segmentArrow} aria-hidden="true">
                                         →
                                     </span>
@@ -118,7 +125,11 @@ export const SegmentRotation = () => {
                     })}
                 </div>
                 <div className={styles.segmentLegend}>
-                    max 3 records per segment · next record: {Math.min(writtenRecords + 1, 9)}
+                    {recordsInFile === 0
+                        ? `Created log-${String(activeSegment + 1).padStart(4, '0')} — ready for appends`
+                        : recordsInFile === 3
+                          ? 'File full — seal it, then create the next file'
+                          : `Appending record ${writtenRecords} to the current file`}
                 </div>
             </div>
         </Figure>

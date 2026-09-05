@@ -174,7 +174,7 @@ export const CommandLine = ({ cwd, children, autoFocus = false }: CommandLinePro
             ))}
 
             <div className="mt-3">
-                <form onSubmit={onSubmit} className="flex items-baseline gap-x-2">
+                <form onSubmit={onSubmit} className="terminal-prompt-form flex items-baseline gap-x-2">
                     <Prompt cwd={cwd} />
                     <label htmlFor={inputId} className="sr-only">
                         Terminal command
@@ -212,7 +212,7 @@ export const CommandLine = ({ cwd, children, autoFocus = false }: CommandLinePro
                     <div id={suggestionsId} className="term-completions" role="listbox">
                         <div className="term-completions__hint">
                             <span>completions</span>
-                            <span>↑↓ select · tab accept · esc close</span>
+                            <span>↑↓ select · enter/tab accept · esc close</span>
                         </div>
                         {suggestions.map((suggestion, index) => (
                             <button
