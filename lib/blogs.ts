@@ -63,8 +63,9 @@ export const buildPostMetadata = (key: string, site: { me: string; icon: string 
         title: blog.title,
         description: blog.summary,
         type: 'article',
+        v: '2',
     })}`;
-    const socialImage = blog.coverImage?.src ?? generatedImage;
+    const socialImage = blog.coverImage ? `/api/blog-image/${key}?v=2` : generatedImage;
     const canonicalUrl = `/blog/${key}`;
 
     return {
@@ -84,6 +85,9 @@ export const buildPostMetadata = (key: string, site: { me: string; icon: string 
             images: [
                 {
                     url: socialImage,
+                    width: 1200,
+                    height: 630,
+                    type: blog.coverImage ? 'image/jpeg' : 'image/png',
                     alt: blog.coverImage?.alt ?? `${blog.title} article cover`,
                 },
             ],

@@ -18,6 +18,9 @@ await generateBlogContent(projectRoot);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    outputFileTracingIncludes: {
+        '/api/blog-image/*': ['./public/image/**/*'],
+    },
     pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
     webpack(config) {
         config.plugins.push(new BlogContentPlugin(projectRoot));

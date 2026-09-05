@@ -1,5 +1,3 @@
-import info from '@/misc/info';
-import Image from 'next/image';
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 
@@ -28,8 +26,8 @@ export async function GET(request: NextRequest) {
                     color: '#fff',
                 }}
             >
-                <div style={{ display: 'flex', maxWidth: '9%', marginBottom: '32px' }}>
-                    <Image src={`${info.url}/svg/avatar.svg`} width={64} height={64} alt="" />
+                <div style={{ display: 'flex', color: '#577fbc', fontSize: 24, marginBottom: 32 }}>
+                    obadafidi.tech / writing
                 </div>
 
                 <div
@@ -39,12 +37,12 @@ export async function GET(request: NextRequest) {
                         color: '#577fbc',
                         lineHeight: 1.1,
                         marginBottom: 24,
-                        maxWidth: '70%',
+                        maxWidth: '100%',
                     }}
                 >
                     {title}
                 </div>
-                <div style={{ fontSize: 28, color: '#7C8498', maxWidth: '60%' }}>{description}</div>
+                <div style={{ fontSize: 28, color: '#7C8498', maxWidth: '100%' }}>{description}</div>
 
                 <div
                     style={{

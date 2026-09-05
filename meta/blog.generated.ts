@@ -65,6 +65,10 @@ export const blogMetadata: Record<string, BlogMetadata> = {
             "distributed-systems"
         ],
         "status": "done",
+        "coverImage": {
+            "src": "/image/log-in-several-systems.png",
+            "alt": "Handwritten map connecting logs to databases, version control, and distributed systems"
+        },
         "series": "log",
         "part": 1
     },
